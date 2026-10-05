@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="es"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Fynance Capital</title><meta name="theme-color" content="#ffffff">
+<link rel="manifest" href="manifest.json"><link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png"><link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<style>
+@font-face{font-family:"Symphonie Grotesque";font-weight:400;font-style:normal;font-display:block;src:url(fonts/SymphonieGrotesque-Regular.otf) format("opentype")}
+@font-face{font-family:"Symphonie Grotesque";font-weight:500;font-style:normal;font-display:block;src:url(fonts/SymphonieGrotesque-Medium.otf) format("opentype")}
+@font-face{font-family:"Symphonie Grotesque";font-weight:700;font-style:normal;font-display:block;src:url(fonts/SymphonieGrotesque-Bold.otf) format("opentype")}
+:root{--bg:#fff;--fg:#000;--mut:#bdbdbd;--soft:#f1f1f1;--tr:-.021em}
+*{box-sizing:border-box;margin:0;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;background:var(--bg);color:var(--fg);font:500 17px/1.2 "Symphonie Grotesque",sans-serif;letter-spacing:var(--tr)}
+#app{height:100%;max-width:480px;margin:auto;display:flex;flex-direction:column;padding:calc(env(safe-area-inset-top,0px) + 14px) 22px calc(env(safe-area-inset-bottom,0px) + 22px);overflow:hidden}
+button,input{font:inherit;letter-spacing:inherit;color:inherit}
+button{border:0;background:none;cursor:pointer;user-select:none}
+.bars{display:flex;gap:4px;margin-bottom:6px}.bar{flex:1;height:3px;background:var(--mut);overflow:hidden}.bar i{display:block;height:100%;width:0;background:var(--fg)}
+.logo{height:46px;margin-top:34px;align-self:flex-start}
+.tap{flex:1;display:flex;user-select:none}.tap div{flex:1}
+h1{font-weight:700;font-size:min(10vw,48px);line-height:.8;text-transform:uppercase;margin-bottom:30px;min-height:2.4em;display:flex;align-items:flex-end;padding-top:.12em;animation:in .45s ease}
+@keyframes in{from{opacity:0;transform:translateY(10px)}}
+@keyframes pinExit{to{opacity:0}}@keyframes pinEnter{from{opacity:0}}
+#app.pin-exit{pointer-events:none}#app.pin-exit>:not(.hd){animation:pinExit .24s ease both}
+#app.pin-enter>:not(.hd),#app.pin-enter .hr{animation:pinEnter .32s ease both}
+@keyframes shake{25%{transform:translateX(-10px)}75%{transform:translateX(10px)}}
+.btns{display:flex;align-items:center;gap:10px}
+.btn{flex:1;height:68px;font-weight:700;font-size:20px;border-radius:28px;transition:.2s}.btn:active{transform:scale(.97)}
+.p{background:var(--fg);color:var(--bg)}.p:disabled{opacity:.18;pointer-events:none}
+.scr{flex:1;overflow-y:auto;padding:34px 0 18px;scrollbar-width:none}.scr::-webkit-scrollbar{display:none}
+.scr>*{animation:in .4s both}.scr>*:nth-child(2){animation-delay:.04s}.scr>*:nth-child(n+3){animation-delay:.08s}
+h2{font-weight:700;font-size:min(9vw,40px);line-height:1;margin-bottom:14px}
+.sub{font-size:19px;line-height:1.1;margin-bottom:30px;max-width:94%}
+.opt{display:flex;align-items:center;justify-content:space-between;width:100%;min-height:64px;padding:0 24px;margin-bottom:12px;border:2.5px solid var(--fg);border-radius:30px;font-weight:700;font-size:21px;text-align:left;transition:.18s}
+.opt:active{transform:scale(.98)}.opt.on{background:var(--fg);color:var(--bg)}.opt small{font-size:22px;opacity:.9}
+.fld{display:block;margin-bottom:16px}.fld>span{display:block;font-size:14px;font-weight:700;margin:0 0 7px 6px;opacity:.55}
+input[type=text],input[type=search]{width:100%;height:58px;padding:0 20px;border:2.5px solid var(--fg);border-radius:24px;background:none;font-weight:700;font-size:18px;outline:0}
+input:focus{box-shadow:0 0 0 3px var(--mut)}
+.av{display:flex;align-items:center;gap:16px;margin-bottom:22px}.av b{width:84px;height:84px;border-radius:50%;border:2.5px dashed var(--fg);display:grid;place-items:center;font-size:30px;overflow:hidden;cursor:pointer;flex:none}.av b img{width:100%;height:100%;object-fit:cover}.av>span{font-weight:700;font-size:16px;line-height:1.1}
+.acc{display:flex;align-items:center;gap:12px;padding:16px 20px;margin-bottom:12px;background:var(--soft);border-radius:26px}.acc div{flex:1;min-width:0}.acc strong{display:block;font-size:19px}.acc em{font-style:normal;font-size:14px;opacity:.55}.acc .x{font-size:22px;opacity:.4;width:32px;height:32px}
+.dots{display:flex;justify-content:center;gap:16px;margin:8px 0 26px}.dots i{width:18px;height:18px;border-radius:50%;border:2.5px solid var(--fg);transition:.15s}.dots i.on{background:var(--fg)}.dots.bad{animation:shake .35s}
+.kp{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.pin-screen{display:flex;flex-direction:column;padding-bottom:0}.pin-screen h2{margin-bottom:24px}.pin-screen .sub{margin-bottom:0}.pin-screen .dots{margin-top:58px;margin-bottom:54px}.pin-screen .kp{margin-top:auto;margin-bottom:8px}.pin-screen + .btns{margin-top:12px}.kp button{height:62px;border-radius:24px;background:var(--soft);font-weight:700;font-size:26px}.kp button:active{background:var(--mut)}
+.pl{width:18px;height:18px;position:relative;display:inline-block}.pl::before,.pl::after{content:"";position:absolute;background:currentColor;border-radius:2px}.pl::before{left:0;right:0;top:7.5px;height:3px}.pl::after{top:0;bottom:0;left:7.5px;width:3px}.av b .pl{width:26px;height:26px}.av b .pl::before{top:11.5px}.av b .pl::after{left:11.5px}
+.op{font-style:normal;font-size:11px;border:2px solid;border-radius:9px;padding:1px 6px;margin-left:8px;opacity:.6;vertical-align:1px}
+.err{color:#c00;font-weight:700}
+.bg{position:fixed;inset:0;background:#0006;display:flex;align-items:flex-end;justify-content:center;animation:fade .25s}@keyframes fade{from{opacity:0}}
+.sh{width:100%;max-width:480px;background:var(--bg);border-radius:34px 34px 0 0;padding:28px 22px calc(env(safe-area-inset-bottom,0px) + 22px);animation:up .3s cubic-bezier(.2,.8,.2,1)}@keyframes up{from{transform:translateY(100%)}}
+.sh h2{margin-bottom:20px}
+#sp{position:fixed;inset:0;background:var(--bg);display:grid;place-items:center;z-index:99;transition:opacity .6s ease}#sp.out{opacity:0;pointer-events:none}#sp img{width:min(64vw,300px)}#sp p{position:absolute;left:0;right:0;bottom:calc(env(safe-area-inset-bottom,0px) + 18px);text-align:center;font-size:12px;opacity:.55}
+.scr.na>*{animation:none}
+
+.md{display:inline-block;width:.2em;height:.2em;border-radius:50%;background:currentColor;margin:0 .24em;vertical-align:.2em}
+#app.hmo{padding-bottom:0}
+.hd{display:flex;align-items:center;gap:10px;height:48px;flex:none}.hr{flex:1;display:flex;justify-content:flex-end;align-items:center;gap:10px;min-width:0}
+.me{position:relative;width:48px;height:48px;flex:none}.me>*{position:absolute;inset:0;transition:opacity .6s}.me .lg{width:48px;height:48px}.me .ph{opacity:0;border-radius:50%;overflow:hidden;background:var(--fg);color:var(--bg);display:grid;place-items:center;font-weight:700;font-size:22px}.me .ph img{width:100%;height:100%;object-fit:cover}.me.on .lg{opacity:0}.me.on .ph{opacity:1}
+.sr{height:48px;width:48px;border-radius:24px;background:#b8b8b8;color:#fff;display:flex;align-items:center;overflow:hidden;flex:none;cursor:pointer;transition:width .45s cubic-bezier(.2,.8,.2,1),background .3s,color .3s}
+.sr svg{flex:none;width:48px;height:48px;padding:12px}.sr input{flex:1;min-width:0;border:0;background:none;color:var(--fg);height:100%;font-weight:700;font-size:18px;outline:0;opacity:0;transition:opacity .3s;box-shadow:none;border-radius:0;padding:0}.sr .cl{flex:none;opacity:0;transition:opacity .3s}
+.hd.so .sr{width:100%;background:var(--soft);color:var(--fg)}.hd.so .sr input,.hd.so .sr .cl{opacity:1}.hd:not(.so) .sr input,.hd:not(.so) .sr .cl{pointer-events:none}
+.gb{width:48px;height:48px;border-radius:50%;background:#b8b8b8;color:#fff;display:grid;place-items:center;flex:none;overflow:hidden;transition:width .45s cubic-bezier(.2,.8,.2,1),opacity .25s,margin .45s}.gb svg{width:26px;height:26px;flex:none}.hd.so .gb{width:0;opacity:0;margin-left:-10px}
+.hc{flex:1;min-height:0;display:flex;flex-direction:column}
+.tabs{display:flex;gap:18px;overflow-x:auto;margin:26px -22px 0;padding:4px 22px;scrollbar-width:none}.tabs::-webkit-scrollbar{display:none}
+.tb{padding:0;font-weight:700;font-size:min(9.8vw,40px);line-height:1.1;color:var(--mut);white-space:nowrap;flex:none;transition:color .25s}.tb.on{color:var(--fg)}
+.lb{font-weight:700;font-size:19px;margin-top:30px}.bl{font-weight:700;font-size:min(15vw,68px);line-height:1;margin-top:8px}
+.cs{height:.7em;width:.6em;vertical-align:-.01em;margin:0 .02em}
+
+.rh{display:flex;justify-content:space-between;align-items:center;margin-top:30px;flex:none}.rh h3{font-weight:700;font-size:min(6.4vw,26px)}.rh button{width:36px;height:36px;display:grid;place-items:center}
+.lst{flex:1;min-height:0;overflow:hidden;margin-top:6px;-webkit-mask-image:linear-gradient(#000 40%,transparent 100%);mask-image:linear-gradient(#000 40%,transparent 100%)}
+.full{flex:1;overflow-y:auto;scrollbar-width:none;padding-bottom:12px}
+.mv{display:flex;align-items:center;gap:14px;padding:9px 4px}.ci{position:relative;width:58px;height:58px;border-radius:50%;background:#f3ede4;display:grid;place-items:center;font-weight:700;font-size:24px;flex:none}
+.bd{position:absolute;right:-3px;bottom:-3px;width:22px;height:22px;border-radius:50%;background:var(--fg);color:var(--bg);display:grid;place-items:center}.bd svg{width:12px;height:12px}
+.mi{flex:1;min-width:0}.mi strong,.ma strong{display:block;font-size:18px}.mi em,.ma em{display:block;font-style:normal;font-size:15px;color:#8c8c8c;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.ma{text-align:right;flex:none}
+.emp{text-align:center;color:#8c8c8c;font-weight:700;padding:34px 0}
+.all{align-self:center;height:46px;padding:0 22px;font-weight:700;font-size:17px;flex:none;margin-bottom:6px}
+.nv{display:flex;background:#000;margin:0 -22px;padding:8px 0 calc(env(safe-area-inset-bottom,0px) + 6px);flex:none}.nv button{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;height:62px;color:#8a8a8a;font-size:13px;font-weight:500;transition:color .2s}.nv button.on{color:#fff}.nv svg{width:30px;height:28px}
+.pg{padding-top:34px}.pg h2{margin-bottom:18px}
+
+.hd.so .sr{width:calc(100% - 50px)}.hd.so .gb{width:40px;opacity:1;margin-left:0}
+.hd,.me,.me .lg,.sr,.gb{height:40px}.me,.me .lg,.gb{width:40px}.sr{width:40px;border-radius:20px}.sr svg{width:40px;height:40px;padding:10px}.gb svg{width:22px;height:22px}.me .ph{font-size:18px}
+.hd.so .sr{width:calc(100% - 50px)}
+.mid{flex:1;display:flex;flex-direction:column;justify-content:center;min-height:0}.mid .lb{margin-top:0}
+.bl{font-size:min(13.5vw,60px)}.lst{-webkit-mask:none;mask:none;flex:none;overflow:visible;margin-top:2px}
+.rh{margin-top:0}
+.nv svg{width:26px;height:26px}.nv{padding-top:10px}.nv button{gap:4px;height:58px}
+
+:root{--u:calc(min(100vw,480px)/1080)}
+#app.hmo{padding:calc(env(safe-area-inset-top,0px) + 30*var(--u)) calc(47*var(--u)) 0}
+.hd,.me,.me .lg,.me .ph,.gb,.sr{height:calc(96*var(--u))}.me,.me .lg,.gb{width:calc(96*var(--u))}.hd,.hr{gap:calc(21*var(--u))}
+.sr{width:calc(96*var(--u));border-radius:50%}.sr svg{width:calc(96*var(--u));height:calc(96*var(--u));padding:calc(22*var(--u))}.gb svg{width:calc(54*var(--u));height:calc(54*var(--u))}
+.hd.so .sr{width:calc(100% - 117*var(--u));border-radius:calc(48*var(--u))}.hd.so .gb{width:calc(96*var(--u));margin-left:0}
+.sr input{font-size:calc(46*var(--u));font-weight:500}.me .ph{font-size:calc(46*var(--u))}
+.tabs{gap:calc(39*var(--u));margin:calc(100*var(--u)) calc(-47*var(--u)) 0;padding:0 calc(47*var(--u))}
+.tb{font-size:calc(83.3*var(--u));font-weight:700;line-height:1.15;color:#b9b9b9}.tb.on{color:var(--fg)}
+.mid{padding-bottom:calc(70*var(--u))}.lb{font-size:calc(40.4*var(--u));font-weight:500;margin:0}.bl{font-size:calc(128.6*var(--u));font-weight:700;line-height:1;margin-top:calc(22*var(--u))}
+.rh{margin:0}.rh h3{font-size:calc(68.2*var(--u));font-weight:700}.rh button{width:calc(60*var(--u));height:calc(60*var(--u))}.rh svg{width:calc(48*var(--u));height:calc(48*var(--u))}
+.lst{margin-top:calc(40*var(--u))}
+.mv{padding:0 calc(50*var(--u)) 0 calc(33*var(--u));gap:calc(31*var(--u))}.ci{width:calc(128*var(--u));height:calc(128*var(--u));font-size:calc(56*var(--u));font-weight:700}
+.bd{width:calc(38*var(--u));height:calc(38*var(--u));right:calc(-4*var(--u));bottom:calc(-2*var(--u))}.bd svg{width:calc(24*var(--u));height:calc(24*var(--u))}
+.mi strong{font-size:calc(36.8*var(--u));font-weight:500}.mi em{font-size:calc(37.1*var(--u));font-weight:400;color:#9b9b9b;margin-top:calc(4*var(--u))}
+.ma strong{font-size:calc(34.2*var(--u));font-weight:700}.ma em{font-size:calc(31.7*var(--u));font-weight:400;color:#9b9b9b;margin-top:calc(4*var(--u))}
+.emp{font-size:calc(40*var(--u));font-weight:500;padding:calc(40*var(--u)) 0}
+
+.nv{margin:0 calc(-47*var(--u));padding:0 0 env(safe-area-inset-bottom,0px);justify-content:center;height:calc(167*var(--u) + env(safe-area-inset-bottom,0px));align-items:center}
+.nv button{flex:1;width:auto;height:auto;gap:calc(14*var(--u));font-size:calc(28.9*var(--u));font-weight:400}.nv svg{width:calc(62*var(--u));height:calc(62*var(--u))}
+.pg{padding-top:calc(60*var(--u))}
+.sts{max-height:92vh;overflow-y:auto;scrollbar-width:none}.sts::-webkit-scrollbar{display:none}.sts .opt{gap:14px;line-height:1.15}.sts .opt span{flex:1}.sts .opt svg{flex:none}.sts .kp button{height:54px}.sts .dots{margin:6px 0 22px}
+.sth{display:flex;align-items:center;gap:14px;margin-bottom:22px}.sth h2{margin:0}.stb{width:42px;height:42px;border-radius:50%;border:2.5px solid var(--fg);display:grid;place-items:center;flex:none}
+.trow{display:flex;align-items:center;gap:16px;padding:16px 22px;margin-bottom:12px;border:2.5px solid var(--fg);border-radius:30px;font-weight:700;font-size:18px;line-height:1.15;cursor:pointer}.trow span{flex:1}
+.tg{width:56px;height:32px;border-radius:16px;border:2.5px solid var(--fg);position:relative;flex:none;transition:.2s}.tg::after{content:"";position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;background:var(--fg);transition:.2s}.tg.on{background:var(--fg)}.tg.on::after{left:27px;background:var(--bg)}
+.chl{min-height:140px;padding:22px;border:2.5px solid var(--fg);border-radius:30px;color:#8c8c8c;font-weight:700;font-size:18px}
+.bg.ctr{align-items:center;padding:24px;z-index:60}.bg.ctr .sh{border-radius:32px;padding:30px 24px 24px;animation:fade .25s}
+.me{cursor:pointer}.pfs{max-height:92vh;overflow-y:auto;scrollbar-width:none}.pfs::-webkit-scrollbar{display:none}
+.gl{display:block;font-size:14px;font-weight:700;margin:2px 0 9px 6px;opacity:.55}.chips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:24px}
+.chip{height:44px;padding:0 18px;border-radius:22px;border:2.5px solid var(--fg);font-weight:700;font-size:16px;transition:.18s}.chip.on{background:var(--fg);color:var(--bg)}.chip:active{transform:scale(.96)}
+.btn:disabled{opacity:.25;pointer-events:none}
+.pfs .btns{position:sticky;bottom:calc(-1*(env(safe-area-inset-bottom,0px) + 22px));background:var(--bg);padding:10px 0 calc(env(safe-area-inset-bottom,0px) + 22px);margin-bottom:calc(-1*(env(safe-area-inset-bottom,0px) + 22px))}
+.mid,.lst{transition:opacity .2s ease,transform .2s ease}.sw{opacity:0;transform:translateY(6px)}
+.lkl{width:calc(96*var(--u));height:calc(96*var(--u));display:block}
+#app.lk{padding:calc(env(safe-area-inset-top,0px) + 30*var(--u)) calc(47*var(--u)) calc(env(safe-area-inset-bottom,0px) + 22px)}
+.lkt{margin-top:calc(100*var(--u))}.lkt h2{margin-bottom:calc(28*var(--u))}.lkt .sub{margin:0}
+.lkb{flex:1;display:flex;flex-direction:column;min-height:0}.lkb .dots{margin:auto 0}.lk .kp{margin-bottom:6px}.lkf{margin-top:12px}
+
+.alist{display:flex;flex-direction:column;gap:calc(33*var(--u));margin-top:calc(90*var(--u))}
+.arow{display:flex;align-items:center;justify-content:space-between;gap:calc(30*var(--u));width:100%;height:calc(160*var(--u));padding:0 calc(60*var(--u));border:2.5px solid var(--fg);border-radius:calc(80*var(--u));font-weight:700;font-size:calc(59*var(--u));line-height:1.15;text-align:left;color:var(--fg);background:transparent;transition:transform .15s}
+.arow:active{transform:scale(.985)}.arow svg{width:calc(50*var(--u));height:calc(50*var(--u));flex:none}
+
+input[type=date],input[type=time]{display:block;width:100%;height:58px;padding:0 20px;border:2.5px solid var(--fg);border-radius:24px;background:none;color:var(--fg);font:inherit;font-weight:700;font-size:18px;outline:0;-webkit-appearance:none;appearance:none;text-align:left;letter-spacing:var(--tr)}
+input[type=date]::-webkit-date-and-time-value,input[type=time]::-webkit-date-and-time-value{text-align:left}
+.wzs{display:flex;flex-direction:column;height:min(93vh,880px);max-height:calc(100dvh - 20px);padding-top:18px;overflow:hidden}
+.wzs .bar i{transition:width .4s ease}
+.wzs .scr{padding-top:26px}.wzs .btns{padding-top:10px;flex:none}
+.scr.wza{display:flex;flex-direction:column}.wzs .kp button{height:58px}.wzs .kp{margin-top:auto;flex:none}
+.amt{flex:1;display:flex;align-items:center;min-height:90px;font-weight:700;font-size:calc(150*var(--u));line-height:1;white-space:nowrap}.amt .ph0{color:var(--mut)}.amt.sm{font-size:calc(116*var(--u))}.amt.xs{font-size:calc(92*var(--u))}
+.lgg{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.lgt{display:none;flex-direction:column;align-items:center;gap:8px;padding:12px 8px 10px;border:2.5px solid var(--soft);border-radius:26px;background:#fff;transition:.18s;min-width:0}
+.lgt.ok{display:flex;animation:in .35s both}.lgt.on{border-color:var(--fg)}.lgt:active{transform:scale(.97)}
+.lgi{width:72px;height:72px;display:grid;place-items:center;border-radius:50%;background:#fff;box-shadow:inset 0 0 0 1px #0002;overflow:hidden}.lgi img{width:62%;height:62%;object-fit:contain}
+.lgt em{font-style:normal;font-size:13px;font-weight:700;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.lgs{font-size:15px;font-weight:700;color:#8c8c8c;margin:0 0 14px 6px;min-height:18px}
+.ci.lg{background:#fff;box-shadow:inset 0 0 0 1px #0002}.ci.lg img{width:100%;height:100%;object-fit:contain;padding:calc(30*var(--u));box-sizing:border-box;border-radius:50%}
+
+.ci.lg{background:none;box-shadow:none}.ci.lg img{padding:0;border-radius:50%}
+.ma strong{display:flex;align-items:center;justify-content:flex-end;gap:calc(14*var(--u))}.ma .bd{position:static;flex:none;right:auto;bottom:auto}
+.lst{flex:none;overflow:visible;-webkit-mask-image:none;mask-image:none;margin-bottom:calc(72*var(--u))}
+</style></head><body><div id="app"></div><div id="sp"><img src="logo.png" alt="Fynance Capital"><p>© 2026 Huko, Fynance Capital. All rights reserved.</p></div>
+<script>
+const L={es:{n:"Empezar de cero",imp:"Importar archivo",back:"Volver",next:"Siguiente",fin:"Finalizar",
+st:["Lleva un control de tus gastos e ingresos","Aplicación sencilla y fácil de usar y entender","Consulta tus estadísticas y controla tus suscripciones","Personaliza la aplicación a tu gusto"],
+lT:"Idioma de la aplicación",lS:"Fynance ha detectado automáticamente que tu navegador está en {x}. Si no es así, puedes seleccionar otro de esta lista.",
+pT:"Datos personales",pS:"Recuerda que tus datos se almacenan localmente en un archivo de tu navegador, por lo que no saldrán de ahí.",nm:"Nombre",ls:"Apellidos",al:"Alias",ph:"Foto de perfil",op:"Opcional",
+gT:"Género",gS:"Fynance utilizará este dato para personalizar la aplicación para ti.",g:["Hombre","Mujer","No binario","Prefiero no responder"],
+cT:"Moneda",cS:"Solo con fines estéticos.",c:["Euro","Dólar estadounidense","Libra esterlina"],
+aT:"Añade tus cuentas",aS:"Debes añadir al menos una cuenta para continuar.",t:["Efectivo","Cuenta bancaria","Cuenta de ahorro","Otra"],na:"Nueva cuenta",an:"Nombre de la cuenta",ad:"Descripción",ab:"Saldo inicial",ap:["Cartera","Cuenta principal","Cuenta de ahorro","Otra cuenta"],cancel:"Cancelar",save:"Guardar",
+kT:"Crea un código",kS:"Elige un código de 6 dígitos para proteger tu aplicación.",k2T:"Repite el código",k2S:"Introdúcelo de nuevo para confirmar.",bad:"Los códigos no coinciden. Inténtalo de nuevo.",ok:"Código confirmado.",
+dT:"Todo listo",dS:"Hola, {n}. Tu configuración se ha guardado en este dispositivo.",ex:"Exportar archivo",det:["español","inglés","francés","alemán"],bad2:"El archivo no es un JSON válido"},
+en:{n:"Start from scratch",imp:"Import file",back:"Back",next:"Next",fin:"Finish",
+st:["Keep track of your expenses and income","A simple app, easy to use and understand","Check your stats and manage your subscriptions","Customize the app to your taste"],
+lT:"App language",lS:"Fynance has automatically detected that your browser is in {x}. If not, you can pick another one from this list.",
+pT:"Personal details",pS:"Remember, your data is stored locally in a file in your browser, so it never leaves it.",nm:"First name",ls:"Last name",al:"Alias",ph:"Profile picture",op:"Optional",
+gT:"Gender",gS:"Fynance will use this to personalize the app for you.",g:["Man","Woman","Non-binary","Prefer not to say"],
+cT:"Currency",cS:"For aesthetic purposes only.",c:["Euro","US dollar","British pound"],
+aT:"Add your accounts",aS:"You must add at least one account to continue.",t:["Cash","Bank account","Savings account","Other"],na:"New account",an:"Account name",ad:"Description",ab:"Initial balance",ap:["Wallet","Main account","Savings account","Other account"],cancel:"Cancel",save:"Save",
+kT:"Create a passcode",kS:"Choose a 6-digit passcode to protect your app.",k2T:"Repeat the passcode",k2S:"Enter it again to confirm.",bad:"Passcodes don't match. Try again.",ok:"Passcode confirmed.",
+dT:"All set",dS:"Hi, {n}. Your setup has been saved on this device.",ex:"Export file",det:["Spanish","English","French","German"],bad2:"The file is not a valid JSON"},
+fr:{n:"Commencer de zéro",imp:"Importer un fichier",back:"Retour",next:"Suivant",fin:"Terminer",
+st:["Suivez vos dépenses et vos revenus","Une application simple, facile à utiliser et à comprendre","Consultez vos statistiques et gérez vos abonnements","Personnalisez l'application à votre goût"],
+lT:"Langue de l'application",lS:"Fynance a automatiquement détecté que votre navigateur est en {x}. Sinon, vous pouvez en choisir une autre dans cette liste.",
+pT:"Informations personnelles",pS:"Vos données sont stockées localement dans votre navigateur et ne le quittent pas.",nm:"Prénom",ls:"Nom",al:"Alias",ph:"Photo de profil",op:"Facultatif",
+gT:"Genre",gS:"Fynance utilisera cette information pour personnaliser l'application.",g:["Homme","Femme","Non binaire","Je préfère ne pas répondre"],
+cT:"Devise",cS:"À des fins esthétiques uniquement.",c:["Euro","Dollar américain","Livre sterling"],
+aT:"Ajoutez vos comptes",aS:"Vous devez ajouter au moins un compte pour continuer.",t:["Espèces","Compte bancaire","Compte d’épargne","Autre"],na:"Nouveau compte",an:"Nom du compte",ad:"Description",ab:"Solde initial",ap:["Portefeuille","Compte principal","Compte d’épargne","Autre compte"],cancel:"Annuler",save:"Enregistrer",
+kT:"Créez un code",kS:"Choisissez un code à 6 chiffres pour protéger votre application.",k2T:"Répétez le code",k2S:"Saisissez-le à nouveau pour confirmer.",bad:"Les codes ne correspondent pas. Réessayez.",ok:"Code confirmé.",
+dT:"Tout est prêt",dS:"Bonjour, {n}. Votre configuration a été enregistrée sur cet appareil.",ex:"Exporter le fichier",det:["espagnol","anglais","français","allemand"],bad2:"Le fichier n'est pas un JSON valide"},
+de:{n:"Von Grund auf beginnen",imp:"Datei importieren",back:"Zurück",next:"Weiter",fin:"Fertig",
+st:["Behalten Sie Ihre Ausgaben und Einnahmen im Blick","Eine einfache, leicht verständliche und benutzerfreundliche App","Sehen Sie Ihre Statistiken ein und verwalten Sie Ihre Abonnements","Passen Sie die App nach Ihren Wünschen an"],
+lT:"App-Sprache",lS:"Fynance hat automatisch erkannt, dass Ihr Browser auf {x} eingestellt ist. Falls nicht, können Sie eine andere Sprache aus dieser Liste auswählen.",
+pT:"Persönliche Daten",pS:"Ihre Daten werden lokal in Ihrem Browser gespeichert und verlassen ihn nicht.",nm:"Vorname",ls:"Nachname",al:"Alias",ph:"Profilbild",op:"Optional",
+gT:"Geschlecht",gS:"Fynance verwendet diese Angabe, um die App für Sie zu personalisieren.",g:["Männlich","Weiblich","Nicht-binär","Keine Angabe"],
+cT:"Währung",cS:"Nur zu ästhetischen Zwecken.",c:["Euro","US-Dollar","Pfund Sterling"],
+aT:"Konten hinzufügen",aS:"Sie müssen mindestens ein Konto hinzufügen, um fortzufahren.",t:["Bargeld","Bankkonto","Sparkonto","Sonstiges"],na:"Neues Konto",an:"Kontoname",ad:"Beschreibung",ab:"Anfangssaldo",ap:["Portemonnaie","Hauptkonto","Sparkonto","Anderes Konto"],cancel:"Abbrechen",save:"Speichern",
+kT:"Code erstellen",kS:"Wählen Sie einen 6-stelligen Code zum Schutz Ihrer App.",k2T:"Code wiederholen",k2S:"Geben Sie ihn zur Bestätigung erneut ein.",bad:"Die Codes stimmen nicht überein. Versuchen Sie es erneut.",ok:"Code bestätigt.",
+dT:"Alles bereit",dS:"Hallo, {n}. Ihre Konfiguration wurde auf diesem Gerät gespeichert.",ex:"Datei exportieren",det:["Spanisch","Englisch","Französisch","Deutsch"],bad2:"Die Datei ist kein gültiges JSON"}};
+Object.assign(L.es,{add:"Añadir",ac:"Cuentas",tot:"Saldo total",gas:"Gasto",ing:"Ingreso",tra:"Traspaso",rec:"Último movimiento",all:"Mostrar todos",none:"Todavía no hay movimientos",sr:"Buscar",hm:"Inicio",mv:"Movimientos",stt:"Estadísticas",soon:"Próximamente",today:"Hoy",yest:"Ayer",set:"Ajustes",del:"Borrar datos",delT:"¿Borrar todos los datos?",delS:"Se eliminarán tu perfil, cuentas y movimientos de este dispositivo. No se puede deshacer.",delY:"Sí, borrar",uT:"Introduce tu código",uS:"Escribe tu código de 6 dígitos para abrir Fynance.",uBad:"Código incorrecto. Inténtalo de nuevo."});
+Object.assign(L.en,{add:"Add",ac:"Accounts",tot:"Total balance",gas:"Expense",ing:"Income",tra:"Transfer",rec:"Latest transaction",all:"Show all",none:"No transactions yet",sr:"Search",hm:"Home",mv:"Transactions",stt:"Statistics",soon:"Coming soon",today:"Today",yest:"Yesterday",set:"Settings",del:"Delete data",delT:"Delete all data?",delS:"Your profile, accounts and transactions will be removed from this device. This can't be undone.",delY:"Yes, delete",uT:"Enter your passcode",uS:"Type your 6-digit passcode to open Fynance.",uBad:"Wrong passcode. Try again."});
+Object.assign(L.fr,{add:"Ajouter",ac:"Comptes",tot:"Solde total",gas:"Dépense",ing:"Revenu",tra:"Virement",rec:"Dernière transaction",all:"Tout afficher",none:"Aucune transaction",sr:"Rechercher",hm:"Accueil",mv:"Transactions",stt:"Statistiques",soon:"Bientôt disponible",today:"Aujourd'hui",yest:"Hier",set:"Paramètres",del:"Supprimer les données",delT:"Supprimer toutes les données ?",delS:"Votre profil, vos comptes et vos transactions seront supprimés de cet appareil. Cette action est irréversible.",delY:"Oui, supprimer",uT:"Saisissez votre code",uS:"Saisissez votre code à 6 chiffres pour ouvrir Fynance.",uBad:"Code incorrect. Réessayez."});
+Object.assign(L.de,{add:"Hinzufügen",ac:"Konten",tot:"Gesamtsaldo",gas:"Ausgabe",ing:"Einnahme",tra:"Überweisung",rec:"Letzte Transaktion",all:"Alle anzeigen",none:"Noch keine Transaktionen",sr:"Suchen",hm:"Startseite",mv:"Transaktionen",stt:"Statistiken",soon:"Demnächst verfügbar",today:"Heute",yest:"Gestern",set:"Einstellungen",del:"Daten löschen",delT:"Alle Daten löschen?",delS:"Ihr Profil, Ihre Konten und Ihre Transaktionen werden von diesem Gerät gelöscht. Dies kann nicht rückgängig gemacht werden.",delY:"Ja, löschen",uT:"Code eingeben",uS:"Geben Sie Ihren 6-stelligen Code ein, um Fynance zu öffnen.",uBad:"Falscher Code. Versuchen Sie es erneut."});
+Object.assign(L.es,{"s_prof": "Ajustes de perfil", "s_theme": "Tema", "s_code": "Código de 6 dígitos", "s_bak": "Copia de seguridad", "s_data": "Datos de la aplicación", "s_upd": "Información de actualizaciones", "s_oth": "Otros", "s_none": "Sin información todavía", "o_add": "Ocultar botón añadir", "o_acc": "Ocultar botón cuentas", "o_logo": "Mostrar siempre el logo de Fynance en vez de la foto de perfil", "c_chg": "Modificar código", "c_del": "Eliminar código", "c_new": "Crear código", "c_delT": "¿Eliminar el código?", "c_delS": "Fynance dejará de pedirte el código al abrir la aplicación.", "c_delY": "Sí, eliminar"});
+Object.assign(L.en,{"s_prof": "Profile settings", "s_theme": "Theme", "s_code": "6-digit passcode", "s_bak": "Backup", "s_data": "App data", "s_upd": "Update information", "s_oth": "Other", "s_none": "No information yet", "o_add": "Hide add button", "o_acc": "Hide accounts button", "o_logo": "Always show the Fynance logo instead of the profile picture", "c_chg": "Change passcode", "c_del": "Remove passcode", "c_new": "Create passcode", "c_delT": "Remove the passcode?", "c_delS": "Fynance will stop asking for the passcode when you open the app.", "c_delY": "Yes, remove"});
+Object.assign(L.fr,{"s_prof": "Paramètres du profil", "s_theme": "Thème", "s_code": "Code à 6 chiffres", "s_bak": "Sauvegarde", "s_data": "Données de l'application", "s_upd": "Informations sur les mises à jour", "s_oth": "Autres", "s_none": "Aucune information pour le moment", "o_add": "Masquer le bouton ajouter", "o_acc": "Masquer le bouton comptes", "o_logo": "Toujours afficher le logo Fynance au lieu de la photo de profil", "c_chg": "Modifier le code", "c_del": "Supprimer le code", "c_new": "Créer un code", "c_delT": "Supprimer le code ?", "c_delS": "Fynance ne demandera plus le code à l'ouverture de l'application.", "c_delY": "Oui, supprimer"});
+Object.assign(L.de,{"s_prof": "Profileinstellungen", "s_theme": "Design", "s_code": "6-stelliger Code", "s_bak": "Datensicherung", "s_data": "App-Daten", "s_upd": "Update-Informationen", "s_oth": "Sonstiges", "s_none": "Noch keine Informationen", "o_add": "Hinzufügen-Button ausblenden", "o_acc": "Konten-Button ausblenden", "o_logo": "Fynance-Logo immer statt des Profilbilds anzeigen", "c_chg": "Code ändern", "c_del": "Code entfernen", "c_new": "Code erstellen", "c_delT": "Code entfernen?", "c_delS": "Fynance fragt beim Öffnen der App nicht mehr nach dem Code.", "c_delY": "Ja, entfernen"});
+Object.assign(L.es,{"d_exp": "Exportar datos", "d_imp": "Importar datos", "d_ok": "Se ha exportado el archivo correctamente. Lo puedes encontrar en la carpeta de descargas en los archivos de tu móvil.", "d_acc": "Aceptar", "i_prot": "Este archivo está protegido. Introduce su código para abrirlo.", "i_cT": "¿Importar este archivo?", "i_cS": "Se reemplazarán los datos actuales de la aplicación.", "i_go": "Importar"});
+Object.assign(L.en,{"d_exp": "Export data", "d_imp": "Import data", "d_ok": "The file was exported successfully. You can find it in the downloads folder in your phone's files.", "d_acc": "OK", "i_prot": "This file is protected. Enter its passcode to open it.", "i_cT": "Import this file?", "i_cS": "The app's current data will be replaced.", "i_go": "Import"});
+Object.assign(L.fr,{"d_exp": "Exporter les données", "d_imp": "Importer les données", "d_ok": "Le fichier a été exporté avec succès. Vous le trouverez dans le dossier Téléchargements des fichiers de votre téléphone.", "d_acc": "OK", "i_prot": "Ce fichier est protégé. Saisissez son code pour l'ouvrir.", "i_cT": "Importer ce fichier ?", "i_cS": "Les données actuelles de l'application seront remplacées.", "i_go": "Importer"});
+Object.assign(L.de,{"d_exp": "Daten exportieren", "d_imp": "Daten importieren", "d_ok": "Die Datei wurde erfolgreich exportiert. Du findest sie im Download-Ordner in den Dateien deines Handys.", "d_acc": "OK", "i_prot": "Diese Datei ist geschützt. Gib ihren Code ein, um sie zu öffnen.", "i_cT": "Diese Datei importieren?", "i_cS": "Die aktuellen Daten der App werden ersetzt.", "i_go": "Importieren"});
+const DEMO=false;
+const nav=(navigator.language||'en').toLowerCase();const det=nav.startsWith('es')?'es':nav.startsWith('fr')?'fr':nav.startsWith('de')?'de':'en';let lang=det;
+const T=k=>L[lang][k],esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const AC='áéíóúñÁÉÍÓÚÑ',BA='aeiounAEIOUN';
+const A0=s=>esc(s);
+const A=s=>A0(s);
+const PLUS='<i class="pl"></i>',BS='<svg width="28" height="22" viewBox="0 0 28 22" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"><path d="M9 2H25V20H9L2 11Z"/><path d="M13 7L20 15M20 7L13 15"/></svg>';
+const OP=()=>` <i class="op">${A(T('op'))}</i>`;
+const $=s=>document.querySelector(s),app=$('#app');
+const st={name:'',last:'',alias:'',photo:'',gender:'',cur:'EUR',acc:[],pin:''};
+let step=-1,live=false,pk={stage:'a',buf:'',first:'',err:false};
+const money=n=>new Intl.NumberFormat(lang,{style:'currency',currency:st.cur}).format(n);
+const bars=n=>`<div class="bars">${Array.from({length:n},(_,i)=>`<div class="bar"><i style="width:${step<0?0:i<=step?100:0}%"></i></div>`).join('')}</div>`;
+const head=(t,s)=>`<h2>${A(t)}</h2><p class="sub">${A(s)}</p>`;
+const opt=(a,on,l,r='')=>`<button class="opt${on?' on':''}" ${a}><span>${A(l)}</span>${r}</button>`;
+function ok(){return[1,!!(st.name.trim()&&st.last.trim()),!!st.gender,1,st.acc.length>0,pk.ok][step]}
+function upd(){const b=$('#nx');if(b)b.disabled=!ok()}
+function body(){
+ if(step==0){const names={es:'Español',en:'English',fr:'Français',de:'Deutsch'};return head(T('lT'),T('lS').replace('{x}',T('det')[['es','en','fr','de'].indexOf(det)]))+['es','en','fr','de'].map(l=>opt(`data-l="${l}"`,lang==l,names[l])).join('')}
+ if(step==1)return head(T('pT'),T('pS'))+`<div class="av"><b id="pb">${st.photo?`<img src="${st.photo}">`:PLUS}</b><span>${A(T('ph'))}${OP()}</span></div><input type="file" id="pf" accept="image/*" hidden>`+[['name','nm'],['last','ls'],['alias','al',1]].map(([k,l,o])=>`<label class="fld"><span>${A(T(l))}${o?OP():''}</span><input type="text" data-f="${k}" value="${esc(st[k])}" autocomplete="off"></label>`).join('');
+ if(step==2)return head(T('gT'),T('gS'))+T('g').map((g,i)=>opt(`data-g="${i}"`,st.gender===String(i),g)).join('');
+ if(step==3)return head(T('cT'),T('cS'))+[['EUR','€'],['USD','$'],['GBP','£']].map(([c,s],i)=>opt(`data-c="${c}"`,st.cur==c,T('c')[i],`<small>${s}</small>`)).join('');
+ if(step==4)return head(T('aT'),T('aS'))+st.acc.map((a,i)=>`<div class="acc"><div><strong>${A(a.name)}</strong><em>${A(T('t')[a.type]+(a.desc?', '+a.desc:''))}</em></div><strong>${money(a.bal)}</strong><button class="x" data-d="${i}"><svg width="16" height="16" viewBox="0 0 16 16"><path d="M2 2L14 14M14 2L2 14" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg></button></div>`).join('')+T('t').map((t,i)=>opt(`data-a="${i}"`,0,t,'<small>'+PLUS+'</small>')).join('');
+ if(step==5){const f=pk.stage=='a';return head(f?T('kT'):T('k2T'),pk.err?'':pk.ok?T('ok'):f?T('kS'):T('k2S')).replace(pk.err?'class="sub"':'~','class="sub err"')+(pk.err?'':'')+`<div class="dots" id="dots">${[0,1,2,3,4,5].map(i=>`<i class="${i<pk.buf.length||pk.ok?'on':''}"></i>`).join('')}</div><div class="kp">${[1,2,3,4,5,6,7,8,9,'',0,'⌫'].map(k=>`<button data-k="${k}" ${k===''?'style="visibility:hidden"':''}>${k=='⌫'?BS:k}</button>`).join('')}</div>`}
+ if(step==6)return head(T('dT'),T('dS').replace('{n}',st.name||'')) +`<button class="btn p" style="width:100%" id="ex">${A(T('ex'))}</button>`}
+
+const ic=(p,x='')=>`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" ${x}>${p}</svg>`;
+const ADD='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5V19M5 12H19"/></svg>',ACCT='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 10H21"/><path d="M7 15H11"/></svg>',
+TRI='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"><path d="M3.5 20.5L20.5 3.5V20.5Z"/></svg>',
+LST='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M4 7H20M4 12H20M4 17H20"/></svg>',
+BAR='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 20V13M12 20V5M18 20V9"/></svg>',
+SRC=ic('<circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5L21 21"/>'),CLS=ic('<path d="M6 6L18 18M18 6L6 18"/>'),
+GER='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="5.4" stroke-width="3.2"/><circle cx="12" cy="12" r="8.6" stroke-width="3.4" stroke-dasharray="3.4 3.4"/></svg>',
+PEN=ic('<path d="M4 20L5 15L16 4L20 8L9 19Z"/><path d="M13.5 6.5L17.5 10.5"/>'),
+DN=ic('<path d="M12 4V19M6 13L12 19L18 13"/>'),UP=ic('<path d="M12 20V5M6 11L12 5L18 11"/>'),
+MORE='<svg viewBox="0 0 24 6" width="24" height="6" fill="currentColor"><circle cx="3" cy="3" r="2.6"/><circle cx="12" cy="3" r="2.6"/><circle cx="21" cy="3" r="2.6"/></svg>';
+const SYM={GBP:'<svg class="cs" viewBox="0 0 10 12" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M7.9 3.1C7.4 1.8 6.3 1.4 4.9 1.4C3.4 1.4 2.3 2.2 2.3 3.5C2.3 4.8 3.4 5.2 4.9 5.6C6.4 6 7.8 6.6 7.8 8.2C7.8 9.8 6.5 10.6 4.8 10.6C3.1 10.6 2 10 1.6 8.6M1.7 7.2H7.6M4.9 0V12"/></svg>',EUR:'<svg class="cs" viewBox="0 0 10 12" fill="none" stroke="currentColor" stroke-width="2"><path d="M8.9 2.5A4.9 4.9 0 1 0 8.9 9.5M.7 4.9H7.4M.7 7.1H7.4"/></svg>',USD:'<svg class="cs" viewBox="0 0 10 12" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M8.2 3.4C7.8 2 6.6 1.6 5 1.6 3.4 1.6 2.3 2.4 2.3 3.7 2.3 5.1 3.5 5.5 5 5.9 6.6 6.3 8 6.8 8 8.3 8 9.7 6.8 10.5 5 10.5 3.3 10.5 2.1 9.9 1.8 8.5M5 0V12"/></svg>'};
+let DB=null,hs={acc:0,q:'',tab:'home',intro:true,on:false,active:false};
+const M=n=>{const s={EUR:'€',USD:'$',GBP:'£'}[DB.ajustes.moneda]||'',x=new Intl.NumberFormat(lang,{minimumFractionDigits:2,maximumFractionDigits:2}).format(n);return lang=='en'?s+x:x+s};
+const bal=a=>a.saldoInicial+DB.movimientos.filter(m=>m.cuenta==a.id).reduce((s,m)=>s+(m.tipo=='ingreso'?m.importe:-m.importe),0);
+const tl=a=>{const m={efectivo:0,cuenta_bancaria:1,cuenta_ahorro:2,otra:3,tarjeta_debito:-1};return a.tipo=='tarjeta_debito'?({es:'Tarjeta de débito',en:'Debit card',fr:'Carte de débit',de:'Debitkarte'}[lang]):T('t')[m[a.tipo]??0]},p2=n=>String(n).padStart(2,'0');
+const dstr=ts=>{const d=new Date(ts),n=new Date(),dd=Math.round((new Date(n.getFullYear(),n.getMonth(),n.getDate())-new Date(d.getFullYear(),d.getMonth(),d.getDate()))/864e5);return(dd==0?T('today'):dd==1?T('yest'):d.toLocaleDateString(lang,{day:'numeric',month:'short'}))+', '+p2(d.getHours())+':'+p2(d.getMinutes())};
+const mvs=()=>DB.movimientos.filter(m=>(!hs.acc||m.cuenta==hs.acc)&&(!hs.q||(m.concepto||'').toLowerCase().includes(hs.q.toLowerCase()))).sort((a,b)=>b.fecha-a.fecha);
+const mlogo=m=>m.logo?((DB.logos||{})[m.logo]||(/^(https?:|data:)/.test(m.logo)?m.logo:'')):'';
+const row=m=>{const a=DB.cuentas.find(x=>x.id==m.cuenta)||{},lg=mlogo(m),ini=A((m.concepto||'?')[0].toUpperCase());return`<div class="mv"><div class="ci${lg?' lg':''}">${lg?`<img src="${esc(lg)}" alt="" data-i="${esc(ini)}" onerror="this.outerHTML=this.dataset.i">`:ini}</div><div class="mi"><strong>${A(m.concepto||'')}</strong><em>${A(dstr(m.fecha)+(m.categoria?' · '+catName(m.categoria):''))}</em></div><div class="ma"><strong><b class="bd">${m.tipo=='ingreso'?UP:DN}</b>${M(m.importe)}</strong><em>${A(a.nombre||'')}</em></div></div>`};
+const rows=n=>{const l=mvs().slice(0,n);return l.length?l.map(row).join(''):`<p class="emp">${A(T('none'))}</p>`};
+function load(){try{const d=JSON.parse(localStorage.getItem('fynance'));if(d&&d.perfil&&d.cuentas&&d.cuentas.length){d.movimientos=d.movimientos||[];DB=d;if(d.ajustes&&d.ajustes.idioma)lang=d.ajustes.idioma;if(DEMO&&!d.movimientos.length){const c=d.cuentas,t=(h,m,dy=0)=>{const x=new Date();x.setDate(x.getDate()-dy);x.setHours(h,m,0,0);return+x};d.movimientos=[['Burger King',22,'gasto','Alimentación',t(22,0),0],['Mercadona',48.3,'gasto','Alimentación',t(13,15),0],['Nómina',1450,'ingreso','Trabajo',t(9,0),0],['Spotify',10.99,'gasto','Suscripciones',t(8,30,1),c.length-1],['Gasolina',55,'gasto','Transporte',t(18,40,1),0],['Café',2.4,'gasto','Alimentación',t(10,5,2),0]].map(([concepto,importe,tipo,categoria,fecha,i],k)=>({id:k+1,concepto,importe,tipo,categoria,fecha,cuenta:c[i].id}))}return true}}catch(_){}return false}
+function homeMain(){const cs=DB.cuentas,sel=cs.find(a=>a.id==hs.acc),tot=sel?bal(sel):cs.reduce((s,a)=>s+bal(a),0);
+ return`<div class="tabs"><button class="tb${sel?'':' on'}" data-acc="0">${A(T('ac'))}</button>${cs.map(a=>`<button class="tb${a.id==hs.acc?' on':''}" data-acc="${a.id}">${A(a.nombre)}</button>`).join('')}</div>
+ <div class="mid"><p class="lb">${A(DB.ajustes.moneda+' · '+(sel?tl(sel):T('tot')))}</p><p class="bl">${M(tot)}</p></div>
+ <div class="rh"><h3>${A(T('rec'))}</h3><button id="edw">${PEN}</button></div><div class="lst" id="lst">${rows(1)}</div>
+ `}
+const O=()=>(DB&&DB.ajustes&&DB.ajustes.otros)||{},LN={es:'Español',en:'English',fr:'Français',de:'Deutsch'};
+function msg(t){const m=document.createElement('div');m.className='bg ctr';m.innerHTML=`<div class="sh"><p class="sub" style="max-width:none;margin-bottom:24px;font-weight:700;font-size:19px">${A(t)}</p><button class="btn p" style="width:100%">${A(T('d_acc'))}</button></div>`;m.onclick=e=>{if(e.target==m||e.target.closest('.btn'))m.remove()};document.body.appendChild(m)}
+function openSettings(){if(document.querySelector('.bg'))return;
+ const d=document.createElement('div');d.className='bg';d.innerHTML='<div class="sh sts"></div>';document.body.appendChild(d);const sh=d.firstChild;
+ const AJ=()=>DB.ajustes,sv=()=>{try{localStorage.setItem('fynance',JSON.stringify(DB))}catch(_){}};
+ const CH='<svg width="12" height="20" viewBox="0 0 12 20" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M2 2L10 10L2 18"/></svg>',BK='<svg width="12" height="20" viewBox="0 0 12 20" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M10 2L2 10L10 18"/></svg>';
+ let v='main',pf={};
+ const hd=(t,b)=>`<div class="sth">${b?`<button class="stb" data-s="${b}">${BK}</button>`:''}<h2>${A(t)}</h2></div>`,
+ rw=(a,l)=>`<button class="opt" data-s="${a}"><span>${A(l)}</span>${CH}</button>`,
+ tg=(k,l)=>`<div class="trow" data-t="${k}"><span>${A(l)}</span><i class="tg${O()[k]?' on':''}"></i></div>`;
+ const R=()=>{
+  if(v=='main')return hd(T('set'))+[['lang','lT'],['prof','s_prof'],['theme','s_theme'],['code','s_code'],['bak','s_bak'],['data','s_data'],['upd','s_upd'],['oth','s_oth']].map(([a,l])=>rw(a,T(l))).join('');
+  if(v=='lang')return hd(T('lT'),'main')+Object.entries(LN).map(([c,n])=>`<button class="opt${lang==c?' on':''}" data-lg="${c}">${A(n)}</button>`).join('');
+  if(v=='code')return hd(T('s_code'),'main')+(AJ().codigoHash?rw('pchg',T('c_chg'))+rw('pdel',T('c_del')):rw('pnew',T('c_new')));
+  if(v=='pin'){const s=pf.stage,t=s=='cur'?['uT','uS']:s=='new'?['kT','kS']:['k2T','k2S'];
+   return hd(T(t[0]),pf.mode=='pimp'?'data':'code')+`<p class="sub${pf.err?' err':''}">${A(T(pf.err||(pf.mode=='pimp'?'i_prot':t[1])))}</p><div class="dots">${[0,1,2,3,4,5].map(i=>`<i class="${i<pf.buf.length?'on':''}"></i>`).join('')}</div><div class="kp">${[1,2,3,4,5,6,7,8,9,'',0,'⌫'].map(k=>`<button data-sk="${k}" ${k===''?'style="visibility:hidden"':''}>${k=='⌫'?BS:k}</button>`).join('')}</div>`}
+  if(v=='delc')return hd(T('c_delT'),'code')+`<p class="sub">${A(T('c_delS'))}</p><div class="btns"><button class="btn" data-s="code">${A(T('cancel'))}</button><button class="btn p" id="pdy" style="background:#c00">${A(T('c_delY'))}</button></div>`;
+  if(v=='data')return hd(T('s_data'),'main')+`<button class="opt" data-s="exp"><span>${A(T('d_exp'))}</span></button><button class="opt" data-s="imp"><span>${A(T('d_imp'))}</span></button><button class="opt" data-s="wipe" style="border-color:#c00;color:#c00"><span>${A(T('del'))}</span></button><input type="file" id="sif" accept=".json,application/json" hidden>`;
+  if(v=='wipe')return hd(T('delT'),'data')+`<p class="sub">${A(T('delS'))}</p><div class="btns"><button class="btn" data-s="data">${A(T('cancel'))}</button><button class="btn p" id="pwy" style="background:#c00">${A(T('delY'))}</button></div>`;
+  if(v=='impc')return hd(T('i_cT'),'data')+`<p class="sub">${A(T('i_cS'))}</p><div class="btns"><button class="btn" data-s="data">${A(T('cancel'))}</button><button class="btn p" id="pig">${A(T('i_go'))}</button></div>`;
+  if(v=='upd')return hd(T('s_upd'),'main')+`<div class="chl">${A(T('s_none'))}</div>`;
+  return hd(T('s_oth'),'main')+tg('hideAdd',T('o_add'))+tg('hideAcc',T('o_acc'))+tg('logo',T('o_logo'))};
+ const draw=()=>{sh.innerHTML=R()};draw();
+ async function pkey(c){if(pf.lock)return;pf.err='';if(c=='⌫')pf.buf=pf.buf.slice(0,-1);else if(pf.buf.length<6)pf.buf+=c;
+  sh.querySelector('.dots').innerHTML=[0,1,2,3,4,5].map(i=>`<i class="${i<pf.buf.length?'on':''}"></i>`).join('');
+  if(pf.buf.length<6)return;pf.lock=true;const b=pf.buf;await new Promise(r=>setTimeout(r,160));pf.lock=false;pf.buf='';
+  if(pf.stage=='cur'){const w=pf.mode=='pimp'?pf.want:AJ().codigoHash;if(b===w||await sha(b)===w){if(pf.mode=='pdel')v='delc';else if(pf.mode=='pimp')v='impc';else pf.stage='new'}else pf.err='uBad'}
+  else if(pf.stage=='new'){pf.first=b;pf.stage='rep'}
+  else if(b===pf.first){AJ().codigoHash=await sha(b);sv();v='code'}else{pf.err='bad';pf.stage='new';pf.first=''}
+  draw()}
+ let imp=null;
+ d.onchange=async e=>{const f=e.target.id=='sif'&&e.target.files[0];if(!f)return;let x;try{x=JSON.parse(await f.text())}catch(_){}
+  if(!(x&&x.perfil&&Array.isArray(x.cuentas)&&x.cuentas.length)){msg(T('bad2'));e.target.value='';return}
+  imp=x;if(x.ajustes&&x.ajustes.codigoHash){pf={mode:'pimp',stage:'cur',buf:'',first:'',err:'',want:x.ajustes.codigoHash};v='pin'}else v='impc';draw()};
+ d.onclick=async e=>{if(e.target==d){d.remove();return}
+  const s=e.target.closest('[data-s]'),t=e.target.closest('[data-t]'),g=e.target.closest('[data-lg]'),k=e.target.closest('[data-sk]');
+  if(e.target.closest('#pig')){try{localStorage.setItem('fynance',JSON.stringify(imp))}catch(_){}
+   if(load()||(DB=imp)){hs.acc=0;hs.tab='home';hs.q='';d.remove();showHome()}return}
+  if(e.target.closest('#pwy')){wipe();return}
+  if(e.target.closest('#pdy')){delete AJ().codigoHash;sv();v='code';draw();return}
+  if(s){const a=s.dataset.s;if(a=='prof'){d.remove();profile();return}
+   if(a=='pchg'||a=='pdel'||a=='pnew'){pf={mode:a,stage:a=='pnew'?'new':'cur',buf:'',first:'',err:''};v='pin'}
+   else if(a=='exp'){const b=new Blob([JSON.stringify(DB,null,2)],{type:'application/json'}),u=URL.createObjectURL(b),l=document.createElement('a'),n=new Date();l.href=u;l.download='fynance-'+n.getFullYear()+'-'+p2(n.getMonth()+1)+'-'+p2(n.getDate())+'.json';document.body.appendChild(l);l.click();l.remove();setTimeout(()=>URL.revokeObjectURL(u),4000);msg(T('d_ok'));return}
+   else if(a=='imp'){const f=sh.querySelector('#sif');f&&f.click();return}
+   else if(['lang','code','upd','oth','main','data','wipe'].includes(a))v=a;else return;draw();return}
+  if(g){lang=g.dataset.lg;AJ().idioma=lang;sv();draw();showHome();return}
+  if(t){const o=AJ().otros=AJ().otros||{};o[t.dataset.t]=!o[t.dataset.t];sv();draw();showHome();return}
+  if(k&&k.dataset.sk!=='')await pkey(k.dataset.sk)}}
+function profile(){if(document.querySelector('.bg'))return;const p=DB.perfil,w={name:p.nombre||'',last:p.apellidos||'',alias:p.alias||'',photo:p.foto||'',gender:p.genero==null?'':String(p.genero)};
+ const d=document.createElement('div');d.className='bg';const av=()=>w.photo?`<img src="${w.photo}">`:PLUS;
+ d.innerHTML=`<div class="sh pfs"><h2>${A(T('pT'))}</h2><div class="av"><b id="ppb">${av()}</b><span>${A(T('ph'))}${OP()}</span></div><input type="file" id="ppf" accept="image/*" hidden>`
+ +[['name','nm'],['last','ls'],['alias','al',1]].map(([k,l,o])=>`<label class="fld"><span>${A(T(l))}${o?OP():''}</span><input type="text" data-pf="${k}" value="${esc(w[k])}" autocomplete="off"></label>`).join('')
+ +`<span class="gl">${A(T('gT'))}</span><div class="chips">${T('g').map((g,i)=>`<button class="chip${w.gender===String(i)?' on':''}" data-ch="${i}">${A(g)}</button>`).join('')}</div><div class="btns"><button class="btn" id="pc">${A(T('cancel'))}</button><button class="btn p" id="ps">${A(T('save'))}</button></div></div>`;
+ document.body.appendChild(d);const chk=()=>{$('#ps').disabled=!(w.name.trim()&&w.last.trim())};chk();
+ d.onclick=e=>{const c=e.target.closest('[data-ch]');
+  if(e.target==d||e.target.closest('#pc'))d.remove();
+  else if(c){w.gender=c.dataset.ch;d.querySelectorAll('.chip').forEach(x=>x.classList.toggle('on',x===c))}
+  else if(e.target.closest('#ppb'))$('#ppf').click();
+  else if(e.target.closest('#ps')&&!$('#ps').disabled){Object.assign(DB.perfil,{nombre:w.name.trim(),apellidos:w.last.trim(),alias:w.alias.trim(),foto:w.photo,genero:w.gender});
+   try{localStorage.setItem('fynance',JSON.stringify(DB))}catch(_){}
+   const ph=$('.me .ph');if(ph)ph.innerHTML=w.photo?`<img src="${w.photo}">`:A((w.name.trim()[0]||'?').toUpperCase());d.remove()}};
+ d.oninput=e=>{const f=e.target.dataset.pf;if(f){w[f]=e.target.value;chk()}};
+ d.onchange=e=>{const f=e.target.files&&e.target.files[0];if(e.target.id!='ppf'||!f)return;const r=new FileReader();r.onload=()=>{const im=new Image();im.onload=()=>{const c=document.createElement('canvas');c.width=c.height=256;const m=Math.min(im.width,im.height);c.getContext('2d').drawImage(im,(im.width-m)/2,(im.height-m)/2,m,m,0,0,256,256);w.photo=c.toDataURL('image/jpeg',.8);$('#ppb').innerHTML=av()};im.src=r.result};r.readAsDataURL(f)}}
+let swT=0;
+function swapAcc(id){if(id===hs.acc)return;hs.acc=id;const tk=++swT;
+ document.querySelectorAll('.tb').forEach(t=>t.classList.toggle('on',+t.dataset.acc===id));
+ const t=document.querySelector('.tb.on');t&&t.scrollIntoView({inline:'center',block:'nearest',behavior:'smooth'});
+ const parts=['#hmain .mid','#lst'].map(s=>$(s)).filter(Boolean);parts.forEach(e=>e.classList.add('sw'));
+ setTimeout(()=>{if(tk!==swT)return;const d=document.createElement('div');d.innerHTML=homeMain();
+  parts.forEach(e=>{const n=d.querySelector(e.id?'#'+e.id:'.mid');if(n)e.innerHTML=n.innerHTML});
+  requestAnimationFrame(()=>parts.forEach(e=>e.classList.remove('sw')))},150)}
+function enterHome(){app.classList.add('pin-exit');setTimeout(()=>{app.classList.remove('pin-exit');showHome(340);app.classList.add('pin-enter');setTimeout(()=>app.classList.remove('pin-enter'),320)},240)}
+function showHome(extra=0){app.classList.remove('lk');live=false;hs.active=true;ls=null;app.classList.add('hmo');const p=DB.perfil,hm=hs.tab=='home';
+ const nv=`<nav class="nv">${[['home',TRI,'hm'],['add',ADD,'add'],['accounts',ACCT,'ac'],['mov',LST,'mv'],['stat',BAR,'stt']].filter(([k])=>!(k=='add'&&O().hideAdd)&&!(k=='accounts'&&O().hideAcc)).map(([k,i,l])=>`<button data-nv="${k}" class="${hs.tab==k?'on':''}">${i}<span>${A(T(l))}</span></button>`).join('')}</nav>`;
+ const head=`<div class="hd" id="hd"><div class="me${hs.on&&!O().logo?' on':''}" id="me"><svg class="lg" viewBox="0 0 24 24" fill="currentColor"><path d="M1 23L23 1V23Z"/></svg><div class="ph">${p.foto?`<img src="${p.foto}">`:A((p.nombre||'?')[0].toUpperCase())}</div></div><div class="hr"><div class="sr" id="sr">${SRC}<input type="search" id="q" placeholder="${T('sr')}" autocomplete="off"><span class="cl" id="sx">${CLS}</span></div><button class="gb" id="gear">${GER}</button></div></div>`;
+ const body=hm?head+`<div class="hc" id="hmain">${homeMain()}</div>`:hs.tab=='add'?head+addPage():tab();
+ app.innerHTML=body+nv;
+ if(hs.intro){hs.intro=false;setTimeout(()=>{hs.on=true;const m=$('#me');m&&!O().logo&&m.classList.add('on')},2500+extra)}}
+/* ===== Añadir gasto / ingreso (ventana por pasos) ===== */
+const LOGO_DEV_KEY='';/* opcional: clave pública gratuita (pk_...) de logo.dev para logos de más calidad */
+Object.assign(L.es,{wAg:"¿Cuánto has gastado?",wAi:"¿Cuánto has ingresado?",wAs:"Escribe el importe.",wCt:"Elige la cuenta",wCg:"¿De qué cuenta ha salido el dinero?",wCi:"¿En qué cuenta ha entrado el dinero?",wNt:"Nombre y descripción",wNs:"Ponle un nombre al movimiento.",wNn:"Nombre",wLt:"Elige un símbolo",wLs:"Toca el logo que quieras. También puedes buscar por web, por ejemplo mercadona.es.",wLq:"Nombre o web",wLb:"Buscando…",wLz:"No se han encontrado logos. Prueba con otro nombre o con la web.",wLo:"No se han podido buscar logos. Comprueba la conexión.",wKt:"Categoría",wKs:"¿En qué categoría entra?",wDt:"Fecha y hora",wDs:"¿Cuándo ha sido?",wDd:"Fecha",wDh:"Hora"});
+Object.assign(L.en,{wAg:"How much did you spend?",wAi:"How much did you receive?",wAs:"Enter the amount.",wCt:"Choose the account",wCg:"Which account did the money leave?",wCi:"Which account did the money go into?",wNt:"Name and description",wNs:"Give the transaction a name.",wNn:"Name",wLt:"Choose a symbol",wLs:"Tap the logo you want. You can also search by website, for example mercadona.es.",wLq:"Name or website",wLb:"Searching…",wLz:"No logos found. Try another name or the website.",wLo:"Couldn't search for logos. Check your connection.",wKt:"Category",wKs:"Which category does it belong to?",wDt:"Date and time",wDs:"When was it?",wDd:"Date",wDh:"Time"});
+Object.assign(L.fr,{wAg:"Combien avez-vous dépensé ?",wAi:"Combien avez-vous reçu ?",wAs:"Saisissez le montant.",wCt:"Choisissez le compte",wCg:"De quel compte l'argent est-il sorti ?",wCi:"Sur quel compte l'argent est-il entré ?",wNt:"Nom et description",wNs:"Donnez un nom à la transaction.",wNn:"Nom",wLt:"Choisissez un symbole",wLs:"Touchez le logo de votre choix. Vous pouvez aussi chercher par site web, par exemple mercadona.es.",wLq:"Nom ou site web",wLb:"Recherche…",wLz:"Aucun logo trouvé. Essayez un autre nom ou le site web.",wLo:"Impossible de chercher des logos. Vérifiez votre connexion.",wKt:"Catégorie",wKs:"Dans quelle catégorie ?",wDt:"Date et heure",wDs:"C'était quand ?",wDd:"Date",wDh:"Heure"});
+Object.assign(L.de,{wAg:"Wie viel hast du ausgegeben?",wAi:"Wie viel hast du erhalten?",wAs:"Gib den Betrag ein.",wCt:"Konto auswählen",wCg:"Von welchem Konto ist das Geld abgegangen?",wCi:"Auf welches Konto ist das Geld eingegangen?",wNt:"Name und Beschreibung",wNs:"Gib der Buchung einen Namen.",wNn:"Name",wLt:"Symbol auswählen",wLs:"Tippe auf das gewünschte Logo. Du kannst auch nach einer Website suchen, z. B. mercadona.es.",wLq:"Name oder Website",wLb:"Suche läuft…",wLz:"Keine Logos gefunden. Versuche einen anderen Namen oder die Website.",wLo:"Logos konnten nicht gesucht werden. Prüfe deine Verbindung.",wKt:"Kategorie",wKs:"In welche Kategorie gehört es?",wDt:"Datum und Uhrzeit",wDs:"Wann war es?",wDd:"Datum",wDh:"Uhrzeit"});
+const WK=['g_sup','g_res','g_ali','g_tra','g_viv','g_com','g_oci','g_sus','g_fac','g_sal','g_rop','g_cui','g_edu','g_via','g_reg','g_don','g_otr'],WI=['i_nom','i_ext','i_reg','i_rem','i_ayu','i_ven','i_trf','i_biz','i_otr'],WN=[...WK,...WI];
+const CAT={
+es:['Supermercado','Restaurante','Alimentación','Transporte','Vivienda','Compras','Ocio','Suscripciones','Facturas','Salud','Ropa','Cuidado personal','Educación','Viajes','Regalos','Donaciones','Otros','Salario','Trabajo extra','Regalos','Reembolsos','Ayudas','Ventas','Transferencias','Bizum','Otros'],
+en:['Supermarket','Restaurant','Food','Transport','Housing','Shopping','Leisure','Subscriptions','Bills','Health','Clothing','Personal care','Education','Travel','Gifts','Donations','Other','Salary','Side job','Gifts','Refunds','Aid','Sales','Transfers','Bizum','Other'],
+fr:['Supermarché','Restaurant','Alimentation','Transport','Logement','Achats','Loisirs','Abonnements','Factures','Santé','Vêtements','Soins personnels','Éducation','Voyages','Cadeaux','Dons','Autres','Salaire','Travail extra','Cadeaux','Remboursements','Aides','Ventes','Virements','Bizum','Autres'],
+de:['Supermarkt','Restaurant','Lebensmittel','Transport','Wohnen','Einkäufe','Freizeit','Abonnements','Rechnungen','Gesundheit','Kleidung','Körperpflege','Bildung','Reisen','Geschenke','Spenden','Sonstiges','Gehalt','Nebenjob','Geschenke','Erstattungen','Beihilfen','Verkäufe','Überweisungen','Bizum','Sonstiges']};
+const catName=k=>{const i=WN.indexOf(k);return i<0?k:(CAT[lang]||CAT.en)[i]};
+const CUR={EUR:'€',USD:'$',GBP:'£'};
+let wz=null,wzTk=0;
+const toDom=x=>{x=String(x||'').trim().toLowerCase();const m=x.match(/^(?:https?:\/\/)?(?:www\.)?((?:[a-z0-9-]+\.)+[a-z]{2,})(?:[\/?#:].*)?$/);return m?m[1]:''};
+const logoUrls=d=>[...(LOGO_DEV_KEY?[`https://img.logo.dev/${d}?token=${LOGO_DEV_KEY}&size=128&format=png`]:[]),`https://t1.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&url=${encodeURIComponent('https://'+d)}&size=128`,`https://icons.duckduckgo.com/ip3/${d}.ico`];
+const commons=f=>`https://commons.wikimedia.org/wiki/Special:FilePath/${encodeURIComponent(f)}?width=160`;
+const hsh=s=>{let h=5381;for(let i=0;i<s.length;i++)h=(h*33^s.charCodeAt(i))>>>0;return h.toString(36)};
+const nowParts=()=>{const d=new Date();return{date:d.getFullYear()+'-'+p2(d.getMonth()+1)+'-'+p2(d.getDate()),time:p2(d.getHours())+':'+p2(d.getMinutes())}};
+const wzTs=()=>new Date(wz.date+'T'+wz.time).getTime();
+function addFlow(type){if(document.querySelector('.wz'))return;const n=nowParts();
+ wz={type,step:0,amt:'',acc:DB.cuentas.length==1?DB.cuentas[0].id:(hs.acc||null),name:'',desc:'',q:'',qName:true,rq:null,res:[],done:false,net:false,sel:null,cat:'',date:n.date,time:n.time};
+ const d=document.createElement('div');d.className='bg wz';d.innerHTML='<div class="sh wzs"></div>';document.body.appendChild(d);wzRender()}
+function wzOk(){const w=wz;return[parseFloat(w.amt)>0,!!w.acc,!!w.name.trim(),true,!!w.cat,!!(w.date&&w.time)&&!isNaN(wzTs())][w.step]}
+function wzUp(){const b=$('#wn');if(b)b.disabled=!wzOk()}
+const wzAmt=()=>{const w=wz,dec=lang=='en'?'.':',',x=(w.amt||'0').replace('.',dec),s=CUR[DB.ajustes.moneda]||'';return`<span class="${w.amt?'':'ph0'}">${lang=='en'?s+x:x+s}</span>`};
+function wzBody(){const w=wz;
+ if(w.step==0)return head(T(w.type=='gasto'?'wAg':'wAi'),T('wAs'))+`<div class="amt" id="amt">${wzAmt()}</div><div class="kp">${['1','2','3','4','5','6','7','8','9','.','0','⌫'].map(k=>`<button data-wk="${k}">${k=='⌫'?BS:k=='.'?(lang=='en'?'.':','):k}</button>`).join('')}</div>`;
+ if(w.step==1)return head(T('wCt'),T(w.type=='gasto'?'wCg':'wCi'))+DB.cuentas.map(a=>opt(`data-wa="${a.id}"`,w.acc==a.id,a.nombre,`<small>${M(bal(a))}</small>`)).join('');
+ if(w.step==2)return head(T('wNt'),T('wNs'))+`<label class="fld"><span>${A(T('wNn'))}</span><input type="text" data-wf="name" value="${esc(w.name)}" autocomplete="off" maxlength="60"></label><label class="fld"><span>${A(T('ad'))}${OP()}</span><input type="text" data-wf="desc" value="${esc(w.desc)}" autocomplete="off" maxlength="120"></label>`;
+ if(w.step==3)return head(T('wLt'),T('wLs'))+`<label class="fld"><input type="search" id="wq" placeholder="${esc(T('wLq'))}" value="${esc(w.q)}" autocomplete="off" autocapitalize="off" spellcheck="false"></label><p class="lgs" id="lgs"></p><div class="lgg" id="lgg"></div>`;
+ if(w.step==4)return head(T('wKt'),T('wKs'))+`<div class="chips">${(w.type=='gasto'?WK:WI).map(k=>`<button class="chip${w.cat==k?' on':''}" data-wc="${k}">${A(catName(k))}</button>`).join('')}</div>`;
+ return head(T('wDt'),T('wDs'))+`<label class="fld"><span>${A(T('wDd'))}</span><input type="date" data-wd="date" value="${esc(w.date)}"></label><label class="fld"><span>${A(T('wDh'))}</span><input type="time" data-wd="time" value="${esc(w.time)}"></label>`}
+function wzRender(){const d=$('.wzs');if(!d)return;const w=wz;
+ if(w.step==3&&w.qName&&w.q!==w.name)w.q=w.name;
+ d.innerHTML=`<div class="bars">${[0,1,2,3,4,5].map(i=>`<div class="bar"><i style="width:${i<w.step?100:0}%"></i></div>`).join('')}</div><div class="scr${w.step==0?' wza':''}" id="wzb">${wzBody()}</div><div class="btns"><button class="btn" id="wb">${A(T(w.step?'back':'cancel'))}</button><button class="btn p" id="wn">${A(T(w.step==5?'save':'next'))}</button></div>`;
+ requestAnimationFrame(()=>requestAnimationFrame(()=>{const b=d.querySelectorAll('.bar i')[w.step];if(b)b.style.width='100%'}));
+ wzUp();if(w.step==3){if(w.rq===w.q.trim()&&w.done)wzRedraw();else wzRun()}}
+function wzKey(k){const w=wz;let a=w.amt;
+ if(k=='⌫')a=a.slice(0,-1);
+ else if(k=='.'){if(a.includes('.'))return;a=(a||'0')+'.'}
+ else{const[i,f]=a.split('.');if(f!==undefined){if(f.length>=2)return}else if(i.length>=9)return;a=a=='0'?k:a+k}
+ w.amt=a;const e=$('#amt');if(e){e.innerHTML=wzAmt();e.classList.toggle('sm',a.length>8);e.classList.toggle('xs',a.length>10)}wzUp()}
+async function wzFind(q,tk){const w=wz,out=[],push=(urls,label)=>{if(urls.length&&out.length<9&&!out.some(o=>o.urls[0]==urls[0]))out.push({urls,label,ok:null})};
+ const dom=toDom(q),enc=encodeURIComponent;w.net=false;
+ if(dom)push(logoUrls(dom),dom);
+ else if(LOGO_DEV_KEY)push([`https://img.logo.dev/name/${enc(q)}?token=${LOGO_DEV_KEY}&size=128&format=png`],q);
+ if(!dom){try{const j=u=>fetch(u).then(r=>r.ok?r.json():Promise.reject());
+  const s=await j(`https://www.wikidata.org/w/api.php?action=wbsearchentities&search=${enc(q)}&language=${lang}&uselang=${lang}&type=item&limit=8&format=json&origin=*`);
+  const ids=(s.search||[]).map(x=>x.id);
+  if(ids.length&&tk===wzTk){const e=await j(`https://www.wikidata.org/w/api.php?action=wbgetentities&ids=${ids.join('|')}&props=claims&format=json&origin=*`);
+   const cl=(en,p)=>{const c=((en.claims||{})[p]||[]).find(x=>x.rank!='deprecated'&&x.mainsnak&&x.mainsnak.datavalue);return c?c.mainsnak.datavalue.value:null};
+   s.search.forEach(x=>{const en=(e.entities||{})[x.id];if(!en)return;const f=cl(en,'P154'),site=cl(en,'P856'),d2=site&&toDom(site),urls=[];if(f&&typeof f=='string')urls.push(commons(f));if(d2)urls.push(...logoUrls(d2));push(urls,x.label||d2||q)})}
+ }catch(_){w.net=true}
+  const slug=q.toLowerCase().replace(/[^a-z0-9]/g,'');if(/^[a-z0-9\u00e0-\u00ff]+$/i.test(q.trim())&&slug.length>1){push(logoUrls(slug+'.com'),slug+'.com');push(logoUrls(slug+'.es'),slug+'.es')}}
+ return out}
+function wzTile(c,tk,done){const g=$('#lgg');if(!g)return done();
+ const b=document.createElement('button');b.type='button';b.className='lgt';b._c=c;b.innerHTML=`<span class="lgi"></span><em>${A(c.label)}</em>`;g.appendChild(b);
+ const urls=c.ok===true?[c.url]:c.urls;let i=0;
+ const nx=()=>{if(i>=urls.length){c.ok=false;b.remove();done();return}
+  const u=urls[i++],im=new Image();let fin=false;const t=setTimeout(()=>{if(fin)return;fin=true;im.onload=im.onerror=null;nx()},7000);
+  im.onload=()=>{if(fin)return;fin=true;clearTimeout(t);if(im.naturalWidth<24&&i<urls.length){nx();return}c.ok=true;c.url=u;const s=b.querySelector('.lgi');if(s){s.appendChild(im);b.classList.add('ok');b.classList.toggle('on',!!wz&&!!wz.sel&&wz.sel.url==u)}done()};
+  im.onerror=()=>{if(fin)return;fin=true;clearTimeout(t);nx()};im.alt='';im.src=u};nx()}
+function wzStat(){const el=$('#lgs');if(!el)return;const n=document.querySelectorAll('.lgt.ok').length;el.textContent=n?'':T(wz.net?'wLo':'wLz')}
+function wzRedraw(){const g=$('#lgg'),el=$('#lgs');if(!g)return;g.innerHTML='';if(el)el.textContent='';const l=wz.res.filter(c=>c.ok===true);let n=l.length;if(!n){wzStat();return}l.forEach(c=>wzTile(c,wzTk,()=>{if(--n<=0)wzStat()}))}
+async function wzRun(){const w=wz,q=w.q.trim(),tk=++wzTk;w.rq=q;w.res=[];w.done=false;const g=$('#lgg'),el=$('#lgs');if(!g)return;g.innerHTML='';
+ if(!q){el.textContent='';w.done=true;return}
+ el.textContent=T('wLb');const out=await wzFind(q,tk);if(tk!==wzTk||!wz)return;w.res=out;let n=out.length;
+ const fin=()=>{if(tk!==wzTk)return;if(--n<=0){w.done=true;wzStat()}};
+ if(!n){w.done=true;wzStat();return}
+ el.textContent=T('wLb');out.forEach(c=>wzTile(c,tk,fin))}
+function wzPick(b){const c=b._c;if(!c||!c.url)return;wz.sel=wz.sel&&wz.sel.url==c.url?null:{url:c.url,label:c.label};document.querySelectorAll('.lgt').forEach(x=>x.classList.toggle('on',!!wz.sel&&!!x._c&&x._c.url==wz.sel.url))}
+function wzCache(u){return new Promise(res=>{const im=new Image();im.crossOrigin='anonymous';const t=setTimeout(()=>res(u),5000);
+ im.onload=()=>{clearTimeout(t);try{const c=document.createElement('canvas'),n=96;c.width=c.height=n;const x=c.getContext('2d'),k=Math.min(n/im.naturalWidth,n/im.naturalHeight),w=im.naturalWidth*k,h=im.naturalHeight*k;x.drawImage(im,(n-w)/2,(n-h)/2,w,h);res(c.toDataURL('image/png'))}catch(_){res(u)}};
+ im.onerror=()=>{clearTimeout(t);res(u)};im.src=u})}
+async function wzSave(){const w=wz,b=$('#wn');if(b)b.disabled=true;let logo='';
+ if(w.sel){const key='l'+hsh(w.sel.url);DB.logos=DB.logos||{};if(!DB.logos[key])DB.logos[key]=await wzCache(w.sel.url);logo=key}
+ const id=DB.movimientos.reduce((m,x)=>Math.max(m,x.id||0),0)+1;
+ DB.movimientos.push(Object.assign({id,concepto:w.name.trim(),descripcion:w.desc.trim(),importe:Math.round(parseFloat(w.amt)*100)/100,tipo:w.type,categoria:w.cat,fecha:wzTs(),cuenta:w.acc},logo?{logo}:{}));
+ try{localStorage.setItem('fynance',JSON.stringify(DB))}catch(_){}
+ wzTk++;const d=document.querySelector('.wz');if(d)d.remove();wz=null;hs.tab='home';hs.q='';showHome()}
+function wzClose(){wzTk++;const d=document.querySelector('.wz');if(d)d.remove();wz=null}
+document.addEventListener('click',e=>{if(!wz||!e.target.closest('.wz'))return;const q=s=>e.target.closest(s);let x;
+ if(x=q('[data-wk]'))wzKey(x.dataset.wk);
+ else if(x=q('[data-wa]')){wz.acc=+x.dataset.wa;document.querySelectorAll('[data-wa]').forEach(b=>b.classList.toggle('on',b===x));wzUp()}
+ else if(x=q('[data-wc]')){wz.cat=x.dataset.wc;document.querySelectorAll('[data-wc]').forEach(b=>b.classList.toggle('on',b===x));wzUp()}
+ else if(x=q('.lgt'))wzPick(x);
+ else if(q('#wb')){if(wz.step==0)wzClose();else{wz.step--;wzRender()}}
+ else if(q('#wn')){if(!wzOk())return;if(wz.step==5)wzSave();else{wz.step++;wzRender()}}});
+document.addEventListener('input',e=>{if(!wz)return;const t=e.target;
+ if(t.dataset&&t.dataset.wf){wz[t.dataset.wf]=t.value;wzUp()}
+ else if(t.dataset&&t.dataset.wd){wz[t.dataset.wd]=t.value;wzUp()}
+ else if(t.id=='wq'){wz.q=t.value;wz.qName=false;clearTimeout(wz.dt);wz.dt=setTimeout(()=>{if(wz&&wz.step==3)wzRun()},450)}});
+document.addEventListener('change',e=>{if(wz&&e.target.dataset&&e.target.dataset.wd){wz[e.target.dataset.wd]=e.target.value;wzUp()}});
+document.addEventListener('keydown',e=>{if(!wz||wz.step!=0||e.ctrlKey||e.metaKey)return;if(/^[0-9]$/.test(e.key))wzKey(e.key);else if(e.key==','||e.key=='.')wzKey('.');else if(e.key=='Backspace')wzKey('⌫')});
+const ADI={g:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="butt" stroke-linejoin="miter"><path d="M12 4V20M4 12H20"/></svg>',i:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="butt" stroke-linejoin="miter"><path d="M12 20V4M5.5 10.5L12 4L18.5 10.5"/></svg>',t:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="butt" stroke-linejoin="miter"><path d="M4 12H20M13.5 5.5L20 12L13.5 18.5"/></svg>'};
+function addPage(){return`<div class="hc" id="hadd"><div class="tabs"><span class="tb on">${A(T('add'))}</span></div><div class="alist">${[['g','gas'],['i','ing'],['t','tra']].map(([k,l])=>`<button class="arow" data-add="${k}"><span>${A(T(l))}</span>${ADI[k]}</button>`).join('')}</div></div>`}
+function tab(){if(hs.tab=='mov'){const q=hs.acc;hs.acc=0;const r=rows(500);hs.acc=q;return`<div class="hc pg"><h2>${A(T('mv'))}</h2><div class="full">${r}</div></div>`}return`<div class="hc pg"><h2>${A(T('stt'))}</h2><p class="sub">${A(T('soon'))}</p></div>`}
+app.addEventListener('click',e=>{if(!hs.active)return;const q=s=>e.target.closest(s);let x;
+ if(x=q('[data-acc]'))swapAcc(+x.dataset.acc);
+ else if(x=q('[data-nv]')){hs.tab=x.dataset.nv;hs.q='';showHome()}
+ else if(x=q('[data-add]')){if(x.dataset.add!='t')addFlow(x.dataset.add=='g'?'gasto':'ingreso')}
+ else if(q('#sx')){$('#hd').classList.remove('so');hs.q='';$('#q').value='';$('#q').blur();const l=$('#lst');l&&(l.innerHTML=rows(1))}
+ else if(q('#gear'))openSettings();
+ else if(q('#me'))profile();
+ else if(q('#sr')&&!$('#hd').classList.contains('so')){$('#hd').classList.add('so');setTimeout(()=>$('#q').focus(),380)}});
+app.addEventListener('input',e=>{if(e.target.id=='q'){hs.q=e.target.value.trim();const l=$('#lst');l&&(l.innerHTML=rows(1))}});
+let ls=null;
+
+const sha=async p=>{try{const b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode('fynance:'+p));return[...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join('')}catch(_){return p}};
+let uk={buf:'',lock:false};let uFails=0;
+function lock(err){document.querySelectorAll('.bg').forEach(e=>e.remove());live=false;hs.active=false;app.classList.remove('hmo');uk={buf:'',lock:false};
+ app.classList.add('lk');app.innerHTML=`<div class="hd"><svg class="lg lkl" viewBox="0 0 24 24" fill="currentColor"><path d="M1 23L23 1V23Z"/></svg></div><div class="lkb"><div class="lkt"><h2>${A(T('uT'))}</h2><p class="sub${err?' err':''}">${A(err?T('uBad'):T('uS'))}</p></div><div class="dots${err?' bad':''}" id="udots">${[0,1,2,3,4,5].map(()=>'<i></i>').join('')}</div></div><div class="kp">${[1,2,3,4,5,6,7,8,9,'',0,'⌫'].map(k=>`<button data-u="${k}" ${k===''?'style="visibility:hidden"':''}>${k=='⌫'?BS:k}</button>`).join('')}</div>${uFails>=2?`<div class="btns" style="margin-top:18px"><button class="btn" id="udl" style="border:2.5px solid #c00;color:#c00">${A(T('del'))}</button></div>`:''}`}
+async function ukey(k){if(uk.lock)return;if(k=='⌫')uk.buf=uk.buf.slice(0,-1);else if(uk.buf.length<6)uk.buf+=k;
+ const d=$('#udots');d.innerHTML=[0,1,2,3,4,5].map(i=>`<i class="${i<uk.buf.length?'on':''}"></i>`).join('');
+ if(uk.buf.length<6)return;uk.lock=true;const h=await sha(uk.buf),want=DB.ajustes.codigoHash;
+ setTimeout(()=>{if(h===want||uk.buf===want){uFails=0;try{localStorage.setItem('fynance',JSON.stringify(DB))}catch(_){}enterHome()}else{uFails++;lock(true)}},180)}
+app.addEventListener('click',e=>{const x=e.target.closest('[data-u]');if(x)ukey(x.dataset.u);if(e.target.closest('#udl'))settings(true)});
+function settings(direct){const d=document.createElement('div');d.className='bg';
+ d.innerHTML=`<div class="sh"><h2>${A(T('set'))}</h2><button class="btn" id="dl" style="width:100%;border:2.5px solid #c00;color:#c00">${A(T('del'))}</button></div>`;
+ document.body.appendChild(d);d.onclick=e=>{if(e.target==d)d.remove()};
+ $('#dl').onclick=()=>{d.querySelector('.sh').innerHTML=`<h2>${A(T('delT'))}</h2><p class="sub">${A(T('delS'))}</p><div class="btns"><button class="btn" id="dn">${A(T('cancel'))}</button><button class="btn p" id="dy" style="background:#c00">${A(T('delY'))}</button></div>`;
+  $('#dn').onclick=()=>d.remove();$('#dy').onclick=wipe};if(direct)$('#dl').onclick()}
+function wipe(){try{localStorage.removeItem('fynance')}catch(_){}
+ document.querySelectorAll('.bg').forEach(e=>e.remove());DB=null;window.DATA=null;
+ Object.assign(st,{name:'',last:'',alias:'',photo:'',gender:'',cur:'EUR',acc:[],pin:''});pk={stage:'a',buf:'',first:''};
+ hs={acc:0,q:'',tab:'home',intro:true,on:false,active:false};lang=det;step=-1;ls=null;render()}
+document.addEventListener('visibilitychange',()=>{if(document.hidden){if(hs.active)hs.hid=Date.now()}else if(hs.active&&DB&&DB.ajustes&&DB.ajustes.codigoHash&&hs.hid)lock()});
+function render(){app.classList.remove('hmo','lk');hs.active=false;live=false;const same=step===ls&&step>0;ls=step;
+ if(step<0){app.innerHTML=bars(4)+`<img class="logo" src="logo.png" alt="Fynance Capital"><div class="tap"><div id="pv"></div><div id="nxt"></div></div><h1 id="t"></h1><div class="btns"><button class="btn p" id="new">${A(T('n'))}</button><button class="btn" id="imp">${A(T('imp'))}</button></div><input type="file" id="f" accept=".json,application/json" hidden>`;story();return}
+ app.innerHTML=(step<6?bars(6):'')+`<div class="scr${same?' na':''}${step==5?' pin-screen':''}">${body()}</div>`+(step<6?`<div class="btns"><button class="btn" id="bk">${A(T('back'))}</button><button class="btn p" id="nx">${A(T(step==5?'fin':'next'))}</button></div>`:'');upd()}
+const S0=()=>L[lang].st,D=5000;let cur=0,t0=0,paused=false,pAt=0;
+function story(){live=true;cur=0;paused=false;const fills=[...document.querySelectorAll('.bar i')];
+ const show=i=>{cur=(i+4)%4;const h=$('#t');h.style.animation='none';h.offsetWidth;h.style.animation='';h.innerHTML='<span>'+A(S0()[cur].toUpperCase())+'</span>';fills.forEach((f,k)=>f.style.width=k<cur?'100%':'0');t0=performance.now()};
+ const tick=n=>{if(!live)return;if(!paused){const p=(n-t0)/D;p>=1?show(cur+1):fills[cur].style.width=p*100+'%'}requestAnimationFrame(tick)};
+ const hold=on=>{if(on){paused=true;pAt=performance.now()}else if(paused){t0+=performance.now()-pAt;paused=false}};
+ $('#pv').onclick=()=>show(cur-1);$('#nxt').onclick=()=>show(cur+1);
+ ['pv','nxt'].forEach(id=>{const e=$('#'+id);e.onpointerdown=()=>hold(1);e.onpointerup=e.onpointerleave=e.onpointercancel=()=>hold(0)});
+ $('#new').onclick=()=>{step=0;render()};$('#imp').onclick=()=>$('#f').click();
+ $('#f').onchange=async e=>{const f=e.target.files[0];if(!f)return;try{const d=JSON.parse(await f.text());if(!(d&&d.perfil&&Array.isArray(d.cuentas)&&d.cuentas.length))throw 0;if(d.ajustes&&d.ajustes.codigoHash){DB=d;hs.acc=0;hs.tab='home';hs.q='';lock();}else{try{localStorage.setItem('fynance',JSON.stringify(d))}catch(_){}if(!load())throw 0;showHome()}}catch{alert(T('bad2'))}};
+ show(0);requestAnimationFrame(tick)}
+function sheet(type){const d=document.createElement('div');d.className='bg';
+ d.innerHTML=`<div class="sh"><h2>${A(T('t')[type])}</h2><label class="fld"><span>${A(T('an'))}</span><input type="text" id="sn" placeholder="${T('ap')[type]}"></label><label class="fld"><span>${A(T('ad'))}${OP()}</span><input type="text" id="sd"></label><label class="fld"><span>${A(T('ab'))}</span><input type="text" id="sb" inputmode="decimal" placeholder="0,00"></label><div class="btns"><button class="btn" id="sc">${A(T('cancel'))}</button><button class="btn p" id="ss">${A(T('save'))}</button></div></div>`;
+ document.body.appendChild(d);$('#sn').focus();d.onclick=e=>{if(e.target==d)d.remove()};$('#sc').onclick=()=>d.remove();
+ $('#ss').onclick=()=>{const name=$('#sn').value.trim(),bal=parseFloat($('#sb').value.replace(',','.'))||0;if(!name){$('#sn').focus();return}
+  st.acc.push({type,name,desc:$('#sd').value.trim(),bal});d.remove();render()}}
+function photo(file){const r=new FileReader();r.onload=()=>{const im=new Image();im.onload=()=>{const c=document.createElement('canvas');c.width=c.height=256;const m=Math.min(im.width,im.height);c.getContext('2d').drawImage(im,(im.width-m)/2,(im.height-m)/2,m,m,0,0,256,256);st.photo=c.toDataURL('image/jpeg',.8);$('#pb').innerHTML=`<img src="${st.photo}">`};im.src=r.result};r.readAsDataURL(file)}
+function key(k){if(pk.ok||pk.lock)return;pk.err=false;if(k=='⌫')pk.buf=pk.buf.slice(0,-1);else if(pk.buf.length<6)pk.buf+=k;
+ if(pk.buf.length<6){$('#dots').innerHTML=[0,1,2,3,4,5].map(i=>`<i class="${i<pk.buf.length?'on':''}"></i>`).join('');return}
+ $('#dots').innerHTML='<i class="on"></i>'.repeat(6);pk.lock=true;
+ setTimeout(()=>{if(pk.stage=='a'){pk={stage:'b',buf:'',first:pk.buf}}else if(pk.buf==pk.first){pk.ok=true;st.pin=pk.buf}else{pk={stage:'a',buf:'',first:'',err:true};render();const s=document.querySelector('.sub');s.className='sub err';s.innerHTML=A(T('bad'));$('#dots').classList.add('bad');return}render()},180)}
+async function finish(){let h=st.pin;try{const b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode('fynance:'+st.pin));h=[...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join('')}catch(_){}
+ const data={version:1,perfil:{nombre:st.name.trim(),apellidos:st.last.trim(),alias:st.alias.trim(),foto:st.photo,genero:st.gender},ajustes:{idioma:lang,moneda:st.cur,codigoHash:h},cuentas:st.acc.map((a,i)=>({id:i+1,tipo:['efectivo','cuenta_bancaria','cuenta_ahorro','otra'][a.type]||'efectivo',nombre:a.name,descripcion:a.desc,saldoInicial:a.bal})),movimientos:[],suscripciones:[]};
+ window.DATA=data;try{localStorage.setItem('fynance',JSON.stringify(data))}catch(_){}DB=data;load();enterHome()}
+app.addEventListener('click',e=>{const q=s=>e.target.closest(s);let x;
+ if(x=q('[data-l]')){lang=x.dataset.l;render()}else if(x=q('[data-g]')){st.gender=x.dataset.g;render()}else if(x=q('[data-c]')){st.cur=x.dataset.c;render()}
+ else if(x=q('[data-a]'))sheet(+x.dataset.a);else if(x=q('[data-d]')){st.acc.splice(+x.dataset.d,1);render()}else if(x=q('[data-k]'))key(x.dataset.k);
+ else if(q('#pb'))$('#pf').click();else if(q('#bk')){if(step==5)pk={stage:'a',buf:'',first:''};step--;render()}
+ else if(q('#nx')){if(step==5)finish();else{step++;render()}}
+ else if(q('#ex')){const b=new Blob([JSON.stringify(window.DATA||JSON.parse(localStorage.getItem('fynance')||'{}'),null,2)],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='fynance.json';a.click()}});
+app.addEventListener('input',e=>{const f=e.target.dataset.f;if(f){st[f]=e.target.value;upd()}});
+app.addEventListener('change',e=>{if(e.target.id=='pf'&&e.target.files[0])photo(e.target.files[0])});
+if('serviceWorker'in navigator)navigator.serviceWorker.register('sw.js').catch(()=>{});
+setTimeout(()=>{load()?(DB.ajustes&&DB.ajustes.codigoHash?lock():showHome(650)):render();const s=$('#sp');s.classList.add('out');setTimeout(()=>s.remove(),700)},3000);
+</script></body></html>
