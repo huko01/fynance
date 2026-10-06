@@ -139,6 +139,24 @@ input[type=date]::-webkit-date-and-time-value,input[type=time]::-webkit-date-and
 .ci.lg{box-shadow:none}.ci.lg img{padding:calc(30*var(--u))}
 .ma strong{display:flex;align-items:center;justify-content:flex-end;gap:calc(14*var(--u))}.ma .bd{position:static;flex:none;right:auto;bottom:auto;width:calc(38*var(--u));height:calc(38*var(--u));width:round(calc(38*var(--u)),2px);height:round(calc(38*var(--u)),2px);aspect-ratio:1/1;border-radius:50%}
 .lst{flex:none;overflow:visible;-webkit-mask-image:none;mask-image:none;margin-bottom:calc(72*var(--u))}
+.wsrc{width:100%;height:58px;padding:0 52px 0 20px;border:2.5px solid var(--fg);border-radius:24px;background:#fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='10' viewBox='0 0 16 10'%3E%3Cpath d='M2 2l6 6 6-6' fill='none' stroke='%23000' stroke-width='2.6'/%3E%3C/svg%3E") no-repeat right 22px center;font-weight:700;font-size:18px;outline:0;-webkit-appearance:none;appearance:none;cursor:pointer}
+.lgi img{max-width:100%;max-height:100%;object-fit:contain;object-position:center}
+.ci.lg{overflow:hidden}.ci.lg img{object-position:center;border-radius:0}
+.ci.lg img{position:absolute;left:23.4%;top:23.4%;width:53.2%;height:53.2%;padding:0;margin:0;max-width:none;max-height:none;object-fit:contain;object-position:center center;border-radius:0;display:block}
+.lgi img{display:block;width:62%;height:62%;object-fit:contain;object-position:center center}
+
+.srcr{display:flex;align-items:center;gap:10px;margin:0 0 12px 6px}.srcr>span{font-size:14px;font-weight:700;opacity:.55}
+.wsrc{width:auto;height:34px;padding:0 30px 0 14px;margin:0;border:2px solid var(--soft);border-radius:17px;background-color:var(--soft);background-size:10px 6px;background-position:right 12px center;font-size:14px;font-weight:700;line-height:30px;transition:.18s}
+.wsrc:focus{border-color:var(--fg)}
+
+.ci{width:round(calc(128*var(--u)),2px);height:round(calc(128*var(--u)),2px);aspect-ratio:1/1;flex:none}
+.ci.lg img{inset:0;margin:auto;left:0;top:0;width:round(calc(68*var(--u)),2px);height:round(calc(68*var(--u)),2px);aspect-ratio:1/1;object-fit:contain;transform:translateZ(0)}
+.full .mv{padding-top:calc(30*var(--u));padding-bottom:calc(30*var(--u))}
+
+.ci>svg{display:block;width:round(calc(68*var(--u)),2px);height:round(calc(68*var(--u)),2px);flex:none}
+.ma strong.pos{color:#1f9d55}
+
+.tb[data-am]{cursor:pointer}@keyframes alin{from{opacity:0;transform:translateX(var(--dx,0))}to{opacity:1;transform:none}}.alist.an,.hc.an{animation:alin .32s cubic-bezier(.2,.8,.2,1)}
 </style></head><body><div id="app"></div><div id="sp"><img src="logo.png" alt="Fynance Capital"><p>© 2026 Huko, Fynance Capital. All rights reserved.</p></div>
 <script>
 const L={es:{n:"Empezar de cero",imp:"Importar archivo",back:"Volver",next:"Siguiente",fin:"Finalizar",
@@ -228,16 +246,18 @@ MORE='<svg viewBox="0 0 24 6" width="24" height="6" fill="currentColor"><circle 
 const SYM={GBP:'<svg class="cs" viewBox="0 0 10 12" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M7.9 3.1C7.4 1.8 6.3 1.4 4.9 1.4C3.4 1.4 2.3 2.2 2.3 3.5C2.3 4.8 3.4 5.2 4.9 5.6C6.4 6 7.8 6.6 7.8 8.2C7.8 9.8 6.5 10.6 4.8 10.6C3.1 10.6 2 10 1.6 8.6M1.7 7.2H7.6M4.9 0V12"/></svg>',EUR:'<svg class="cs" viewBox="0 0 10 12" fill="none" stroke="currentColor" stroke-width="2"><path d="M8.9 2.5A4.9 4.9 0 1 0 8.9 9.5M.7 4.9H7.4M.7 7.1H7.4"/></svg>',USD:'<svg class="cs" viewBox="0 0 10 12" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M8.2 3.4C7.8 2 6.6 1.6 5 1.6 3.4 1.6 2.3 2.4 2.3 3.7 2.3 5.1 3.5 5.5 5 5.9 6.6 6.3 8 6.8 8 8.3 8 9.7 6.8 10.5 5 10.5 3.3 10.5 2.1 9.9 1.8 8.5M5 0V12"/></svg>'};
 let DB=null,hs={acc:0,q:'',tab:'home',intro:true,on:false,active:false};
 const M=n=>{const s={EUR:'€',USD:'$',GBP:'£'}[DB.ajustes.moneda]||'',x=new Intl.NumberFormat(lang,{minimumFractionDigits:2,maximumFractionDigits:2}).format(n);return lang=='en'?s+x:x+s};
-const bal=a=>a.saldoInicial+DB.movimientos.filter(m=>m.cuenta==a.id).reduce((s,m)=>s+(m.tipo=='ingreso'?m.importe:-m.importe),0);
+const bal=a=>DB.movimientos.reduce((s,m)=>{if(m.tipo=='traspaso')return s+(m.destino==a.id?m.importe:0)-(m.cuenta==a.id?m.importe:0);if(m.cuenta!=a.id)return s;return s+(m.tipo=='ingreso'?m.importe:-m.importe)},a.saldoInicial);
 const tl=a=>{const m={efectivo:0,cuenta_bancaria:1,cuenta_ahorro:2,otra:3,tarjeta_debito:-1};return a.tipo=='tarjeta_debito'?({es:'Tarjeta de débito',en:'Debit card',fr:'Carte de débit',de:'Debitkarte'}[lang]):T('t')[m[a.tipo]??0]},p2=n=>String(n).padStart(2,'0');
 const dstr=ts=>{const d=new Date(ts),n=new Date(),dd=Math.round((new Date(n.getFullYear(),n.getMonth(),n.getDate())-new Date(d.getFullYear(),d.getMonth(),d.getDate()))/864e5);return(dd==0?T('today'):dd==1?T('yest'):d.toLocaleDateString(lang,{day:'numeric',month:'short'}))+', '+p2(d.getHours())+':'+p2(d.getMinutes())};
-const mvs=()=>DB.movimientos.filter(m=>(!hs.acc||m.cuenta==hs.acc)&&(!hs.q||(m.concepto||'').toLowerCase().includes(hs.q.toLowerCase()))).sort((a,b)=>b.fecha-a.fecha);
+const mvs=()=>DB.movimientos.filter(m=>(!hs.acc||m.cuenta==hs.acc||m.destino==hs.acc)&&(!hs.q||(m.concepto||'').toLowerCase().includes(hs.q.toLowerCase()))).sort((a,b)=>b.fecha-a.fecha);
 const mlogo=m=>m.logo?((DB.logos||{})[m.logo]||(/^(https?:|data:)/.test(m.logo)?m.logo:'')):'';
-const row=m=>{const a=DB.cuentas.find(x=>x.id==m.cuenta)||{},lg=mlogo(m),ini=A((m.concepto||'?')[0].toUpperCase());return`<div class="mv"><div class="ci${lg?' lg':''}">${lg?`<img src="${esc(lg)}" alt="" data-i="${esc(ini)}" onerror="this.outerHTML=this.dataset.i">`:ini}</div><div class="mi"><strong>${A(m.concepto||'')}</strong><em>${A(dstr(m.fecha)+(m.categoria?' · '+catName(m.categoria):''))}</em></div><div class="ma"><strong><b class="bd">${m.tipo=='ingreso'?UP:DN}</b>${M(m.importe)}</strong><em>${A(a.nombre||'')}</em></div></div>`};
+const SWP=ic('<path d="M4 8H19M15 4L19 8L15 12M20 16H5M9 12L5 16L9 20"/>');
+const isT=m=>m.tipo=='traspaso'||m.tipo=='transfer',arw=m=>isT(m)?SWP:m.tipo=='ingreso'?UP:DN;
+const row=m=>{const lg=mlogo(m),ic0=arw(m),t=isT(m),inc=m.tipo=='ingreso',sg=t?'':inc?'+':'-';return`<div class="mv"><div class="ci${lg?' lg':''}">${lg?`<img src="${esc(lg)}" alt="" data-i="${esc(ic0)}" onerror="this.outerHTML=this.dataset.i">`:ic0}</div><div class="mi"><strong>${A(m.concepto||'')}</strong><em>${A(dstr(m.fecha)+(m.categoria?' · '+catName(m.categoria):''))}</em></div><div class="ma"><strong${inc?' class="pos"':''}>${sg}${M(m.importe)}</strong></div></div>`};
 const rows=n=>{const l=mvs().slice(0,n);return l.length?l.map(row).join(''):`<p class="emp">${A(T('none'))}</p>`};
-function load(){try{const d=JSON.parse(localStorage.getItem('fynance'));if(d&&d.perfil&&d.cuentas&&d.cuentas.length){d.movimientos=d.movimientos||[];DB=d;if(d.ajustes&&d.ajustes.idioma)lang=d.ajustes.idioma;if(DEMO&&!d.movimientos.length){const c=d.cuentas,t=(h,m,dy=0)=>{const x=new Date();x.setDate(x.getDate()-dy);x.setHours(h,m,0,0);return+x};d.movimientos=[['Burger King',22,'gasto','Alimentación',t(22,0),0],['Mercadona',48.3,'gasto','Alimentación',t(13,15),0],['Nómina',1450,'ingreso','Trabajo',t(9,0),0],['Spotify',10.99,'gasto','Suscripciones',t(8,30,1),c.length-1],['Gasolina',55,'gasto','Transporte',t(18,40,1),0],['Café',2.4,'gasto','Alimentación',t(10,5,2),0]].map(([concepto,importe,tipo,categoria,fecha,i],k)=>({id:k+1,concepto,importe,tipo,categoria,fecha,cuenta:c[i].id}))}return true}}catch(_){}return false}
+function load(){try{const d=JSON.parse(localStorage.getItem('fynance'));if(d&&d.perfil&&d.cuentas&&d.cuentas.length){d.movimientos=d.movimientos||[];d.auto=d.auto||[];DB=d;if(d.ajustes&&d.ajustes.idioma)lang=d.ajustes.idioma;if(DEMO&&!d.movimientos.length){const c=d.cuentas,t=(h,m,dy=0)=>{const x=new Date();x.setDate(x.getDate()-dy);x.setHours(h,m,0,0);return+x};d.movimientos=[['Burger King',22,'gasto','Alimentación',t(22,0),0],['Mercadona',48.3,'gasto','Alimentación',t(13,15),0],['Nómina',1450,'ingreso','Trabajo',t(9,0),0],['Spotify',10.99,'gasto','Suscripciones',t(8,30,1),c.length-1],['Gasolina',55,'gasto','Transporte',t(18,40,1),0],['Café',2.4,'gasto','Alimentación',t(10,5,2),0]].map(([concepto,importe,tipo,categoria,fecha,i],k)=>({id:k+1,concepto,importe,tipo,categoria,fecha,cuenta:c[i].id}))}return true}}catch(_){}return false}
 function homeMain(){const cs=DB.cuentas,sel=cs.find(a=>a.id==hs.acc),tot=sel?bal(sel):cs.reduce((s,a)=>s+bal(a),0);
- return`<div class="tabs"><button class="tb${sel?'':' on'}" data-acc="0">${A(T('ac'))}</button>${cs.map(a=>`<button class="tb${a.id==hs.acc?' on':''}" data-acc="${a.id}">${A(a.nombre)}</button>`).join('')}</div>
+ return`<div class="tabs"><button class="tb${sel?'':' on'}" data-acc="0">${A(T('hm'))}</button>${cs.map(a=>`<button class="tb${a.id==hs.acc?' on':''}" data-acc="${a.id}">${A(a.nombre)}</button>`).join('')}</div>
  <div class="mid"><p class="lb">${A(DB.ajustes.moneda+' · '+(sel?tl(sel):T('tot')))}</p><p class="bl">${M(tot)}</p></div>
  <div class="rh"><h3>${A(T('rec'))}</h3><button id="edw">${PEN}</button></div><div class="lst" id="lst">${rows(1)}</div>
  `}
@@ -313,69 +333,93 @@ function swapAcc(id){if(id===hs.acc)return;hs.acc=id;const tk=++swT;
   parts.forEach(e=>{const n=d.querySelector(e.id?'#'+e.id:'.mid');if(n)e.innerHTML=n.innerHTML});
   requestAnimationFrame(()=>parts.forEach(e=>e.classList.remove('sw')))},150)}
 function enterHome(){app.classList.add('pin-exit');setTimeout(()=>{app.classList.remove('pin-exit');showHome(340);app.classList.add('pin-enter');setTimeout(()=>app.classList.remove('pin-enter'),320)},240)}
-function showHome(extra=0){app.classList.remove('lk');live=false;hs.active=true;ls=null;app.classList.add('hmo');const p=DB.perfil,hm=hs.tab=='home';
+function showHome(extra=0){runAuto();app.classList.remove('lk');live=false;hs.active=true;ls=null;app.classList.add('hmo');const p=DB.perfil,hm=hs.tab=='home';
  const nv=`<nav class="nv">${[['home',TRI,'hm'],['add',ADD,'add'],['accounts',ACCT,'ac'],['mov',LST,'mv'],['stat',BAR,'stt']].filter(([k])=>!(k=='add'&&O().hideAdd)&&!(k=='accounts'&&O().hideAcc)).map(([k,i,l])=>`<button data-nv="${k}" class="${hs.tab==k?'on':''}">${i}<span>${A(T(l))}</span></button>`).join('')}</nav>`;
  const head=`<div class="hd" id="hd"><div class="me${hs.on&&!O().logo?' on':''}" id="me"><svg class="lg" viewBox="0 0 24 24" fill="currentColor"><path d="M1 23L23 1V23Z"/></svg><div class="ph">${p.foto?`<img src="${p.foto}">`:A((p.nombre||'?')[0].toUpperCase())}</div></div><div class="hr"><div class="sr" id="sr">${SRC}<input type="search" id="q" placeholder="${T('sr')}" autocomplete="off"><span class="cl" id="sx">${CLS}</span></div><button class="gb" id="gear">${GER}</button></div></div>`;
  const body=hm?head+`<div class="hc" id="hmain">${homeMain()}</div>`:hs.tab=='add'?head+addPage():tab();
  app.innerHTML=body+nv;
  if(hs.intro){hs.intro=false;setTimeout(()=>{hs.on=true;const m=$('#me');m&&!O().logo&&m.classList.add('on')},2500+extra)}}
 /* ===== Añadir gasto / ingreso (ventana por pasos) ===== */
-const LOGO_DEV_KEY='';/* opcional: clave pública gratuita (pk_...) de logo.dev para logos de más calidad */
+const LOGO_DEV_KEY='pk_AqSldAhGTLGVrtC0PBGSpg';/* opcional: clave pública gratuita (pk_...) de logo.dev para logos de más calidad */
 Object.assign(L.es,{wAg:"¿Cuánto has gastado?",wAi:"¿Cuánto has ingresado?",wAs:"Escribe el importe.",wCt:"Elige la cuenta",wCg:"¿De qué cuenta ha salido el dinero?",wCi:"¿En qué cuenta ha entrado el dinero?",wNt:"Nombre y descripción",wNs:"Ponle un nombre al movimiento.",wNn:"Nombre",wLt:"Elige un símbolo",wLs:"Toca el logo que quieras. También puedes buscar por web, por ejemplo mercadona.es.",wLq:"Nombre o web",wLb:"Buscando…",wLz:"No se han encontrado logos. Prueba con otro nombre o con la web.",wLo:"No se han podido buscar logos. Comprueba la conexión.",wKt:"Categoría",wKs:"¿En qué categoría entra?",wDt:"Fecha y hora",wDs:"¿Cuándo ha sido?",wDd:"Fecha",wDh:"Hora"});
 Object.assign(L.en,{wAg:"How much did you spend?",wAi:"How much did you receive?",wAs:"Enter the amount.",wCt:"Choose the account",wCg:"Which account did the money leave?",wCi:"Which account did the money go into?",wNt:"Name and description",wNs:"Give the transaction a name.",wNn:"Name",wLt:"Choose a symbol",wLs:"Tap the logo you want. You can also search by website, for example mercadona.es.",wLq:"Name or website",wLb:"Searching…",wLz:"No logos found. Try another name or the website.",wLo:"Couldn't search for logos. Check your connection.",wKt:"Category",wKs:"Which category does it belong to?",wDt:"Date and time",wDs:"When was it?",wDd:"Date",wDh:"Time"});
 Object.assign(L.fr,{wAg:"Combien avez-vous dépensé ?",wAi:"Combien avez-vous reçu ?",wAs:"Saisissez le montant.",wCt:"Choisissez le compte",wCg:"De quel compte l'argent est-il sorti ?",wCi:"Sur quel compte l'argent est-il entré ?",wNt:"Nom et description",wNs:"Donnez un nom à la transaction.",wNn:"Nom",wLt:"Choisissez un symbole",wLs:"Touchez le logo de votre choix. Vous pouvez aussi chercher par site web, par exemple mercadona.es.",wLq:"Nom ou site web",wLb:"Recherche…",wLz:"Aucun logo trouvé. Essayez un autre nom ou le site web.",wLo:"Impossible de chercher des logos. Vérifiez votre connexion.",wKt:"Catégorie",wKs:"Dans quelle catégorie ?",wDt:"Date et heure",wDs:"C'était quand ?",wDd:"Date",wDh:"Heure"});
 Object.assign(L.de,{wAg:"Wie viel hast du ausgegeben?",wAi:"Wie viel hast du erhalten?",wAs:"Gib den Betrag ein.",wCt:"Konto auswählen",wCg:"Von welchem Konto ist das Geld abgegangen?",wCi:"Auf welches Konto ist das Geld eingegangen?",wNt:"Name und Beschreibung",wNs:"Gib der Buchung einen Namen.",wNn:"Name",wLt:"Symbol auswählen",wLs:"Tippe auf das gewünschte Logo. Du kannst auch nach einer Website suchen, z. B. mercadona.es.",wLq:"Name oder Website",wLb:"Suche läuft…",wLz:"Keine Logos gefunden. Versuche einen anderen Namen oder die Website.",wLo:"Logos konnten nicht gesucht werden. Prüfe deine Verbindung.",wKt:"Kategorie",wKs:"In welche Kategorie gehört es?",wDt:"Datum und Uhrzeit",wDs:"Wann war es?",wDd:"Datum",wDh:"Uhrzeit"});
-const WK=['g_sup','g_res','g_ali','g_tra','g_viv','g_com','g_oci','g_sus','g_fac','g_sal','g_rop','g_cui','g_edu','g_via','g_reg','g_don','g_otr'],WI=['i_nom','i_ext','i_reg','i_rem','i_ayu','i_ven','i_trf','i_biz','i_otr'],WN=[...WK,...WI];
+Object.assign(L.es,{wFt:"Retirar dinero desde",wFs:"¿De qué cuenta sale el dinero?",wTt:"Ingresar dinero en",wTs:"¿En qué cuenta entra el dinero?",wQt:"Cantidad",wNo:"Para hacer un traspaso necesitas al menos dos cuentas.",aut:"Automatizar"});
+Object.assign(L.en,{wFt:"Withdraw money from",wFs:"Which account is the money leaving?",wTt:"Deposit money into",wTs:"Which account is the money going into?",wQt:"Amount",wNo:"You need at least two accounts to make a transfer.",aut:"Automate"});
+Object.assign(L.fr,{wFt:"Retirer de l'argent depuis",wFs:"De quel compte l'argent sort-il ?",wTt:"Déposer de l'argent sur",wTs:"Sur quel compte l'argent entre-t-il ?",wQt:"Montant",wNo:"Il faut au moins deux comptes pour faire un virement.",aut:"Automatiser"});
+Object.assign(L.de,{wFt:"Geld abheben von",wFs:"Von welchem Konto geht das Geld ab?",wTt:"Geld einzahlen auf",wTs:"Auf welches Konto geht das Geld?",wQt:"Betrag",wNo:"Für eine Überweisung brauchst du mindestens zwei Konten.",aut:"Automatisieren"});
+Object.assign(L.es,{aU:"Único",aTt:"Tipo",aTs:"¿Qué quieres automatizar?",aFt:"Frecuencia",aFs:"¿Cada cuánto se repite?",aD:"Cada día",aW:"Cada semana",aM:"Cada mes",aY:"Cada año",aAv:"Avanzado",aEv:"Cada",aUd:"días",aUm:"meses",aUy:"años",aNx:"Próximo movimiento",aFi:"Primer movimiento",aSn:"Después",aSt:"Empezar desde",aSs:"¿Cuándo se hará el primer movimiento?"});
+Object.assign(L.en,{aU:"One-time",aTt:"Type",aTs:"What do you want to automate?",aFt:"Frequency",aFs:"How often does it repeat?",aD:"Every day",aW:"Every week",aM:"Every month",aY:"Every year",aAv:"Advanced",aEv:"Every",aUd:"days",aUm:"months",aUy:"years",aNx:"Next transaction",aFi:"First transaction",aSn:"Then",aSt:"Start from",aSs:"When will the first transaction happen?"});
+Object.assign(L.fr,{aU:"Ponctuel",aTt:"Type",aTs:"Que voulez-vous automatiser ?",aFt:"Fréquence",aFs:"À quelle fréquence se répète-t-il ?",aD:"Chaque jour",aW:"Chaque semaine",aM:"Chaque mois",aY:"Chaque année",aAv:"Avancé",aEv:"Tous les",aUd:"jours",aUm:"mois",aUy:"ans",aNx:"Prochaine transaction",aFi:"Première transaction",aSn:"Ensuite",aSt:"Commencer à partir du",aSs:"Quand aura lieu la première transaction ?"});
+Object.assign(L.de,{aU:"Einmalig",aTt:"Typ",aTs:"Was möchtest du automatisieren?",aFt:"Häufigkeit",aFs:"Wie oft wiederholt es sich?",aD:"Jeden Tag",aW:"Jede Woche",aM:"Jeden Monat",aY:"Jedes Jahr",aAv:"Erweitert",aEv:"Alle",aUd:"Tage",aUm:"Monate",aUy:"Jahre",aNx:"Nächste Buchung",aFi:"Erste Buchung",aSn:"Danach",aSt:"Beginnen ab",aSs:"Wann findet die erste Buchung statt?"});
+Object.assign(L.es,{wSrc:'Buscar en'});Object.assign(L.en,{wSrc:'Search in'});Object.assign(L.fr,{wSrc:'Rechercher dans'});Object.assign(L.de,{wSrc:'Suchen in'});
+const WK=['g_sup','g_res','g_ali','g_tra','g_viv','g_com','g_oci','g_sus','g_fac','g_sal','g_rop','g_cui','g_edu','g_via','g_reg','g_don','g_otr'],WI=['i_nom','i_ext','i_reg','i_rem','i_ayu','i_ven','i_trf','i_biz','i_otr'],WT=['t_caj','t_trf','t_otr'],WN=[...WK,...WI,...WT];
 const CAT={
-es:['Supermercado','Restaurante','Alimentación','Transporte','Vivienda','Compras','Ocio','Suscripciones','Facturas','Salud','Ropa','Cuidado personal','Educación','Viajes','Regalos','Donaciones','Otros','Salario','Trabajo extra','Regalos','Reembolsos','Ayudas','Ventas','Transferencias','Bizum','Otros'],
-en:['Supermarket','Restaurant','Food','Transport','Housing','Shopping','Leisure','Subscriptions','Bills','Health','Clothing','Personal care','Education','Travel','Gifts','Donations','Other','Salary','Side job','Gifts','Refunds','Aid','Sales','Transfers','Bizum','Other'],
-fr:['Supermarché','Restaurant','Alimentation','Transport','Logement','Achats','Loisirs','Abonnements','Factures','Santé','Vêtements','Soins personnels','Éducation','Voyages','Cadeaux','Dons','Autres','Salaire','Travail extra','Cadeaux','Remboursements','Aides','Ventes','Virements','Bizum','Autres'],
-de:['Supermarkt','Restaurant','Lebensmittel','Transport','Wohnen','Einkäufe','Freizeit','Abonnements','Rechnungen','Gesundheit','Kleidung','Körperpflege','Bildung','Reisen','Geschenke','Spenden','Sonstiges','Gehalt','Nebenjob','Geschenke','Erstattungen','Beihilfen','Verkäufe','Überweisungen','Bizum','Sonstiges']};
+es:['Supermercado','Restaurante','Alimentación','Transporte','Vivienda','Compras','Ocio','Suscripciones','Facturas','Salud','Ropa','Cuidado personal','Educación','Viajes','Regalos','Donaciones','Otros','Salario','Trabajo extra','Regalos','Reembolsos','Ayudas','Ventas','Transferencias','Bizum','Otros','Cajero','Transferencia','Otros'],
+en:['Supermarket','Restaurant','Food','Transport','Housing','Shopping','Leisure','Subscriptions','Bills','Health','Clothing','Personal care','Education','Travel','Gifts','Donations','Other','Salary','Side job','Gifts','Refunds','Aid','Sales','Transfers','Bizum','Other','ATM','Transfer','Other'],
+fr:['Supermarché','Restaurant','Alimentation','Transport','Logement','Achats','Loisirs','Abonnements','Factures','Santé','Vêtements','Soins personnels','Éducation','Voyages','Cadeaux','Dons','Autres','Salaire','Travail extra','Cadeaux','Remboursements','Aides','Ventes','Virements','Bizum','Autres','Distributeur','Virement','Autres'],
+de:['Supermarkt','Restaurant','Lebensmittel','Transport','Wohnen','Einkäufe','Freizeit','Abonnements','Rechnungen','Gesundheit','Kleidung','Körperpflege','Bildung','Reisen','Geschenke','Spenden','Sonstiges','Gehalt','Nebenjob','Geschenke','Erstattungen','Beihilfen','Verkäufe','Überweisungen','Bizum','Sonstiges','Geldautomat','Überweisung','Sonstiges']};
 const catName=k=>{const i=WN.indexOf(k);return i<0?k:(CAT[lang]||CAT.en)[i]};
 const CUR={EUR:'€',USD:'$',GBP:'£'};
 let wz=null,wzTk=0;
 const toDom=x=>{x=String(x||'').trim().toLowerCase();const m=x.match(/^(?:https?:\/\/)?(?:www\.)?((?:[a-z0-9-]+\.)+[a-z]{2,})(?:[\/?#:].*)?$/);return m?m[1]:''};
-const logoUrls=d=>[...(LOGO_DEV_KEY?[`https://img.logo.dev/${d}?token=${LOGO_DEV_KEY}&size=128&format=png`]:[]),`https://t1.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&url=${encodeURIComponent('https://'+d)}&size=128`,`https://icons.duckduckgo.com/ip3/${d}.ico`];
+const LDQ=`token=${LOGO_DEV_KEY}&size=128&retina=true&format=png&fallback=404`;
+const logoUrls=(d,src)=>src=='go'?[`https://t1.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=${encodeURIComponent('https://'+d)}&size=256`]:(LOGO_DEV_KEY?[`https://img.logo.dev/${d}?${LDQ}`]:[]);
 const commons=f=>`https://commons.wikimedia.org/wiki/Special:FilePath/${encodeURIComponent(f)}?width=160`;
 const hsh=s=>{let h=5381;for(let i=0;i<s.length;i++)h=(h*33^s.charCodeAt(i))>>>0;return h.toString(36)};
 const nowParts=()=>{const d=new Date();return{date:d.getFullYear()+'-'+p2(d.getMonth()+1)+'-'+p2(d.getDate()),time:p2(d.getHours())+':'+p2(d.getMinutes())}};
 const wzTs=()=>new Date(wz.date+'T'+wz.time).getTime();
-function addFlow(type){if(document.querySelector('.wz'))return;const n=nowParts();
- wz={type,step:0,amt:'',acc:DB.cuentas.length==1?DB.cuentas[0].id:(hs.acc||null),name:'',desc:'',q:'',qName:true,rq:null,res:[],done:false,net:false,sel:null,cat:'',date:n.date,time:n.time};
+function addFlow(type,auto){if(document.querySelector('.wz'))return;const n=nowParts();
+ wz={type,auto:!!auto,fu:'',fn:0,fi:'',adv:false,step:0,amt:'',acc:DB.cuentas.length==1?DB.cuentas[0].id:(hs.acc||null),name:'',desc:'',q:'',dest:null,src:'ld',qName:true,rq:null,res:[],done:false,net:false,sel:null,cat:'',date:n.date,time:n.time};
  const d=document.createElement('div');d.className='bg wz';d.innerHTML='<div class="sh wzs"></div>';document.body.appendChild(d);wzRender()}
-function wzOk(){const w=wz;return[parseFloat(w.amt)>0,!!w.acc,!!w.name.trim(),true,!!w.cat,!!(w.date&&w.time)&&!isNaN(wzTs())][w.step]}
+const wzKinds=()=>wz.auto?['start','freq','acc','amt','name','cat','logo']:wz.type=='traspaso'?['from','to','amt','name','cat','date']:['amt','acc','name','logo','cat','date'],wzK=()=>wzKinds()[wz.step];
+const nth=(a,k)=>{const d=new Date(a.inicio);if(a.fu=='d'||a.fu=='w'){d.setDate(d.getDate()+k*a.fn*(a.fu=='w'?7:1));return+d}const dy=d.getDate();d.setDate(1);d.setMonth(d.getMonth()+k*a.fn*(a.fu=='y'?12:1));d.setDate(Math.min(dy,new Date(d.getFullYear(),d.getMonth()+1,0).getDate()));return+d};
+const fdt=t=>{const d=new Date(t);return d.toLocaleDateString(lang,{weekday:'short',day:'numeric',month:'short',year:'numeric'})+' · '+p2(d.getHours())+':'+p2(d.getMinutes())};
+function wzPrev(){const w=wz;if(wzK()!='freq'||!w.fu||!(w.fn>=1))return'';const t=wzTs();if(isNaN(t))return'';return`${A(T('aFi'))}: <b>${A(fdt(t))}</b><br>${A(T('aSn'))}: <b>${A(fdt(nth({inicio:t,fu:w.fu,fn:w.fn},1)))}</b>`}
+const wzPv=()=>{const e=$('#nxp');if(e)e.innerHTML=wzPrev()};
+function runAuto(){const au=DB&&DB.auto;if(!au||!au.length)return false;let ch=false;const now=Date.now();let id=DB.movimientos.reduce((m,x)=>Math.max(m,x.id||0),0);
+ au.forEach(a=>{let n=0;while(a.next<=now&&n<2000){if(DB.cuentas.some(c=>c.id==a.cuenta)){id++;DB.movimientos.push(Object.assign({id,concepto:a.concepto,descripcion:a.descripcion||'',importe:a.importe,tipo:a.tipo,categoria:a.categoria,fecha:a.next,cuenta:a.cuenta,auto:a.id},a.logo?{logo:a.logo}:{}))}a.k++;a.next=nth(a,a.k);n++;ch=true}});
+ if(ch)try{localStorage.setItem('fynance',JSON.stringify(DB))}catch(_){}return ch}
+function wzOk(){const w=wz;return{type:!!w.type,freq:!!w.fu&&w.fn>=1,start:!!(w.date&&w.time)&&!isNaN(wzTs()),amt:parseFloat(w.amt)>0,acc:!!w.acc,from:!!w.acc,to:!!w.dest&&w.dest!=w.acc,name:!!w.name.trim(),logo:true,cat:!!w.cat,date:!!(w.date&&w.time)&&!isNaN(wzTs())}[wzK()]}
 function wzUp(){const b=$('#wn');if(b)b.disabled=!wzOk()}
 const wzAmt=()=>{const w=wz,dec=lang=='en'?'.':',',x=(w.amt||'0').replace('.',dec),s=CUR[DB.ajustes.moneda]||'';return`<span class="${w.amt?'':'ph0'}">${lang=='en'?s+x:x+s}</span>`};
-function wzBody(){const w=wz;
- if(w.step==0)return head(T(w.type=='gasto'?'wAg':'wAi'),T('wAs'))+`<div class="amt" id="amt">${wzAmt()}</div><div class="kp">${['1','2','3','4','5','6','7','8','9','.','0','⌫'].map(k=>`<button data-wk="${k}">${k=='⌫'?BS:k=='.'?(lang=='en'?'.':','):k}</button>`).join('')}</div>`;
- if(w.step==1)return head(T('wCt'),T(w.type=='gasto'?'wCg':'wCi'))+DB.cuentas.map(a=>opt(`data-wa="${a.id}"`,w.acc==a.id,a.nombre,`<small>${M(bal(a))}</small>`)).join('');
- if(w.step==2)return head(T('wNt'),T('wNs'))+`<label class="fld"><span>${A(T('wNn'))}</span><input type="text" data-wf="name" value="${esc(w.name)}" autocomplete="off" maxlength="60"></label><label class="fld"><span>${A(T('ad'))}${OP()}</span><input type="text" data-wf="desc" value="${esc(w.desc)}" autocomplete="off" maxlength="120"></label>`;
- if(w.step==3)return head(T('wLt'),T('wLs'))+`<label class="fld"><input type="search" id="wq" placeholder="${esc(T('wLq'))}" value="${esc(w.q)}" autocomplete="off" autocapitalize="off" spellcheck="false"></label><p class="lgs" id="lgs"></p><div class="lgg" id="lgg"></div>`;
- if(w.step==4)return head(T('wKt'),T('wKs'))+`<div class="chips">${(w.type=='gasto'?WK:WI).map(k=>`<button class="chip${w.cat==k?' on':''}" data-wc="${k}">${A(catName(k))}</button>`).join('')}</div>`;
+function wzBody(){const w=wz,k=wzK();
+ if(k=='type')return head(T('aTt'),T('aTs'))+opt('data-wy="gasto"',w.type=='gasto',T('gas'))+opt('data-wy="ingreso"',w.type=='ingreso',T('ing'));
+ if(k=='freq')return head(T('aFt'),T('aFs'))+[['d','aD'],['w','aW'],['m','aM'],['y','aY']].map(([u,l])=>opt(`data-wq="${u}"`,!w.adv&&w.fu==u&&w.fn==1,T(l))).join('')+`<div class="chips"><button type="button" class="chip${w.adv?' on':''}" data-wadv>${A(T('aAv'))}</button></div>`+(w.adv?`<label class="fld" style="margin-top:14px"><span>${A(T('aEv'))}</span><input type="text" inputmode="numeric" data-wn value="${esc(w.fi)}" autocomplete="off" maxlength="3"></label><div class="chips">${[['d','aUd'],['m','aUm'],['y','aUy']].map(([u,l])=>`<button type="button" class="chip${w.fu==u?' on':''}" data-wu="${u}">${A(T(l))}</button>`).join('')}</div>`:'')+`<p class="sub" id="nxp" style="margin-top:18px;max-width:none">${wzPrev()}</p>`;
+ if(k=='start')return head(T('aSt'),T('aSs'))+`<label class="fld"><span>${A(T('wDd'))}</span><input type="date" data-wd="date" value="${esc(w.date)}"></label><label class="fld"><span>${A(T('wDh'))}</span><input type="time" data-wd="time" value="${esc(w.time)}"></label>`;
+ if(k=='amt')return head(T(w.auto||w.type=='traspaso'?'wQt':w.type=='gasto'?'wAg':'wAi'),T('wAs'))+`<div class="amt" id="amt">${wzAmt()}</div><div class="kp">${['1','2','3','4','5','6','7','8','9','.','0','⌫'].map(k=>`<button data-wk="${k}">${k=='⌫'?BS:k=='.'?(lang=='en'?'.':','):k}</button>`).join('')}</div>`;
+ if(k=='from')return head(T('wFt'),T('wFs'))+DB.cuentas.map(a=>opt(`data-wa="${a.id}"`,w.acc==a.id,a.nombre,`<small>${M(bal(a))}</small>`)).join('');
+ if(k=='to')return head(T('wTt'),T('wTs'))+DB.cuentas.filter(a=>a.id!=w.acc).map(a=>opt(`data-wt="${a.id}"`,w.dest==a.id,a.nombre,`<small>${M(bal(a))}</small>`)).join('');
+ if(k=='acc')return head(T('wCt'),T(w.type=='gasto'?'wCg':'wCi'))+DB.cuentas.map(a=>opt(`data-wa="${a.id}"`,w.acc==a.id,a.nombre,`<small>${M(bal(a))}</small>`)).join('');
+ if(k=='name')return head(T('wNt'),T('wNs'))+`<label class="fld"><span>${A(T('wNn'))}</span><input type="text" data-wf="name" value="${esc(w.name)}" autocomplete="off" maxlength="60"></label><label class="fld"><span>${A(T('ad'))}${OP()}</span><input type="text" data-wf="desc" value="${esc(w.desc)}" autocomplete="off" maxlength="120"></label>`;
+ if(k=='logo')return head(T('wLt'),T('wLs'))+`<label class="fld"><input type="search" id="wq" placeholder="${esc(T('wLq'))}" value="${esc(w.q)}" autocomplete="off" autocapitalize="off" spellcheck="false"></label><p class="lgs" id="lgs"></p><div class="lgg" id="lgg"></div>`;
+ if(k=='cat')return head(T('wKt'),T('wKs'))+`<div class="chips">${(w.type=='traspaso'?WT:w.type=='gasto'?WK:WI).map(k=>`<button class="chip${w.cat==k?' on':''}" data-wc="${k}">${A(catName(k))}</button>`).join('')}</div>`;
  return head(T('wDt'),T('wDs'))+`<label class="fld"><span>${A(T('wDd'))}</span><input type="date" data-wd="date" value="${esc(w.date)}"></label><label class="fld"><span>${A(T('wDh'))}</span><input type="time" data-wd="time" value="${esc(w.time)}"></label>`}
 function wzRender(){const d=$('.wzs');if(!d)return;const w=wz;
- if(w.step==3&&w.qName&&w.q!==w.name)w.q=w.name;
- d.innerHTML=`<div class="bars">${[0,1,2,3,4,5].map(i=>`<div class="bar"><i style="width:${i<w.step?100:0}%"></i></div>`).join('')}</div><div class="scr${w.step==0?' wza':''}" id="wzb">${wzBody()}</div><div class="btns"><button class="btn" id="wb">${A(T(w.step?'back':'cancel'))}</button><button class="btn p" id="wn">${A(T(w.step==5?'save':'next'))}</button></div>`;
+ if(wzK()=='logo'&&w.qName&&w.q!==w.name)w.q=w.name;
+ d.innerHTML=`<div class="bars">${wzKinds().map((_,i)=>`<div class="bar"><i style="width:${i<w.step?100:0}%"></i></div>`).join('')}</div><div class="scr${wzK()=='amt'?' wza':''}" id="wzb">${wzBody()}</div><div class="btns"><button class="btn" id="wb">${A(T(w.step?'back':'cancel'))}</button><button class="btn p" id="wn">${A(T(w.step==wzKinds().length-1?'save':'next'))}</button></div>`;
  requestAnimationFrame(()=>requestAnimationFrame(()=>{const b=d.querySelectorAll('.bar i')[w.step];if(b)b.style.width='100%'}));
- wzUp();if(w.step==3){if(w.rq===w.q.trim()&&w.done)wzRedraw();else wzRun()}}
+ wzUp();if(wzK()=='logo'){if(w.rq===w.q.trim()&&w.done)wzRedraw();else wzRun()}}
 function wzKey(k){const w=wz;let a=w.amt;
  if(k=='⌫')a=a.slice(0,-1);
  else if(k=='.'){if(a.includes('.'))return;a=(a||'0')+'.'}
  else{const[i,f]=a.split('.');if(f!==undefined){if(f.length>=2)return}else if(i.length>=9)return;a=a=='0'?k:a+k}
  w.amt=a;const e=$('#amt');if(e){e.innerHTML=wzAmt();e.classList.toggle('sm',a.length>8);e.classList.toggle('xs',a.length>10)}wzUp()}
-async function wzFind(q,tk){const w=wz,out=[],push=(urls,label)=>{if(urls.length&&out.length<9&&!out.some(o=>o.urls[0]==urls[0]))out.push({urls,label,ok:null})};
+async function wzFind(q,tk){const w=wz,ld=[],go=[],mk=(arr)=>(urls,label)=>{if(urls.length&&arr.length<9&&!arr.some(o=>o.urls[0]==urls[0]))arr.push({urls,label,ok:null})};
+ const pl=mk(ld),pg=mk(go),both=(d,label)=>{pl(logoUrls(d,'ld'),label);pg(logoUrls(d,'go'),label)};
  const dom=toDom(q),enc=encodeURIComponent;w.net=false;
- if(dom)push(logoUrls(dom),dom);
- else if(LOGO_DEV_KEY)push([`https://img.logo.dev/name/${enc(q)}?token=${LOGO_DEV_KEY}&size=128&format=png`],q);
+ if(dom)both(dom,dom);
+ else if(LOGO_DEV_KEY)pl([`https://img.logo.dev/name/${enc(q)}?${LDQ}`],q);
  if(!dom){try{const j=u=>fetch(u).then(r=>r.ok?r.json():Promise.reject());
   const s=await j(`https://www.wikidata.org/w/api.php?action=wbsearchentities&search=${enc(q)}&language=${lang}&uselang=${lang}&type=item&limit=8&format=json&origin=*`);
   const ids=(s.search||[]).map(x=>x.id);
   if(ids.length&&tk===wzTk){const e=await j(`https://www.wikidata.org/w/api.php?action=wbgetentities&ids=${ids.join('|')}&props=claims&format=json&origin=*`);
    const cl=(en,p)=>{const c=((en.claims||{})[p]||[]).find(x=>x.rank!='deprecated'&&x.mainsnak&&x.mainsnak.datavalue);return c?c.mainsnak.datavalue.value:null};
-   s.search.forEach(x=>{const en=(e.entities||{})[x.id];if(!en)return;const f=cl(en,'P154'),site=cl(en,'P856'),d2=site&&toDom(site),urls=[];if(f&&typeof f=='string')urls.push(commons(f));if(d2)urls.push(...logoUrls(d2));push(urls,x.label||d2||q)})}
+   s.search.forEach(x=>{const en=(e.entities||{})[x.id];if(!en)return;const site=cl(en,'P856'),d2=site&&toDom(site);if(d2)both(d2,x.label||d2||q)})}
  }catch(_){w.net=true}
-  const slug=q.toLowerCase().replace(/[^a-z0-9]/g,'');if(/^[a-z0-9\u00e0-\u00ff]+$/i.test(q.trim())&&slug.length>1){push(logoUrls(slug+'.com'),slug+'.com');push(logoUrls(slug+'.es'),slug+'.es')}}
- return out}
+  const slug=q.toLowerCase().replace(/[^a-z0-9]/g,'');if(/^[a-z0-9\u00e0-\u00ff]+$/i.test(q.trim())&&slug.length>1){both(slug+'.com',slug+'.com');both(slug+'.es',slug+'.es')}}
+ return ld.concat(go).slice(0,16)}
 function wzTile(c,tk,done){const g=$('#lgg');if(!g)return done();
  const b=document.createElement('button');b.type='button';b.className='lgt';b._c=c;b.innerHTML=`<span class="lgi"></span><em>${A(c.label)}</em>`;g.appendChild(b);
  const urls=c.ok===true?[c.url]:c.urls;let i=0;
@@ -393,35 +437,49 @@ async function wzRun(){const w=wz,q=w.q.trim(),tk=++wzTk;w.rq=q;w.res=[];w.done=
  el.textContent=T('wLb');out.forEach(c=>wzTile(c,tk,fin))}
 function wzPick(b){const c=b._c;if(!c||!c.url)return;wz.sel=wz.sel&&wz.sel.url==c.url?null:{url:c.url,label:c.label};document.querySelectorAll('.lgt').forEach(x=>x.classList.toggle('on',!!wz.sel&&!!x._c&&x._c.url==wz.sel.url))}
 function wzCache(u){return new Promise(res=>{const im=new Image();im.crossOrigin='anonymous';const t=setTimeout(()=>res(u),5000);
- im.onload=()=>{clearTimeout(t);try{const c=document.createElement('canvas'),n=96;c.width=c.height=n;const x=c.getContext('2d'),k=Math.min(n/im.naturalWidth,n/im.naturalHeight),w=im.naturalWidth*k,h=im.naturalHeight*k;x.drawImage(im,(n-w)/2,(n-h)/2,w,h);res(c.toDataURL('image/png'))}catch(_){res(u)}};
+ im.onload=()=>{clearTimeout(t);try{const W=im.naturalWidth,H=im.naturalHeight,n=192,c0=document.createElement('canvas');c0.width=W;c0.height=H;const x0=c0.getContext('2d',{willReadFrequently:true});x0.drawImage(im,0,0);
+  const d=x0.getImageData(0,0,W,H).data;let x1=W,y1=H,x2=-1,y2=-1;
+  for(let y=0;y<H;y++)for(let x=0;x<W;x++){const i=(y*W+x)*4;if(d[i+3]>20&&!(d[i]>245&&d[i+1]>245&&d[i+2]>245)){if(x<x1)x1=x;if(x>x2)x2=x;if(y<y1)y1=y;if(y>y2)y2=y}}
+  if(x2<0||(x2-x1)<4||(y2-y1)<4){x1=0;y1=0;x2=W-1;y2=H-1}
+  const sw=x2-x1+1,sh=y2-y1+1,c=document.createElement('canvas');c.width=c.height=n;const x=c.getContext('2d'),m=n*.96,k=Math.min(m/sw,m/sh),w=sw*k,h=sh*k;
+  x.fillStyle='#fff';x.fillRect(0,0,n,n);x.imageSmoothingQuality='high';x.drawImage(im,x1,y1,sw,sh,(n-w)/2,(n-h)/2,w,h);res(c.toDataURL('image/png'))}catch(_){res(u)}};
  im.onerror=()=>{clearTimeout(t);res(u)};im.src=u})}
 async function wzSave(){const w=wz,b=$('#wn');if(b)b.disabled=true;let logo='';
- if(w.sel){const key='l'+hsh(w.sel.url);DB.logos=DB.logos||{};if(!DB.logos[key])DB.logos[key]=await wzCache(w.sel.url);logo=key}
+ if(w.sel&&w.type!='traspaso'){const key='l'+hsh(w.sel.url);DB.logos=DB.logos||{};if(!DB.logos[key])DB.logos[key]=await wzCache(w.sel.url);logo=key}
  const id=DB.movimientos.reduce((m,x)=>Math.max(m,x.id||0),0)+1;
- DB.movimientos.push(Object.assign({id,concepto:w.name.trim(),descripcion:w.desc.trim(),importe:Math.round(parseFloat(w.amt)*100)/100,tipo:w.type,categoria:w.cat,fecha:wzTs(),cuenta:w.acc},logo?{logo}:{}));
+ if(w.auto){DB.auto=DB.auto||[];const t0=wzTs();DB.auto.push(Object.assign({id:DB.auto.reduce((m,x)=>Math.max(m,x.id||0),0)+1,tipo:w.type,fu:w.fu,fn:w.fn,inicio:t0,k:0,next:t0,cuenta:w.acc,importe:Math.round(parseFloat(w.amt)*100)/100,concepto:w.name.trim(),descripcion:w.desc.trim(),categoria:w.cat},logo?{logo}:{}));runAuto()}
+ else DB.movimientos.push(Object.assign({id,concepto:w.name.trim(),descripcion:w.desc.trim(),importe:Math.round(parseFloat(w.amt)*100)/100,tipo:w.type,categoria:w.cat,fecha:wzTs(),cuenta:w.acc},logo?{logo}:{},w.type=='traspaso'?{destino:w.dest}:{}));
  try{localStorage.setItem('fynance',JSON.stringify(DB))}catch(_){}
  wzTk++;const d=document.querySelector('.wz');if(d)d.remove();wz=null;hs.tab='home';hs.q='';showHome()}
 function wzClose(){wzTk++;const d=document.querySelector('.wz');if(d)d.remove();wz=null}
 document.addEventListener('click',e=>{if(!wz||!e.target.closest('.wz'))return;const q=s=>e.target.closest(s);let x;
  if(x=q('[data-wk]'))wzKey(x.dataset.wk);
- else if(x=q('[data-wa]')){wz.acc=+x.dataset.wa;document.querySelectorAll('[data-wa]').forEach(b=>b.classList.toggle('on',b===x));wzUp()}
+ else if(x=q('[data-wy]')){wz.type=x.dataset.wy;const l=wz.type=='gasto'?WK:WI;if(wz.cat&&!l.includes(wz.cat))wz.cat='';document.querySelectorAll('[data-wy]').forEach(b=>b.classList.toggle('on',b===x));wzUp()}
+ else if(x=q('[data-wq]')){wz.fu=x.dataset.wq;wz.fn=1;wz.fi='1';wz.adv=false;wzRender()}
+ else if(x=q('[data-wadv]')){wz.adv=!wz.adv;if(wz.adv){if(!wz.fu)wz.fu='d';if(wz.fu=='w'){wz.fu='d';wz.fn=7}if(!(wz.fn>=1))wz.fn=1;wz.fi=String(wz.fn)}wzRender()}
+ else if(x=q('[data-wu]')){wz.fu=x.dataset.wu;document.querySelectorAll('[data-wu]').forEach(b=>b.classList.toggle('on',b===x));wzPv();wzUp()}
+ else if(x=q('[data-wt]')){wz.dest=+x.dataset.wt;document.querySelectorAll('[data-wt]').forEach(b=>b.classList.toggle('on',b===x));wzUp()}
+ else if(x=q('[data-wa]')){wz.acc=+x.dataset.wa;if(wz.dest==wz.acc)wz.dest=null;document.querySelectorAll('[data-wa]').forEach(b=>b.classList.toggle('on',b===x));wzUp()}
  else if(x=q('[data-wc]')){wz.cat=x.dataset.wc;document.querySelectorAll('[data-wc]').forEach(b=>b.classList.toggle('on',b===x));wzUp()}
  else if(x=q('.lgt'))wzPick(x);
  else if(q('#wb')){if(wz.step==0)wzClose();else{wz.step--;wzRender()}}
- else if(q('#wn')){if(!wzOk())return;if(wz.step==5)wzSave();else{wz.step++;wzRender()}}});
+ else if(q('#wn')){if(!wzOk())return;if(wz.step==wzKinds().length-1)wzSave();else{wz.step++;wzRender()}}});
 document.addEventListener('input',e=>{if(!wz)return;const t=e.target;
  if(t.dataset&&t.dataset.wf){wz[t.dataset.wf]=t.value;wzUp()}
- else if(t.dataset&&t.dataset.wd){wz[t.dataset.wd]=t.value;wzUp()}
- else if(t.id=='wq'){wz.q=t.value;wz.qName=false;clearTimeout(wz.dt);wz.dt=setTimeout(()=>{if(wz&&wz.step==3)wzRun()},450)}});
-document.addEventListener('change',e=>{if(wz&&e.target.dataset&&e.target.dataset.wd){wz[e.target.dataset.wd]=e.target.value;wzUp()}});
+ else if(t.dataset&&t.dataset.wd){wz[t.dataset.wd]=t.value;wzUp();wzPv()}
+ else if(t.dataset&&t.dataset.wn!==undefined){const v=t.value.replace(/\D/g,'').slice(0,3);t.value=v;wz.fi=v;wz.fn=parseInt(v)||0;wzUp();wzPv()}
+ else if(t.id=='wq'){wz.q=t.value;wz.qName=false;clearTimeout(wz.dt);wz.dt=setTimeout(()=>{if(wz&&wzK()=='logo')wzRun()},450)}});
+document.addEventListener('change',e=>{if(!wz)return;const t=e.target;if(t.dataset&&t.dataset.wd){wz[t.dataset.wd]=t.value;wzUp()}});
 document.addEventListener('keydown',e=>{if(!wz||wz.step!=0||e.ctrlKey||e.metaKey)return;if(/^[0-9]$/.test(e.key))wzKey(e.key);else if(e.key==','||e.key=='.')wzKey('.');else if(e.key=='Backspace')wzKey('⌫')});
-const ADI={g:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="butt" stroke-linejoin="miter"><path d="M12 4V20M4 12H20"/></svg>',i:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="butt" stroke-linejoin="miter"><path d="M12 20V4M5.5 10.5L12 4L18.5 10.5"/></svg>',t:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="butt" stroke-linejoin="miter"><path d="M4 12H20M13.5 5.5L20 12L13.5 18.5"/></svg>'};
-function addPage(){return`<div class="hc" id="hadd"><div class="tabs"><span class="tb on">${A(T('add'))}</span></div><div class="alist">${[['g','gas'],['i','ing'],['t','tra']].map(([k,l])=>`<button class="arow" data-add="${k}"><span>${A(T(l))}</span>${ADI[k]}</button>`).join('')}</div></div>`}
+const ADI={g:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="butt" stroke-linejoin="miter"><path d="M12 4V20M4 12H20"/></svg>',i:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="butt" stroke-linejoin="miter"><path d="M12 20V4M5.5 10.5L12 4L18.5 10.5"/></svg>',t:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="butt" stroke-linejoin="miter"><path d="M4 12H20M13.5 5.5L20 12L13.5 18.5"/></svg>',a:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="butt" stroke-linejoin="miter"><path d="M4 6H20V20H4ZM4 11H20M8 3V8M16 3V8"/></svg>'};
+const addList=m=>(m=='a'?[['ga','gas'],['ia','ing']]:[['g','gas'],['i','ing'],['t','tra']]).map(([k,l])=>`<button class="arow" data-add="${k}"><span>${A(T(l))}</span>${m=='a'?ADI.a:ADI[k]}</button>`).join('');
+function addPage(){const m=hs.addm=='a'?'a':'u';return`<div class="hc" id="hadd"><div class="tabs"><span class="tb on">${A(T('add'))}</span><span class="tb${m=='u'?' on':''}" data-am="u">${A(T('aU'))}</span><span class="tb${m=='a'?' on':''}" data-am="a">${A(T('aut'))}</span></div><div class="alist">${addList(m)}</div></div>`}
 function tab(){if(hs.tab=='mov'){const q=hs.acc;hs.acc=0;const r=rows(500);hs.acc=q;return`<div class="hc pg"><h2>${A(T('mv'))}</h2><div class="full">${r}</div></div>`}return`<div class="hc pg"><h2>${A(T('stt'))}</h2><p class="sub">${A(T('soon'))}</p></div>`}
 app.addEventListener('click',e=>{if(!hs.active)return;const q=s=>e.target.closest(s);let x;
  if(x=q('[data-acc]'))swapAcc(+x.dataset.acc);
- else if(x=q('[data-nv]')){hs.tab=x.dataset.nv;hs.q='';showHome()}
- else if(x=q('[data-add]')){if(x.dataset.add!='t')addFlow(x.dataset.add=='g'?'gasto':'ingreso')}
+ else if(x=q('[data-nv]')){{const o=['home','add','accounts','mov','stat'],a=o.indexOf(hs.tab),b=o.indexOf(x.dataset.nv);hs.tab=x.dataset.nv;hs.q='';showHome();const c=a==b?null:app.querySelector('.hc');if(c){c.style.setProperty('--dx',(b>a?36:-36)+'px');c.classList.add('an')}}}
+ else if(x=q('[data-am]')){const m=x.dataset.am;if((hs.addm=='a'?'a':'u')==m)return;hs.addm=m;document.querySelectorAll('[data-am]').forEach(t=>t.classList.toggle('on',t===x));const l=$('.alist');if(l){l.style.setProperty('--dx',(m=='a'?28:-28)+'px');l.innerHTML=addList(m);l.classList.remove('an');void l.offsetWidth;l.classList.add('an')}}
+ else if(x=q('[data-add]')){{const k=x.dataset.add;if(k=='t'){if(DB.cuentas.length<2)msg(T('wNo'));else addFlow('traspaso')}else if(k=='ga'||k=='ia')addFlow(k=='ga'?'gasto':'ingreso',1);else addFlow(k=='g'?'gasto':'ingreso')}}
  else if(q('#sx')){$('#hd').classList.remove('so');hs.q='';$('#q').value='';$('#q').blur();const l=$('#lst');l&&(l.innerHTML=rows(1))}
  else if(q('#gear'))openSettings();
  else if(q('#me'))profile();
@@ -447,7 +505,7 @@ function wipe(){try{localStorage.removeItem('fynance')}catch(_){}
  document.querySelectorAll('.bg').forEach(e=>e.remove());DB=null;window.DATA=null;
  Object.assign(st,{name:'',last:'',alias:'',photo:'',gender:'',cur:'EUR',acc:[],pin:''});pk={stage:'a',buf:'',first:''};
  hs={acc:0,q:'',tab:'home',intro:true,on:false,active:false};lang=det;step=-1;ls=null;render()}
-document.addEventListener('visibilitychange',()=>{if(document.hidden){if(hs.active)hs.hid=Date.now()}else if(hs.active&&DB&&DB.ajustes&&DB.ajustes.codigoHash&&hs.hid)lock()});
+document.addEventListener('visibilitychange',()=>{if(!document.hidden&&hs.active&&DB&&!document.querySelector('.wz')&&!app.classList.contains('lk')&&runAuto())showHome();if(document.hidden){if(hs.active)hs.hid=Date.now()}else if(hs.active&&DB&&DB.ajustes&&DB.ajustes.codigoHash&&hs.hid)lock()});
 function render(){app.classList.remove('hmo','lk');hs.active=false;live=false;const same=step===ls&&step>0;ls=step;
  if(step<0){app.innerHTML=bars(4)+`<img class="logo" src="logo.png" alt="Fynance Capital"><div class="tap"><div id="pv"></div><div id="nxt"></div></div><h1 id="t"></h1><div class="btns"><button class="btn p" id="new">${A(T('n'))}</button><button class="btn" id="imp">${A(T('imp'))}</button></div><input type="file" id="f" accept=".json,application/json" hidden>`;story();return}
  app.innerHTML=(step<6?bars(6):'')+`<div class="scr${same?' na':''}${step==5?' pin-screen':''}">${body()}</div>`+(step<6?`<div class="btns"><button class="btn" id="bk">${A(T('back'))}</button><button class="btn p" id="nx">${A(T(step==5?'fin':'next'))}</button></div>`:'');upd()}
