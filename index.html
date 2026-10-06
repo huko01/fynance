@@ -156,7 +156,16 @@ input[type=date]::-webkit-date-and-time-value,input[type=time]::-webkit-date-and
 .ci>svg{display:block;width:round(calc(68*var(--u)),2px);height:round(calc(68*var(--u)),2px);flex:none}
 .ma strong.pos{color:#1f9d55}
 
-.tb[data-am]{cursor:pointer}@keyframes alin{from{opacity:0;transform:translateX(var(--dx,0))}to{opacity:1;transform:none}}.alist.an,.hc.an{animation:alin .32s cubic-bezier(.2,.8,.2,1)}
+.tb[data-am]{cursor:pointer}@keyframes alin{from{opacity:0;transform:translateX(var(--dx,0))}to{opacity:1;transform:none}}.alist.an,.hc.an,.acp.an{animation:alin .32s cubic-bezier(.2,.8,.2,1)}
+
+.tb[data-ca]{cursor:pointer}.ainf{margin-top:calc(70*var(--u))}.ainf>div{margin-bottom:calc(40*var(--u))}.ainf span{display:block;font-size:calc(36*var(--u));font-weight:700;color:#9b9b9b}.ainf strong{display:block;font-size:calc(56*var(--u));font-weight:700;line-height:1.15;margin-top:calc(8*var(--u));overflow-wrap:anywhere}
+.acp .rh{margin-top:calc(30*var(--u))}.acp .lst{margin-bottom:calc(30*var(--u))}
+
+.mv[data-mid]{cursor:pointer}
+.mds{max-height:92vh;overflow-y:auto;scrollbar-width:none}.mds::-webkit-scrollbar{display:none}
+.mdh{display:flex;align-items:center;gap:14px;margin-bottom:14px}.mdh strong{font-size:22px;line-height:1.15;overflow-wrap:anywhere}
+.mda{font-size:34px;font-weight:700;margin-bottom:20px}.mda.pos{color:#1f9d55}
+.mdi{margin-bottom:14px}.mdi span{display:block;font-size:14px;font-weight:700;color:#9b9b9b}.mdi strong{display:block;font-size:19px;line-height:1.2;margin-top:2px;overflow-wrap:anywhere}
 </style></head><body><div id="app"></div><div id="sp"><img src="logo.png" alt="Fynance Capital"><p>© 2026 Huko, Fynance Capital. All rights reserved.</p></div>
 <script>
 const L={es:{n:"Empezar de cero",imp:"Importar archivo",back:"Volver",next:"Siguiente",fin:"Finalizar",
@@ -253,7 +262,7 @@ const mvs=()=>DB.movimientos.filter(m=>(!hs.acc||m.cuenta==hs.acc||m.destino==hs
 const mlogo=m=>m.logo?((DB.logos||{})[m.logo]||(/^(https?:|data:)/.test(m.logo)?m.logo:'')):'';
 const SWP=ic('<path d="M4 8H19M15 4L19 8L15 12M20 16H5M9 12L5 16L9 20"/>');
 const isT=m=>m.tipo=='traspaso'||m.tipo=='transfer',arw=m=>isT(m)?SWP:m.tipo=='ingreso'?UP:DN;
-const row=m=>{const lg=mlogo(m),ic0=arw(m),t=isT(m),inc=m.tipo=='ingreso',sg=t?'':inc?'+':'-';return`<div class="mv"><div class="ci${lg?' lg':''}">${lg?`<img src="${esc(lg)}" alt="" data-i="${esc(ic0)}" onerror="this.outerHTML=this.dataset.i">`:ic0}</div><div class="mi"><strong>${A(m.concepto||'')}</strong><em>${A(dstr(m.fecha)+(m.categoria?' · '+catName(m.categoria):''))}</em></div><div class="ma"><strong${inc?' class="pos"':''}>${sg}${M(m.importe)}</strong></div></div>`};
+const row=m=>{const lg=mlogo(m),ic0=arw(m),t=isT(m),inc=m.tipo=='ingreso',sg=t?'':inc?'+':'-';return`<div class="mv" data-mid="${m.id}"><div class="ci${lg?' lg':''}">${lg?`<img src="${esc(lg)}" alt="" data-i="${esc(ic0)}" onerror="this.outerHTML=this.dataset.i">`:ic0}</div><div class="mi"><strong>${A(m.concepto||'')}</strong><em>${A(dstr(m.fecha)+(m.categoria?' · '+catName(m.categoria):''))}</em></div><div class="ma"><strong${inc?' class="pos"':''}>${sg}${M(m.importe)}</strong></div></div>`};
 const rows=n=>{const l=mvs().slice(0,n);return l.length?l.map(row).join(''):`<p class="emp">${A(T('none'))}</p>`};
 function load(){try{const d=JSON.parse(localStorage.getItem('fynance'));if(d&&d.perfil&&d.cuentas&&d.cuentas.length){d.movimientos=d.movimientos||[];d.auto=d.auto||[];DB=d;if(d.ajustes&&d.ajustes.idioma)lang=d.ajustes.idioma;if(DEMO&&!d.movimientos.length){const c=d.cuentas,t=(h,m,dy=0)=>{const x=new Date();x.setDate(x.getDate()-dy);x.setHours(h,m,0,0);return+x};d.movimientos=[['Burger King',22,'gasto','Alimentación',t(22,0),0],['Mercadona',48.3,'gasto','Alimentación',t(13,15),0],['Nómina',1450,'ingreso','Trabajo',t(9,0),0],['Spotify',10.99,'gasto','Suscripciones',t(8,30,1),c.length-1],['Gasolina',55,'gasto','Transporte',t(18,40,1),0],['Café',2.4,'gasto','Alimentación',t(10,5,2),0]].map(([concepto,importe,tipo,categoria,fecha,i],k)=>({id:k+1,concepto,importe,tipo,categoria,fecha,cuenta:c[i].id}))}return true}}catch(_){}return false}
 function homeMain(){const cs=DB.cuentas,sel=cs.find(a=>a.id==hs.acc),tot=sel?bal(sel):cs.reduce((s,a)=>s+bal(a),0);
@@ -336,7 +345,7 @@ function enterHome(){app.classList.add('pin-exit');setTimeout(()=>{app.classList
 function showHome(extra=0){runAuto();app.classList.remove('lk');live=false;hs.active=true;ls=null;app.classList.add('hmo');const p=DB.perfil,hm=hs.tab=='home';
  const nv=`<nav class="nv">${[['home',TRI,'hm'],['add',ADD,'add'],['accounts',ACCT,'ac'],['mov',LST,'mv'],['stat',BAR,'stt']].filter(([k])=>!(k=='add'&&O().hideAdd)&&!(k=='accounts'&&O().hideAcc)).map(([k,i,l])=>`<button data-nv="${k}" class="${hs.tab==k?'on':''}">${i}<span>${A(T(l))}</span></button>`).join('')}</nav>`;
  const head=`<div class="hd" id="hd"><div class="me${hs.on&&!O().logo?' on':''}" id="me"><svg class="lg" viewBox="0 0 24 24" fill="currentColor"><path d="M1 23L23 1V23Z"/></svg><div class="ph">${p.foto?`<img src="${p.foto}">`:A((p.nombre||'?')[0].toUpperCase())}</div></div><div class="hr"><div class="sr" id="sr">${SRC}<input type="search" id="q" placeholder="${T('sr')}" autocomplete="off"><span class="cl" id="sx">${CLS}</span></div><button class="gb" id="gear">${GER}</button></div></div>`;
- const body=hm?head+`<div class="hc" id="hmain">${homeMain()}</div>`:hs.tab=='add'?head+addPage():tab();
+ const body=hm?head+`<div class="hc" id="hmain">${homeMain()}</div>`:hs.tab=='add'?head+addPage():hs.tab=='accounts'?head+accPage():tab();
  app.innerHTML=body+nv;
  if(hs.intro){hs.intro=false;setTimeout(()=>{hs.on=true;const m=$('#me');m&&!O().logo&&m.classList.add('on')},2500+extra)}}
 /* ===== Añadir gasto / ingreso (ventana por pasos) ===== */
@@ -353,6 +362,14 @@ Object.assign(L.es,{aU:"Único",aTt:"Tipo",aTs:"¿Qué quieres automatizar?",aFt
 Object.assign(L.en,{aU:"One-time",aTt:"Type",aTs:"What do you want to automate?",aFt:"Frequency",aFs:"How often does it repeat?",aD:"Every day",aW:"Every week",aM:"Every month",aY:"Every year",aAv:"Advanced",aEv:"Every",aUd:"days",aUm:"months",aUy:"years",aNx:"Next transaction",aFi:"First transaction",aSn:"Then",aSt:"Start from",aSs:"When will the first transaction happen?"});
 Object.assign(L.fr,{aU:"Ponctuel",aTt:"Type",aTs:"Que voulez-vous automatiser ?",aFt:"Fréquence",aFs:"À quelle fréquence se répète-t-il ?",aD:"Chaque jour",aW:"Chaque semaine",aM:"Chaque mois",aY:"Chaque année",aAv:"Avancé",aEv:"Tous les",aUd:"jours",aUm:"mois",aUy:"ans",aNx:"Prochaine transaction",aFi:"Première transaction",aSn:"Ensuite",aSt:"Commencer à partir du",aSs:"Quand aura lieu la première transaction ?"});
 Object.assign(L.de,{aU:"Einmalig",aTt:"Typ",aTs:"Was möchtest du automatisieren?",aFt:"Häufigkeit",aFs:"Wie oft wiederholt es sich?",aD:"Jeden Tag",aW:"Jede Woche",aM:"Jeden Monat",aY:"Jedes Jahr",aAv:"Erweitert",aEv:"Alle",aUd:"Tage",aUm:"Monate",aUy:"Jahre",aNx:"Nächste Buchung",aFi:"Erste Buchung",aSn:"Danach",aSt:"Beginnen ab",aSs:"Wann findet die erste Buchung statt?"});
+Object.assign(L.es,{cTy:"Tipo",cNm:"Nombre",cLm:"Últimos movimientos",cAu:"Automatizados"});
+Object.assign(L.en,{cTy:"Type",cNm:"Name",cLm:"Latest transactions",cAu:"Automations"});
+Object.assign(L.fr,{cTy:"Type",cNm:"Nom",cLm:"Dernières transactions",cAu:"Automatisations"});
+Object.assign(L.de,{cTy:"Typ",cNm:"Name",cLm:"Letzte Buchungen",cAu:"Automatisierungen"});
+Object.assign(L.es,{mdF:"Retirado de",mdT:"Ingresado en",mdE:"Editar",mdB:"Borrar",mdQ:"¿Borrar este movimiento?",mdQs:"Esta acción no se puede deshacer.",eLg:"Quitar logo actual"});
+Object.assign(L.en,{mdF:"Withdrawn from",mdT:"Deposited into",mdE:"Edit",mdB:"Delete",mdQ:"Delete this transaction?",mdQs:"This action cannot be undone.",eLg:"Remove current logo"});
+Object.assign(L.fr,{mdF:"Retiré de",mdT:"Versé sur",mdE:"Modifier",mdB:"Supprimer",mdQ:"Supprimer cette transaction ?",mdQs:"Cette action est irréversible.",eLg:"Retirer le logo actuel"});
+Object.assign(L.de,{mdF:"Abgebucht von",mdT:"Eingezahlt auf",mdE:"Bearbeiten",mdB:"Löschen",mdQ:"Diese Buchung löschen?",mdQs:"Dies kann nicht rückgängig gemacht werden.",eLg:"Aktuelles Logo entfernen"});
 Object.assign(L.es,{wSrc:'Buscar en'});Object.assign(L.en,{wSrc:'Search in'});Object.assign(L.fr,{wSrc:'Rechercher dans'});Object.assign(L.de,{wSrc:'Suchen in'});
 const WK=['g_sup','g_res','g_ali','g_tra','g_viv','g_com','g_oci','g_sus','g_fac','g_sal','g_rop','g_cui','g_edu','g_via','g_reg','g_don','g_otr'],WI=['i_nom','i_ext','i_reg','i_rem','i_ayu','i_ven','i_trf','i_biz','i_otr'],WT=['t_caj','t_trf','t_otr'],WN=[...WK,...WI,...WT];
 const CAT={
@@ -393,7 +410,7 @@ function wzBody(){const w=wz,k=wzK();
  if(k=='to')return head(T('wTt'),T('wTs'))+DB.cuentas.filter(a=>a.id!=w.acc).map(a=>opt(`data-wt="${a.id}"`,w.dest==a.id,a.nombre,`<small>${M(bal(a))}</small>`)).join('');
  if(k=='acc')return head(T('wCt'),T(w.type=='gasto'?'wCg':'wCi'))+DB.cuentas.map(a=>opt(`data-wa="${a.id}"`,w.acc==a.id,a.nombre,`<small>${M(bal(a))}</small>`)).join('');
  if(k=='name')return head(T('wNt'),T('wNs'))+`<label class="fld"><span>${A(T('wNn'))}</span><input type="text" data-wf="name" value="${esc(w.name)}" autocomplete="off" maxlength="60"></label><label class="fld"><span>${A(T('ad'))}${OP()}</span><input type="text" data-wf="desc" value="${esc(w.desc)}" autocomplete="off" maxlength="120"></label>`;
- if(k=='logo')return head(T('wLt'),T('wLs'))+`<label class="fld"><input type="search" id="wq" placeholder="${esc(T('wLq'))}" value="${esc(w.q)}" autocomplete="off" autocapitalize="off" spellcheck="false"></label><p class="lgs" id="lgs"></p><div class="lgg" id="lgg"></div>`;
+ if(k=='logo')return head(T('wLt'),T('wLs'))+(w.sel&&w.sel.keep?`<div class="chips"><button type="button" class="chip on" data-wlk>${A(T('eLg'))}</button></div>`:'')+`<label class="fld"><input type="search" id="wq" placeholder="${esc(T('wLq'))}" value="${esc(w.q)}" autocomplete="off" autocapitalize="off" spellcheck="false"></label><p class="lgs" id="lgs"></p><div class="lgg" id="lgg"></div>`;
  if(k=='cat')return head(T('wKt'),T('wKs'))+`<div class="chips">${(w.type=='traspaso'?WT:w.type=='gasto'?WK:WI).map(k=>`<button class="chip${w.cat==k?' on':''}" data-wc="${k}">${A(catName(k))}</button>`).join('')}</div>`;
  return head(T('wDt'),T('wDs'))+`<label class="fld"><span>${A(T('wDd'))}</span><input type="date" data-wd="date" value="${esc(w.date)}"></label><label class="fld"><span>${A(T('wDh'))}</span><input type="time" data-wd="time" value="${esc(w.time)}"></label>`}
 function wzRender(){const d=$('.wzs');if(!d)return;const w=wz;
@@ -445,15 +462,17 @@ function wzCache(u){return new Promise(res=>{const im=new Image();im.crossOrigin
   x.fillStyle='#fff';x.fillRect(0,0,n,n);x.imageSmoothingQuality='high';x.drawImage(im,x1,y1,sw,sh,(n-w)/2,(n-h)/2,w,h);res(c.toDataURL('image/png'))}catch(_){res(u)}};
  im.onerror=()=>{clearTimeout(t);res(u)};im.src=u})}
 async function wzSave(){const w=wz,b=$('#wn');if(b)b.disabled=true;let logo='';
- if(w.sel&&w.type!='traspaso'){const key='l'+hsh(w.sel.url);DB.logos=DB.logos||{};if(!DB.logos[key])DB.logos[key]=await wzCache(w.sel.url);logo=key}
+ if(w.sel&&w.sel.keep)logo=w.sel.keep;else if(w.sel&&w.type!='traspaso'){const key='l'+hsh(w.sel.url);DB.logos=DB.logos||{};if(!DB.logos[key])DB.logos[key]=await wzCache(w.sel.url);logo=key}
  const id=DB.movimientos.reduce((m,x)=>Math.max(m,x.id||0),0)+1;
  if(w.auto){DB.auto=DB.auto||[];const t0=wzTs();DB.auto.push(Object.assign({id:DB.auto.reduce((m,x)=>Math.max(m,x.id||0),0)+1,tipo:w.type,fu:w.fu,fn:w.fn,inicio:t0,k:0,next:t0,cuenta:w.acc,importe:Math.round(parseFloat(w.amt)*100)/100,concepto:w.name.trim(),descripcion:w.desc.trim(),categoria:w.cat},logo?{logo}:{}));runAuto()}
+ else if(w.edit){const m=DB.movimientos.find(x=>x.id==w.edit);if(m){Object.assign(m,{concepto:w.name.trim(),descripcion:w.desc.trim(),importe:Math.round(parseFloat(w.amt)*100)/100,tipo:w.type,categoria:w.cat,fecha:wzTs(),cuenta:w.acc});if(logo)m.logo=logo;else delete m.logo;if(w.type=='traspaso')m.destino=w.dest}}
  else DB.movimientos.push(Object.assign({id,concepto:w.name.trim(),descripcion:w.desc.trim(),importe:Math.round(parseFloat(w.amt)*100)/100,tipo:w.type,categoria:w.cat,fecha:wzTs(),cuenta:w.acc},logo?{logo}:{},w.type=='traspaso'?{destino:w.dest}:{}));
  try{localStorage.setItem('fynance',JSON.stringify(DB))}catch(_){}
- wzTk++;const d=document.querySelector('.wz');if(d)d.remove();wz=null;hs.tab='home';hs.q='';showHome()}
+ wzTk++;const d=document.querySelector('.wz');if(d)d.remove();wz=null;if(!w.edit){hs.tab='home';hs.q=''}showHome()}
 function wzClose(){wzTk++;const d=document.querySelector('.wz');if(d)d.remove();wz=null}
 document.addEventListener('click',e=>{if(!wz||!e.target.closest('.wz'))return;const q=s=>e.target.closest(s);let x;
  if(x=q('[data-wk]'))wzKey(x.dataset.wk);
+ else if(q('[data-wlk]')){wz.sel=null;wzRender()}
  else if(x=q('[data-wy]')){wz.type=x.dataset.wy;const l=wz.type=='gasto'?WK:WI;if(wz.cat&&!l.includes(wz.cat))wz.cat='';document.querySelectorAll('[data-wy]').forEach(b=>b.classList.toggle('on',b===x));wzUp()}
  else if(x=q('[data-wq]')){wz.fu=x.dataset.wq;wz.fn=1;wz.fi='1';wz.adv=false;wzRender()}
  else if(x=q('[data-wadv]')){wz.adv=!wz.adv;if(wz.adv){if(!wz.fu)wz.fu='d';if(wz.fu=='w'){wz.fu='d';wz.fn=7}if(!(wz.fn>=1))wz.fn=1;wz.fi=String(wz.fn)}wzRender()}
@@ -474,10 +493,34 @@ document.addEventListener('keydown',e=>{if(!wz||wz.step!=0||e.ctrlKey||e.metaKey
 const ADI={g:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="butt" stroke-linejoin="miter"><path d="M12 4V20M4 12H20"/></svg>',i:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="butt" stroke-linejoin="miter"><path d="M12 20V4M5.5 10.5L12 4L18.5 10.5"/></svg>',t:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="butt" stroke-linejoin="miter"><path d="M4 12H20M13.5 5.5L20 12L13.5 18.5"/></svg>',a:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="butt" stroke-linejoin="miter"><path d="M4 6H20V20H4ZM4 11H20M8 3V8M16 3V8"/></svg>'};
 const addList=m=>(m=='a'?[['ga','gas'],['ia','ing']]:[['g','gas'],['i','ing'],['t','tra']]).map(([k,l])=>`<button class="arow" data-add="${k}"><span>${A(T(l))}</span>${m=='a'?ADI.a:ADI[k]}</button>`).join('');
 function addPage(){const m=hs.addm=='a'?'a':'u';return`<div class="hc" id="hadd"><div class="tabs"><span class="tb on">${A(T('add'))}</span><span class="tb${m=='u'?' on':''}" data-am="u">${A(T('aU'))}</span><span class="tb${m=='a'?' on':''}" data-am="a">${A(T('aut'))}</span></div><div class="alist">${addList(m)}</div></div>`}
+const fqt=a=>a.fn==1?T({d:'aD',w:'aW',m:'aM',y:'aY'}[a.fu]):`${T('aEv')} ${a.fn} ${T({d:'aUd',w:'aUd',m:'aUm',y:'aUy'}[a.fu])}`.replace(/^(\S+) (\d+) (\S+)$/,'$1 $2 $3');
+const autoRow=a=>{const lg=mlogo(a),ic0=a.tipo=='ingreso'?UP:DN,inc=a.tipo=='ingreso',nx=new Date(a.next).toLocaleDateString(lang,{day:'numeric',month:'short',year:'numeric'});return`<div class="mv"><div class="ci${lg?' lg':''}">${lg?`<img src="${esc(lg)}" alt="" data-i="${esc(ic0)}" onerror="this.outerHTML=this.dataset.i">`:ic0}</div><div class="mi"><strong>${A(a.concepto||'')}</strong><em>${A(fqt(a)+' · '+nx)}</em></div><div class="ma"><strong${inc?' class="pos"':''}>${inc?'+':'-'}${M(a.importe)}</strong></div></div>`};
+const accCur=()=>DB.cuentas.find(c=>c.id==hs.cacc)||DB.cuentas[0];
+function accInfo(id){const a=DB.cuentas.find(c=>c.id==id)||DB.cuentas[0];if(!a)return'';const ms=DB.movimientos.filter(m=>m.cuenta==a.id||m.destino==a.id).sort((x,y)=>y.fecha-x.fecha).slice(0,3),au=(DB.auto||[]).filter(x=>x.cuenta==a.id).sort((x,y)=>x.next-y.next);
+ return`<div class="ainf"><div><span>${A(T('cTy'))}</span><strong>${A(tl(a))}</strong></div><div><span>${A(T('cNm'))}</span><strong>${A(a.nombre||'')}</strong></div><div><span>${A(T('ad'))}</span><strong>${A(a.descripcion||'—')}</strong></div></div><div class="rh"><h3>${A(T('cLm'))}</h3></div><div class="lst">${ms.length?ms.map(row).join(''):`<p class="emp">${A(T('none'))}</p>`}</div>`+(au.length?`<div class="rh"><h3>${A(T('cAu'))}</h3></div><div class="lst">${au.map(autoRow).join('')}</div>`:'')}
+function accPage(){const c=accCur();return`<div class="hc" id="hacc"><div class="tabs"><span class="tb on">${A(T('ac'))}</span>${DB.cuentas.map(a=>`<span class="tb${c&&a.id==c.id?' on':''}" data-ca="${a.id}">${A(a.nombre)}</span>`).join('')}</div><div class="full acp">${c?accInfo(c.id):''}</div></div>`}
+function mdClose(){const d=document.querySelector('.mvd');if(d)d.remove()}
+function openMov(id){const m=DB.movimientos.find(x=>x.id==id);if(!m)return;mdClose();const t=isT(m),inc=m.tipo=='ingreso',nm=i=>{const a=DB.cuentas.find(c=>c.id==i);return a?a.nombre:'—'},lg=mlogo(m),ic0=arw(m),inf=(l,v)=>`<div class="mdi"><span>${A(l)}</span><strong>${A(v)}</strong></div>`;
+ const o=document.createElement('div');o.className='bg mvd';
+ o.innerHTML=`<div class="sh mds"><div class="mdh"><div class="ci${lg?' lg':''}">${lg?`<img src="${esc(lg)}" alt="" data-i="${esc(ic0)}" onerror="this.outerHTML=this.dataset.i">`:ic0}</div><strong>${A(m.concepto||'')}</strong></div><div class="mda${inc?' pos':''}">${t?'':inc?'+':'-'}${M(m.importe)}</div>`
+ +(t?inf(T('mdF'),nm(m.cuenta))+inf(T('mdT'),nm(m.destino)):inf(T(inc?'mdT':'mdF'),nm(m.cuenta)))
+ +(m.categoria?inf(T('wKt'),catName(m.categoria)):'')+inf(T('wDt'),fdt(m.fecha))+(m.descripcion?inf(T('ad'),m.descripcion):'')
+ +`<div class="btns" style="margin-top:20px"><button class="btn" id="mdd" style="border:2.5px solid #c00;color:#c00">${A(T('mdB'))}</button><button class="btn p" id="mde">${A(T('mdE'))}</button></div></div>`;
+ o.onclick=e=>{if(e.target==o){o.remove();return}
+  if(e.target.closest('#mde')){o.remove();editMov(id)}
+  else if(e.target.closest('#mdd')){o.querySelector('.sh').innerHTML=`<h2 style="margin-bottom:8px">${A(T('mdQ'))}</h2><p class="sub" style="max-width:none;margin-bottom:24px">${A(T('mdQs'))}</p><div class="btns"><button class="btn" id="mdx">${A(T('cancel'))}</button><button class="btn p" id="mdy" style="background:#c00;border-color:#c00;color:#fff">${A(T('mdB'))}</button></div>`}
+  else if(e.target.closest('#mdx'))o.remove();
+  else if(e.target.closest('#mdy')){DB.movimientos=DB.movimientos.filter(x=>x.id!=id);try{localStorage.setItem('fynance',JSON.stringify(DB))}catch(_){}o.remove();showHome()}};
+ document.body.appendChild(o)}
+function editMov(id){const m=DB.movimientos.find(x=>x.id==id);if(!m)return;addFlow(m.tipo);if(!wz)return;const d=new Date(m.fecha);
+ Object.assign(wz,{edit:id,amt:String(m.importe),acc:m.cuenta,dest:m.destino||null,name:m.concepto||'',desc:m.descripcion||'',q:m.concepto||'',qName:true,cat:m.categoria||'',date:d.getFullYear()+'-'+p2(d.getMonth()+1)+'-'+p2(d.getDate()),time:p2(d.getHours())+':'+p2(d.getMinutes())});
+ if(m.logo)wz.sel={url:'',label:'',keep:m.logo};wzRender()}
 function tab(){if(hs.tab=='mov'){const q=hs.acc;hs.acc=0;const r=rows(500);hs.acc=q;return`<div class="hc pg"><h2>${A(T('mv'))}</h2><div class="full">${r}</div></div>`}return`<div class="hc pg"><h2>${A(T('stt'))}</h2><p class="sub">${A(T('soon'))}</p></div>`}
 app.addEventListener('click',e=>{if(!hs.active)return;const q=s=>e.target.closest(s);let x;
  if(x=q('[data-acc]'))swapAcc(+x.dataset.acc);
  else if(x=q('[data-nv]')){{const o=['home','add','accounts','mov','stat'],a=o.indexOf(hs.tab),b=o.indexOf(x.dataset.nv);hs.tab=x.dataset.nv;hs.q='';showHome();const c=a==b?null:app.querySelector('.hc');if(c){c.style.setProperty('--dx',(b>a?36:-36)+'px');c.classList.add('an')}}}
+ else if(x=q('[data-mid]'))openMov(+x.dataset.mid);
+ else if(x=q('[data-ca]')){const id=+x.dataset.ca,cur=accCur();if(cur&&cur.id==id)return;const o=DB.cuentas.findIndex(c=>c.id==(cur&&cur.id)),n=DB.cuentas.findIndex(c=>c.id==id);hs.cacc=id;document.querySelectorAll('[data-ca]').forEach(t=>t.classList.toggle('on',t===x));const l=$('.acp');if(l){l.scrollTop=0;l.style.setProperty('--dx',(n>o?28:-28)+'px');l.innerHTML=accInfo(id);l.classList.remove('an');void l.offsetWidth;l.classList.add('an')}}
  else if(x=q('[data-am]')){const m=x.dataset.am;if((hs.addm=='a'?'a':'u')==m)return;hs.addm=m;document.querySelectorAll('[data-am]').forEach(t=>t.classList.toggle('on',t===x));const l=$('.alist');if(l){l.style.setProperty('--dx',(m=='a'?28:-28)+'px');l.innerHTML=addList(m);l.classList.remove('an');void l.offsetWidth;l.classList.add('an')}}
  else if(x=q('[data-add]')){{const k=x.dataset.add;if(k=='t'){if(DB.cuentas.length<2)msg(T('wNo'));else addFlow('traspaso')}else if(k=='ga'||k=='ia')addFlow(k=='ga'?'gasto':'ingreso',1);else addFlow(k=='g'?'gasto':'ingreso')}}
  else if(q('#sx')){$('#hd').classList.remove('so');hs.q='';$('#q').value='';$('#q').blur();const l=$('#lst');l&&(l.innerHTML=rows(1))}
