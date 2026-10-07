@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="es"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>Fynance Capital</title><meta name="theme-color" content="#ffffff">
+<title>Fynance Capital</title><meta name="theme-color" content="#ffffff"><script>try{var d=JSON.parse(localStorage.getItem("fynance"));if(d&&d.ajustes&&d.ajustes.tema=="dark"){document.documentElement.dataset.theme="dark";document.querySelector("meta[name=theme-color]").content="#000000"}}catch(e){}</script>
 <link rel="manifest" href="manifest.json"><link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png"><link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
 <style>
 @font-face{font-family:"Symphonie Grotesque";font-weight:400;font-style:normal;font-display:block;src:url(fonts/SymphonieGrotesque-Regular.otf) format("opentype")}
@@ -166,6 +166,20 @@ input[type=date]::-webkit-date-and-time-value,input[type=time]::-webkit-date-and
 .mdh{display:flex;align-items:center;gap:14px;margin-bottom:14px}.mdh strong{font-size:22px;line-height:1.15;overflow-wrap:anywhere}
 .mda{font-size:34px;font-weight:700;margin-bottom:20px}.mda.pos{color:#1f9d55}
 .mdi{margin-bottom:14px}.mdi span{display:block;font-size:14px;font-weight:700;color:#9b9b9b}.mdi strong{display:block;font-size:19px;line-height:1.2;margin-top:2px;overflow-wrap:anywhere}
+
+/* Modo oscuro: la app invertida, fondo negro puro y el resto en blanco */
+html[data-theme=dark]{--bg:#000;--fg:#fff;--mut:#4d4d4d;--soft:#161616;color-scheme:dark}
+html[data-theme=dark] .bg{background:#000a}
+html[data-theme=dark] .sr,html[data-theme=dark] .gb{background:#3a3a3a;color:#fff}
+html[data-theme=dark] .ci:not(.lg){background:var(--soft)}
+html[data-theme=dark] .nv{background:transparent;border-top:1px solid #333}
+html[data-theme=dark] .nv button.on{color:var(--fg)}
+html[data-theme=dark] .lgt{background:var(--bg)}
+html[data-theme=dark] .wsrc{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='10' viewBox='0 0 16 10'%3E%3Cpath d='M2 2l6 6 6-6' fill='none' stroke='%23fff' stroke-width='2.6'/%3E%3C/svg%3E")}
+html[data-theme=dark] .logo,html[data-theme=dark] #sp img{filter:invert(1)}
+html[data-theme=dark] .ma strong.pos,html[data-theme=dark] .mda.pos{color:#3ddc84}
+html[data-theme=dark] .tb:not(.on){color:#5a5a5a}
+html[data-theme=dark] .ci.lg{background:transparent;box-shadow:none}
 </style></head><body><div id="app"></div><div id="sp"><img src="logo.png" alt="Fynance Capital"><p>© 2026 Huko, Fynance Capital. All rights reserved.</p></div>
 <script>
 const L={es:{n:"Empezar de cero",imp:"Importar archivo",back:"Volver",next:"Siguiente",fin:"Finalizar",
@@ -212,6 +226,7 @@ Object.assign(L.es,{"s_prof": "Ajustes de perfil", "s_theme": "Tema", "s_code": 
 Object.assign(L.en,{"s_prof": "Profile settings", "s_theme": "Theme", "s_code": "6-digit passcode", "s_bak": "Backup", "s_data": "App data", "s_upd": "Update information", "s_oth": "Other", "s_none": "No information yet", "o_add": "Hide add button", "o_acc": "Hide accounts button", "o_logo": "Always show the Fynance logo instead of the profile picture", "c_chg": "Change passcode", "c_del": "Remove passcode", "c_new": "Create passcode", "c_delT": "Remove the passcode?", "c_delS": "Fynance will stop asking for the passcode when you open the app.", "c_delY": "Yes, remove"});
 Object.assign(L.fr,{"s_prof": "Paramètres du profil", "s_theme": "Thème", "s_code": "Code à 6 chiffres", "s_bak": "Sauvegarde", "s_data": "Données de l'application", "s_upd": "Informations sur les mises à jour", "s_oth": "Autres", "s_none": "Aucune information pour le moment", "o_add": "Masquer le bouton ajouter", "o_acc": "Masquer le bouton comptes", "o_logo": "Toujours afficher le logo Fynance au lieu de la photo de profil", "c_chg": "Modifier le code", "c_del": "Supprimer le code", "c_new": "Créer un code", "c_delT": "Supprimer le code ?", "c_delS": "Fynance ne demandera plus le code à l'ouverture de l'application.", "c_delY": "Oui, supprimer"});
 Object.assign(L.de,{"s_prof": "Profileinstellungen", "s_theme": "Design", "s_code": "6-stelliger Code", "s_bak": "Datensicherung", "s_data": "App-Daten", "s_upd": "Update-Informationen", "s_oth": "Sonstiges", "s_none": "Noch keine Informationen", "o_add": "Hinzufügen-Button ausblenden", "o_acc": "Konten-Button ausblenden", "o_logo": "Fynance-Logo immer statt des Profilbilds anzeigen", "c_chg": "Code ändern", "c_del": "Code entfernen", "c_new": "Code erstellen", "c_delT": "Code entfernen?", "c_delS": "Fynance fragt beim Öffnen der App nicht mehr nach dem Code.", "c_delY": "Ja, entfernen"});
+Object.assign(L.es,{tLi:'Modo blanco',tDa:'Modo oscuro'});Object.assign(L.en,{tLi:'Light mode',tDa:'Dark mode'});Object.assign(L.fr,{tLi:'Mode clair',tDa:'Mode sombre'});Object.assign(L.de,{tLi:'Heller Modus',tDa:'Dunkler Modus'});
 Object.assign(L.es,{"d_exp": "Exportar datos", "d_imp": "Importar datos", "d_ok": "Se ha exportado el archivo correctamente. Lo puedes encontrar en la carpeta de descargas en los archivos de tu móvil.", "d_acc": "Aceptar", "i_prot": "Este archivo está protegido. Introduce su código para abrirlo.", "i_cT": "¿Importar este archivo?", "i_cS": "Se reemplazarán los datos actuales de la aplicación.", "i_go": "Importar"});
 Object.assign(L.en,{"d_exp": "Export data", "d_imp": "Import data", "d_ok": "The file was exported successfully. You can find it in the downloads folder in your phone's files.", "d_acc": "OK", "i_prot": "This file is protected. Enter its passcode to open it.", "i_cT": "Import this file?", "i_cS": "The app's current data will be replaced.", "i_go": "Import"});
 Object.assign(L.fr,{"d_exp": "Exporter les données", "d_imp": "Importer les données", "d_ok": "Le fichier a été exporté avec succès. Vous le trouverez dans le dossier Téléchargements des fichiers de votre téléphone.", "d_acc": "OK", "i_prot": "Ce fichier est protégé. Saisissez son code pour l'ouvrir.", "i_cT": "Importer ce fichier ?", "i_cS": "Les données actuelles de l'application seront remplacées.", "i_go": "Importer"});
@@ -270,6 +285,30 @@ function homeMain(){const cs=DB.cuentas,sel=cs.find(a=>a.id==hs.acc),tot=sel?bal
  <div class="mid"><p class="lb">${A(DB.ajustes.moneda+' · '+(sel?tl(sel):T('tot')))}</p><p class="bl">${M(tot)}</p></div>
  <div class="rh"><h3>${A(T('rec'))}</h3><button id="edw">${PEN}</button></div><div class="lst" id="lst">${rows(1)}</div>
  `}
+const th=()=>(DB&&DB.ajustes&&DB.ajustes.tema)=='dark'?'dark':'light';
+function applyTheme(){const d=th()=='dark';document.documentElement.dataset.theme=d?'dark':'light';const m=document.querySelector('meta[name=theme-color]');if(m)m.content=d?'#000000':'#ffffff';if(d)fixLogos();else document.querySelectorAll('.ci.lg img[data-os]').forEach(im=>{im.src=im.dataset.os;delete im.dataset.os;delete im.dataset.dw})}
+
+/* Quita el fondo blanco de un logo (solo el blanco conectado con los bordes, con borde suavizado) */
+function dwCanvas(c){const w=c.width,h=c.height,x=c.getContext('2d',{willReadFrequently:true}),D=x.getImageData(0,0,w,h),p=D.data,N=w*h,seen=new Uint8Array(N),st=[];
+ const isBg=q=>{const i=q*4;return p[i+3]<16||(p[i]>=236&&p[i+1]>=236&&p[i+2]>=236)},push=q=>{if(!seen[q]&&isBg(q)){seen[q]=1;st.push(q)}};
+ for(let i=0;i<w;i++){push(i);push((h-1)*w+i)}for(let j=0;j<h;j++){push(j*w);push(j*w+w-1)}
+ while(st.length){const q=st.pop(),cx=q%w;if(q>=w)push(q-w);if(q<N-w)push(q+w);if(cx>0)push(q-1);if(cx<w-1)push(q+1)}
+ const edge=[];for(let q=0;q<N;q++){if(seen[q])continue;const cx=q%w;if((q>=w&&seen[q-w])||(q<N-w&&seen[q+w])||(cx>0&&seen[q-1])||(cx<w-1&&seen[q+1]))edge.push(q)}
+ for(let q=0;q<N;q++)if(seen[q])p[q*4+3]=0;
+ for(const q of edge){const i=q*4,m=Math.min(p[i],p[i+1],p[i+2]);if(m>150){const a=Math.min(1,(255-m)/105);if(a<=.02){p[i+3]=0;continue}for(let k=0;k<3;k++)p[i+k]=Math.max(0,Math.min(255,Math.round((p[i+k]-255*(1-a))/a)));p[i+3]=Math.round(p[i+3]*a)}}
+ x.putImageData(D,0,0)}
+/* Si el logo es casi todo oscuro (se camufla con el fondo negro), lo pasa a claro: grises invertidos y colores muy oscuros en blanco */
+function dkFix(c){const x=c.getContext('2d',{willReadFrequently:true}),D=x.getImageData(0,0,c.width,c.height),p=D.data;let n=0,dk=0;
+ for(let i=0;i<p.length;i+=4){if(p[i+3]<128)continue;n++;if(Math.max(p[i],p[i+1],p[i+2])<90)dk++}
+ if(!n||dk/n<.55)return;
+ for(let i=0;i<p.length;i+=4){if(!p[i+3])continue;const mx=Math.max(p[i],p[i+1],p[i+2]),mn=Math.min(p[i],p[i+1],p[i+2]),sa=mx?(mx-mn)/mx:0;
+  if(sa<.3){p[i]=255-p[i];p[i+1]=255-p[i+1];p[i+2]=255-p[i+2]}else if(mx<90){p[i]=p[i+1]=p[i+2]=255}}
+ x.putImageData(D,0,0)}
+function dewhite(u){return new Promise(res=>{const im=new Image();im.onload=()=>{try{const c=document.createElement('canvas');c.width=im.naturalWidth;c.height=im.naturalHeight;c.getContext('2d').drawImage(im,0,0);dwCanvas(c);dkFix(c);res(c.toDataURL('image/png'))}catch(_){res(u)}};im.onerror=()=>res(u);im.src=u})}
+const DWM=new Map();
+function fixLogos(){if(th()!='dark')return;document.querySelectorAll('.ci.lg img').forEach(im=>{if(im.dataset.dw)return;im.dataset.dw=1;const u=im.getAttribute('src')||'';if(u.indexOf('data:')!==0)return;im.dataset.os=u;
+ let r=DWM.get(u);if(!r){r=dewhite(u).then(v=>(DWM.set(u,v),v));DWM.set(u,r)}if(typeof r=='string')im.src=r;else r.then(v=>{im.src=v})})}
+new MutationObserver(fixLogos).observe(document.documentElement,{childList:true,subtree:true});
 const O=()=>(DB&&DB.ajustes&&DB.ajustes.otros)||{},LN={es:'Español',en:'English',fr:'Français',de:'Deutsch'};
 function msg(t){const m=document.createElement('div');m.className='bg ctr';m.innerHTML=`<div class="sh"><p class="sub" style="max-width:none;margin-bottom:24px;font-weight:700;font-size:19px">${A(t)}</p><button class="btn p" style="width:100%">${A(T('d_acc'))}</button></div>`;m.onclick=e=>{if(e.target==m||e.target.closest('.btn'))m.remove()};document.body.appendChild(m)}
 function openSettings(){if(document.querySelector('.bg'))return;
@@ -283,6 +322,7 @@ function openSettings(){if(document.querySelector('.bg'))return;
  const R=()=>{
   if(v=='main')return hd(T('set'))+[['lang','lT'],['prof','s_prof'],['theme','s_theme'],['code','s_code'],['bak','s_bak'],['data','s_data'],['upd','s_upd'],['oth','s_oth']].map(([a,l])=>rw(a,T(l))).join('');
   if(v=='lang')return hd(T('lT'),'main')+Object.entries(LN).map(([c,n])=>`<button class="opt${lang==c?' on':''}" data-lg="${c}">${A(n)}</button>`).join('');
+  if(v=='theme')return hd(T('s_theme'),'main')+[['light','tLi'],['dark','tDa']].map(([c,l])=>`<button class="opt${th()==c?' on':''}" data-th="${c}">${A(T(l))}</button>`).join('');
   if(v=='code')return hd(T('s_code'),'main')+(AJ().codigoHash?rw('pchg',T('c_chg'))+rw('pdel',T('c_del')):rw('pnew',T('c_new')));
   if(v=='pin'){const s=pf.stage,t=s=='cur'?['uT','uS']:s=='new'?['kT','kS']:['k2T','k2S'];
    return hd(T(t[0]),pf.mode=='pimp'?'data':'code')+`<p class="sub${pf.err?' err':''}">${A(T(pf.err||(pf.mode=='pimp'?'i_prot':t[1])))}</p><div class="dots">${[0,1,2,3,4,5].map(i=>`<i class="${i<pf.buf.length?'on':''}"></i>`).join('')}</div><div class="kp">${[1,2,3,4,5,6,7,8,9,'',0,'⌫'].map(k=>`<button data-sk="${k}" ${k===''?'style="visibility:hidden"':''}>${k=='⌫'?BS:k}</button>`).join('')}</div>`}
@@ -314,7 +354,8 @@ function openSettings(){if(document.querySelector('.bg'))return;
    if(a=='pchg'||a=='pdel'||a=='pnew'){pf={mode:a,stage:a=='pnew'?'new':'cur',buf:'',first:'',err:''};v='pin'}
    else if(a=='exp'){const b=new Blob([JSON.stringify(DB,null,2)],{type:'application/json'}),u=URL.createObjectURL(b),l=document.createElement('a'),n=new Date();l.href=u;l.download='fynance-'+n.getFullYear()+'-'+p2(n.getMonth()+1)+'-'+p2(n.getDate())+'.json';document.body.appendChild(l);l.click();l.remove();setTimeout(()=>URL.revokeObjectURL(u),4000);msg(T('d_ok'));return}
    else if(a=='imp'){const f=sh.querySelector('#sif');f&&f.click();return}
-   else if(['lang','code','upd','oth','main','data','wipe'].includes(a))v=a;else return;draw();return}
+   else if(['lang','theme','code','upd','oth','main','data','wipe'].includes(a))v=a;else return;draw();return}
+  const hh=e.target.closest('[data-th]');if(hh){AJ().tema=hh.dataset.th;sv();applyTheme();draw();return}
   if(g){lang=g.dataset.lg;AJ().idioma=lang;sv();draw();showHome();return}
   if(t){const o=AJ().otros=AJ().otros||{};o[t.dataset.t]=!o[t.dataset.t];sv();draw();showHome();return}
   if(k&&k.dataset.sk!=='')await pkey(k.dataset.sk)}}
@@ -342,7 +383,7 @@ function swapAcc(id){if(id===hs.acc)return;hs.acc=id;const tk=++swT;
   parts.forEach(e=>{const n=d.querySelector(e.id?'#'+e.id:'.mid');if(n)e.innerHTML=n.innerHTML});
   requestAnimationFrame(()=>parts.forEach(e=>e.classList.remove('sw')))},150)}
 function enterHome(){app.classList.add('pin-exit');setTimeout(()=>{app.classList.remove('pin-exit');showHome(340);app.classList.add('pin-enter');setTimeout(()=>app.classList.remove('pin-enter'),320)},240)}
-function showHome(extra=0){runAuto();app.classList.remove('lk');live=false;hs.active=true;ls=null;app.classList.add('hmo');const p=DB.perfil,hm=hs.tab=='home';
+function showHome(extra=0){applyTheme();runAuto();app.classList.remove('lk');live=false;hs.active=true;ls=null;app.classList.add('hmo');const p=DB.perfil,hm=hs.tab=='home';
  const nv=`<nav class="nv">${[['home',TRI,'hm'],['add',ADD,'add'],['accounts',ACCT,'ac'],['mov',LST,'mv'],['stat',BAR,'stt']].filter(([k])=>!(k=='add'&&O().hideAdd)&&!(k=='accounts'&&O().hideAcc)).map(([k,i,l])=>`<button data-nv="${k}" class="${hs.tab==k?'on':''}">${i}<span>${A(T(l))}</span></button>`).join('')}</nav>`;
  const head=`<div class="hd" id="hd"><div class="me${hs.on&&!O().logo?' on':''}" id="me"><svg class="lg" viewBox="0 0 24 24" fill="currentColor"><path d="M1 23L23 1V23Z"/></svg><div class="ph">${p.foto?`<img src="${p.foto}">`:A((p.nombre||'?')[0].toUpperCase())}</div></div><div class="hr"><div class="sr" id="sr">${SRC}<input type="search" id="q" placeholder="${T('sr')}" autocomplete="off"><span class="cl" id="sx">${CLS}</span></div><button class="gb" id="gear">${GER}</button></div></div>`;
  const body=hm?head+`<div class="hc" id="hmain">${homeMain()}</div>`:hs.tab=='add'?head+addPage():hs.tab=='accounts'?head+accPage():tab();
@@ -459,7 +500,7 @@ function wzCache(u){return new Promise(res=>{const im=new Image();im.crossOrigin
   for(let y=0;y<H;y++)for(let x=0;x<W;x++){const i=(y*W+x)*4;if(d[i+3]>20&&!(d[i]>245&&d[i+1]>245&&d[i+2]>245)){if(x<x1)x1=x;if(x>x2)x2=x;if(y<y1)y1=y;if(y>y2)y2=y}}
   if(x2<0||(x2-x1)<4||(y2-y1)<4){x1=0;y1=0;x2=W-1;y2=H-1}
   const sw=x2-x1+1,sh=y2-y1+1,c=document.createElement('canvas');c.width=c.height=n;const x=c.getContext('2d'),m=n*.96,k=Math.min(m/sw,m/sh),w=sw*k,h=sh*k;
-  x.fillStyle='#fff';x.fillRect(0,0,n,n);x.imageSmoothingQuality='high';x.drawImage(im,x1,y1,sw,sh,(n-w)/2,(n-h)/2,w,h);res(c.toDataURL('image/png'))}catch(_){res(u)}};
+  x.imageSmoothingQuality='high';x.drawImage(im,x1,y1,sw,sh,(n-w)/2,(n-h)/2,w,h);dwCanvas(c);res(c.toDataURL('image/png'))}catch(_){res(u)}};
  im.onerror=()=>{clearTimeout(t);res(u)};im.src=u})}
 async function wzSave(){const w=wz,b=$('#wn');if(b)b.disabled=true;let logo='';
  if(w.sel&&w.sel.keep)logo=w.sel.keep;else if(w.sel&&w.type!='traspaso'){const key='l'+hsh(w.sel.url);DB.logos=DB.logos||{};if(!DB.logos[key])DB.logos[key]=await wzCache(w.sel.url);logo=key}
