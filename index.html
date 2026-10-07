@@ -583,6 +583,7 @@ app.addEventListener('click',e=>{const q=s=>e.target.closest(s);let x;
  else if(q('#ex')){const b=new Blob([JSON.stringify(window.DATA||JSON.parse(localStorage.getItem('fynance')||'{}'),null,2)],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='fynance.json';a.click()}});
 app.addEventListener('input',e=>{const f=e.target.dataset.f;if(f){st[f]=e.target.value;upd()}});
 app.addEventListener('change',e=>{if(e.target.id=='pf'&&e.target.files[0])photo(e.target.files[0])});
-if('serviceWorker'in navigator)navigator.serviceWorker.register('sw.js').catch(()=>{});
+if('serviceWorker'in navigator)navigator.serviceWorker.register('sw.js',{updateViaCache:'none'}).then(reg=>{let base='';const chk=()=>{reg.update().catch(()=>{});fetch('index.html',{cache:'no-cache'}).then(r=>r.ok?r.text():'').then(t=>{if(!t)return;const h=hsh(t);if(!base)base=h;else if(h!==base&&!wz)location.reload()}).catch(()=>{})};chk();document.addEventListener('visibilitychange',()=>{if(document.visibilityState=='visible')chk()})}).catch(()=>{});
+try{if(navigator.storage&&navigator.storage.persist)navigator.storage.persist().catch(()=>{})}catch(_){}
 setTimeout(()=>{load()?(DB.ajustes&&DB.ajustes.codigoHash?lock():showHome(650)):render();const s=$('#sp');s.classList.add('out');setTimeout(()=>s.remove(),700)},3000);
 </script></body></html>
