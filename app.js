@@ -61,8 +61,8 @@ const chart=()=>{const D=864e5,map={};
  return`<div class="gr" style="grid-template-columns:repeat(${days.length},minmax(0,1fr))">${days.map((d,k)=>`<div class="gc${d.a==t0?' now':''}"><div class="gb2">${bar(d.g,'e')}${bar(d.i,'n')}</div><span>${d.n}</span></div>`).join('')}</div>`};
 function homeMain(){const cs=DB.cuentas,sel=cs.find(a=>a.id==hs.acc),tot=sel?bal(sel):cs.reduce((s,a)=>s+bal(a),0);
  return`<div class="tabs"><button class="tb${sel?'':' on'}" data-acc="0" aria-label="${A(T('hm'))}"><svg class="tri" viewBox="0 0 24 24"><path d="M1 23L23 1V23Z"/></svg></button>${cs.map(a=>`<button class="tb${a.id==hs.acc?' on':''}" data-acc="${a.id}">${A(a.nombre)}</button>`).join('')}</div>
- <div class="mid"><p class="lb">${A(DB.ajustes.moneda+' · '+(sel?tl(sel):T('tot')))}</p><p class="bl">${M(tot)}</p>${chart()}</div>
- <div class="rh"><h3>${A(T('rec'))}</h3></div><div class="lst" id="lst">${rows(1)}</div>
+ <div class="mid${HI().center?' mc':''}"><p class="lb">${A(DB.ajustes.moneda+' · '+(sel?tl(sel):T('tot')))}</p><p class="bl">${M(tot)}</p>${HI().hideChart?'':chart()}</div>
+ ${HI().hideLast?'':`<div class="rh"><h3>${A(T('rec'))}</h3></div><div class="lst" id="lst">${rows(1)}</div>`}
  `}
 const _mq=window.matchMedia?matchMedia('(prefers-color-scheme: dark)'):null;
 const th=()=>{const t=DB&&DB.ajustes&&DB.ajustes.tema;return t=='dark'||t=='light'?t:(_mq&&_mq.matches?'dark':'light')};
@@ -91,6 +91,12 @@ function fixLogos(){if(th()!='dark')return;document.querySelectorAll('.ci.lg img
  let r=DWM.get(u);if(!r){r=dewhite(u).then(v=>(DWM.set(u,v),v));DWM.set(u,r)}if(typeof r=='string')im.src=r;else r.then(v=>{im.src=v})})}
 new MutationObserver(fixLogos).observe(document.documentElement,{childList:true,subtree:true});
 const O=()=>(DB&&DB.ajustes&&DB.ajustes.otros)||{},LN=LANG_NAMES;
+const BK_ALL=['stats','accounts','mov','add'],BK_FIX=['accounts','mov'],NVI={stats:[STAT,'stt'],accounts:[ACCT,'ac'],mov:[LST,'mv'],add:[ADD,'add']},HI=()=>(DB&&DB.ajustes&&DB.ajustes.inicio)||{};
+function barCfg(){const b=(DB&&DB.ajustes&&DB.ajustes.barra)||{},o=(Array.isArray(b.orden)?b.orden:[]).filter((k,i,a)=>BK_ALL.includes(k)&&a.indexOf(k)==i);BK_ALL.forEach(k=>{if(!o.includes(k))o.push(k)});
+ return{order:o,hidden:(Array.isArray(b.ocultos)?b.ocultos:['add']).filter(k=>BK_ALL.includes(k)&&!BK_FIX.includes(k))}}
+const navOrd=()=>{const c=barCfg(),o=['home',...c.order.filter(k=>!c.hidden.includes(k))];if(!o.includes('add'))o.splice(1,0,'add');return o};
+const IP={gen:'<path d="M4 7h10M18 7h2M4 17h2M10 17h10"/><circle cx="16" cy="7" r="2"/><circle cx="8" cy="17" r="2"/>',usr:'<circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-6 8-6s8 2 8 6"/>',per:'<path d="M12 3l2.2 6.8L21 12l-6.8 2.2L12 21l-2.2-6.8L3 12l6.8-2.2z"/>',lang:'<circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.8 2.6 4 5.6 4 9s-1.2 6.4-4 9c-2.8-2.6-4-5.6-4-9s1.2-6.4 4-9z"/>',cur:'<circle cx="12" cy="12" r="9"/><path d="M15 9.5C15 8.4 13.7 8 12 8s-3 .6-3 1.8c0 2.6 6 1.4 6 4.2 0 1.2-1.3 1.9-3 1.9s-3-.5-3-1.8M12 6.5V8M12 16v1.5"/>',dat:'<path d="M12 4v11M7.5 10.5L12 15l4.5-4.5M5 20h14"/>',upl:'<path d="M12 16V5M7.5 9.5L12 5l4.5 4.5M5 20h14"/>',bel:'<path d="M6 17v-6a6 6 0 0 1 12 0v6l2 2H4zM10 21h4"/>',syn:'<path d="M20 11a8 8 0 0 0-14-4.5L4 9M4 13a8 8 0 0 0 14 4.5L20 15M4 4v5h5M20 20v-5h-5"/>',pwd:'<rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/>',mail:'<rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/>',cod:'<rect x="3" y="8" width="18" height="8" rx="4"/><path d="M8 12h.01M12 12h.01M16 12h.01"/>',key:'<circle cx="8" cy="15" r="4"/><path d="M11 12l9-9M16 7l3 3"/>',out:'<path d="M10 4H6a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h4M15 8l4 4-4 4M19 12H9"/>',del:'<path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13M10 11v5M14 11v5"/>',thm:'<circle cx="12" cy="12" r="9"/><path d="M12 3a9 9 0 0 1 0 18z" fill="currentColor"/>',hom:'<rect x="7" y="3" width="10" height="18" rx="2.5"/><path d="M11 18h2"/>',bar:'<rect x="3" y="13" width="18" height="7" rx="3.5"/><path d="M8 16.5h.01M12 16.5h.01M16 16.5h.01"/>',pau:'<path d="M9 5v14M15 5v14"/>',pla:'<path d="M7 4l13 8-13 8z"/>',up:'<path d="M6 15l6-6 6 6"/>',dn:'<path d="M6 9l6 6 6-6"/>'};
+
 function msg(t){const m=document.createElement('div');m.className='bg ctr';m.innerHTML=`<div class="sh"><p class="sub" style="max-width:none;margin-bottom:24px;font-weight:700;font-size:19px">${A(t)}</p><button class="btn p" style="width:100%">${A(T('d_acc'))}</button></div>`;m.onclick=e=>{if(e.target==m||e.target.closest('.btn'))m.remove()};document.body.appendChild(m)}
 /* ===== Recordatorio de copia de seguridad ===== */
 Object.assign(L.es,{d_exp:"Exportar",d_imp:"Importar",d_rem:"Recordatorio de copia de seguridad",d_del:"Borrar todos los datos",r_mov:"Después de cada movimiento",r_2:"Cada 2 movimientos",r_3:"Cada 3 movimientos",r_5:"Cada 5 movimientos",r_10:"Cada 10 movimientos",r_msgT:"Recuerda exportar tus datos periódicamente para no perderlos.",r_msgS:"Puedes cambiar cada cuánto te lo recordamos en Ajustes > Datos de la aplicación > Recordatorio de copia de seguridad.",r_btn:"Exportar"});
@@ -120,34 +126,45 @@ function remSheet(){const d=document.createElement('div');d.className='bg';
  d.innerHTML=`<div class="sh"><div class="sth"><h2>${A(T('r_msgT'))}</h2></div><p class="sub">${A(T('r_msgS'))}</p><button class="btn p" id="rex" style="width:100%">${A(T('r_btn'))}</button></div>`;
  d.onclick=e=>{if(e.target==d)d.remove();else if(e.target.closest('#rex')){d.remove();exportData()}};document.body.appendChild(d)}
 function exportData(){const b=new Blob([JSON.stringify(DB,null,2)],{type:'application/json'}),u=URL.createObjectURL(b),l=document.createElement('a'),n=new Date();l.href=u;l.download='fynance-'+n.getFullYear()+'-'+p2(n.getMonth()+1)+'-'+p2(n.getDate())+'.json';document.body.appendChild(l);l.click();l.remove();setTimeout(()=>URL.revokeObjectURL(u),4000);msg(T('d_ok'))}
-function openSettings(){if(document.querySelector('.bg'))return;
- const d=document.createElement('div');d.className='bg';d.innerHTML='<div class="sh sts"></div>';document.body.appendChild(d);const sh=d.firstChild;
+function openSettings(v0){if(document.querySelector('.bg'))return;
+ const d=document.createElement('div');d.className='bg fs';d.innerHTML='<div class="sh sts"></div>';document.body.appendChild(d);const sh=d.firstChild;
  const AJ=()=>DB.ajustes,sv=()=>persist();
  const CH='<svg width="12" height="20" viewBox="0 0 12 20" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M2 2L10 10L2 18"/></svg>',BK='<svg width="12" height="20" viewBox="0 0 12 20" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M10 2L2 10L10 18"/></svg>';
- let v='main',pf={};
- const hd=(t,b)=>`<div class="sth">${b?`<button class="stb" data-s="${b}">${BK}</button>`:''}<h2>${A(t)}</h2></div>`,
- rw=(a,l)=>`<button class="opt" data-s="${a}"><span>${A(l)}</span>${CH}</button>`,
- tg=(k,l)=>`<div class="trow" data-t="${k}"><span>${A(l)}</span><i class="tg${O()[k]?' on':''}"></i></div>`;
+ let v=v0||'main',pf=v0=='prof'?{name:DB.perfil.nombre||'',photo:DB.perfil.foto||'',direct:1}:{};
+ const hd=(t,b)=>`<div class="sbt"><button class="sbk" data-s="${b||'x'}" aria-label="${A(T('back'))}">${ICBK}</button></div><h2>${A(t)}</h2>`,
+ I=n=>`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${IP[n]}</svg>`,
+ rw=(a,l,ic,c='')=>`<button class="row ${c}" data-s="${a}">${ic?I(ic):''}<span>${A(l)}</span></button>`,
+ sel=(a,on,l,r='')=>`<button class="row${on?' on':''}" ${a}><span>${A(l)}</span>${r}</button>`,
+ tg=(k,l)=>`<div class="trow" data-t="${k}"><span>${A(l)}</span><i class="tg${(AJ().inicio||{})[k]?' on':''}"></i></div>`;
  const R=()=>{
-  if(v=='main')return hd(T('set'))+[['lang','lT'],['prof','s_prof'],['theme','s_theme'],['code','s_code'],['data','s_data'],['oth','s_oth']].map(([a,l])=>rw(a,T(l))).join('')+(aget()?rw('acct',X('Cuenta','Account')):'');
-  if(v=='lang')return hd(T('lT'),'main')+Object.entries(LN).map(([c,n])=>`<button class="opt${lang==c?' on':''}" data-lg="${c}">${A(n)}</button>`).join('');
-  if(v=='theme')return hd(T('s_theme'),'main')+[['light','tLi'],['dark','tDa']].map(([c,l])=>`<button class="opt${th()==c?' on':''}" data-th="${c}">${A(T(l))}</button>`).join('');
-  if(v=='code')return hd(T('s_code'),'main')+(AJ().codigoHash?rw('pchg',T('c_chg'))+rw('pdel',T('c_del')):rw('pnew',T('c_new')));
+  const ac=aget();
+  if(v=='main')return hd(T('set'))+rw('gen',X('Generales','General'),'gen')+rw('acc',X('Cuenta','Account'),'usr')+rw('per',X('Personalización','Personalization'),'per');
+  if(v=='lang')return hd(T('lT'),'gen')+Object.entries(LN).map(([c,n])=>sel(`data-lg="${c}"`,lang==c,n)).join('');
+  if(v=='theme')return hd(T('s_theme'),'per')+[['light','tLi'],['dark','tDa']].map(([c,l])=>sel(`data-th="${c}"`,th()==c,T(l))).join('');
+  if(v=='code')return hd(T('s_code'),'acc')+(AJ().codigoHash?rw('pchg',T('c_chg'))+rw('pdel',T('c_del')):rw('pnew',T('c_new')));
   if(v=='pin'){const s=pf.stage,t=s=='cur'?['uT','uS']:s=='new'?['kT','kS']:['k2T','k2S'];
    return hd(T(t[0]),pf.mode=='pimp'?'data':'code')+`<p class="sub${pf.err?' err':''}">${A(T(pf.err||(pf.mode=='pimp'?'i_prot':t[1])))}</p><div class="dots">${[0,1,2,3,4,5].map(i=>`<i class="${i<pf.buf.length?'on':''}"></i>`).join('')}</div><div class="kp">${[1,2,3,4,5,6,7,8,9,'',0,'⌫'].map(k=>`<button data-sk="${k}" ${k===''?'style="visibility:hidden"':''}>${k=='⌫'?BS:k}</button>`).join('')}</div>`}
   if(v=='delc')return hd(T('c_delT'),'code')+`<p class="sub">${A(T('c_delS'))}</p><div class="btns"><button class="btn" data-s="code">${A(T('cancel'))}</button><button class="btn p" id="pdy" style="background:#c00">${A(T('c_delY'))}</button></div>`;
-  if(v=='data')return hd(T('s_data'),'main')+`<button class="opt" data-s="exp"><span>${A(T('d_exp'))}</span></button><button class="opt" data-s="imp"><span>${A(T('d_imp'))}</span></button>${rw('rem',T('d_rem'))}<button class="opt" data-s="wipe" style="border-color:#c00;color:#c00"><span>${A(T('d_del'))}</span></button><input type="file" id="sif" accept=".json,application/json" hidden>`;
-  if(v=='rem')return hd(T('d_rem'),'data')+REM_MODES.map(([m,l])=>`<button class="opt${remMode()==m?' on':''}" data-rm="${m}"><span>${A(T(l))}</span></button>`).join('');
+  if(v=='data')return hd(T('s_data'),'gen')+rw('exp',T('d_exp'),'dat')+rw('imp',T('d_imp'),'upl')+rw('rem',T('d_rem'),'bel')+rw('wipe',T('d_del'),'del','dg')+`<input type="file" id="sif" accept=".json,application/json" hidden>`;
+  if(v=='rem')return hd(T('d_rem'),'data')+REM_MODES.map(([m,l])=>sel(`data-rm="${m}"`,remMode()==m,T(l))).join('');
   if(v=='remoff')return hd(T('r_offT'),'rem')+`<p class="sub">${A(T('r_offS'))}</p><div class="btns"><button class="btn p" data-s="rem">${A(T('r_keep'))}</button><button class="btn" id="rof">${A(T('r_ign'))}</button></div>`;
   if(v=='wipe')return hd(T('delT'),'data')+`<p class="sub">${A(aget()?X('Se borrarán los datos de este dispositivo y se cerrará la sesión. Seguirán guardados en tu cuenta.','The data on this device will be erased and you will be signed out. It stays saved in your account.'):T('delS'))}</p><div class="btns"><button class="btn" data-s="data">${A(T('cancel'))}</button><button class="btn p" id="pwy" style="background:#c00">${A(T('delY'))}</button></div>`;
   if(v=='impc')return hd(T('i_cT'),'data')+`<p class="sub">${A(T('i_cS'))}</p><div class="btns"><button class="btn" data-s="data">${A(T('cancel'))}</button><button class="btn p" id="pig">${A(T('i_go'))}</button></div>`;
-  if(v=='acct')return hd(X('Cuenta','Account'),'main')+`<p class="sub">${A((aget()||{}).email||'')}</p><p class="sub">${A(syncLine())}</p>${(aget()||{}).pause?`<p class="sub">${A(X('Los cambios se guardan solo en este dispositivo hasta que reanudes la sincronización.','Changes stay on this device only until you resume sync.'))}</p>`:`<button class="opt" id="sny"><span>${A(X('Sincronizar ahora','Sync now'))}</span></button>`}<button class="opt" id="spz"><span>${A((aget()||{}).pause?X('Reanudar sincronización','Resume sync'):X('Pausar sincronización','Pause sync'))}</span></button>`+rw('cpw',X('Cambiar contraseña','Change password'))+rw('rkey',X('Clave de recuperación','Recovery key'))+`<button class="opt" id="lgo"><span>${A(X('Cerrar sesión','Sign out'))}</span></button><button class="opt" data-s="dacct" style="border-color:#c00;color:#c00"><span>${A(X('Eliminar cuenta','Delete account'))}</span></button>`;
-  if(v=='rkey')return hd(X('Clave de recuperación','Recovery key'),'acct')+(pf.rk?`<p class="rk">${A(pf.rk)}</p><p class="sub">${A(X('Guárdala en un lugar seguro. La clave anterior ya no sirve.','Keep it somewhere safe. The previous key no longer works.'))}</p><button class="opt" id="rkc"><span>${A(X('Copiar clave','Copy key'))}</span></button>`:`<p class="sub">${A(X('Es la única forma de recuperar tus datos si olvidas la contraseña. Por seguridad no se puede mostrar la actual, pero puedes generar una nueva (la anterior dejará de valer).','It is the only way to recover your data if you forget your password. For security the current one cannot be shown, but you can generate a new one (the old one will stop working).'))}</p><div class="btns"><button class="btn p" id="rkg">${A(X('Generar clave nueva','Generate new key'))}</button></div>`);
-  if(v=='cpw')return hd(X('Cambiar contraseña','Change password'),'acct')+[['po',X('Contraseña actual','Current password'),'current-password'],['pn',X('Nueva contraseña','New password'),'new-password'],['pn2',X('Repite la nueva contraseña','Repeat new password'),'new-password']].map(([i,l,c])=>`<label class="fld"><span>${A(l)}</span><input type="password" id="${i}" autocomplete="${c}"></label>`).join('')+`<div class="btns"><button class="btn p" id="cps">${A(T('save'))}</button></div>`;
-  if(v=='dacct')return hd(X('Eliminar cuenta','Delete account'),'acct')+`<p class="sub">${A(X('Se borrarán tus datos de la nube y de este dispositivo, y se cerrará la sesión. No se puede deshacer.','Your data will be deleted from the cloud and from this device, and you will be signed out. This cannot be undone.'))}</p><div class="btns"><button class="btn" data-s="acct">${A(T('cancel'))}</button><button class="btn p" id="dys" style="background:#c00">${A(X('Eliminar','Delete'))}</button></div>`;
-  if(v=='upd')return hd(T('s_upd'),'main')+`<div class="chl">${A(T('s_none'))}</div>`;
-  return hd(T('s_oth'),'main')+tg('hideAcc',T('o_acc'))+tg('logo',T('o_logo'))};
- const draw=()=>{sh.innerHTML=R()};draw();
+  if(v=='sync')return hd(X('Sincronización','Sync'),'acc')+`<p class="sub">${A(ac.email||'')}</p><p class="sub">${A(syncLine())}</p>`+(ac.pause?`<p class="sub">${A(X('Los cambios se guardan solo en este dispositivo hasta que reanudes la sincronización.','Changes stay on this device only until you resume sync.'))}</p>`:`<button class="row" id="sny">${I('syn')}<span>${A(X('Sincronizar ahora','Sync now'))}</span></button>`)+`<button class="row" id="spz">${I(ac.pause?'pla':'pau')}<span>${A(ac.pause?X('Reanudar sincronización','Resume sync'):X('Pausar sincronización','Pause sync'))}</span></button>`;
+  if(v=='cem')return hd(X('Correo electrónico','Email'),'acc')+`<p class="sub">${A(ac.email||'')}</p>`+[['ne',X('Nuevo correo electrónico','New email'),'email','email'],['cp',X('Contraseña actual','Current password'),'password','current-password']].map(([i,l,t,c])=>`<label class="fld"><span>${A(l)}</span><input type="${t}" id="${i}" autocomplete="${c}" autocapitalize="none" spellcheck="false"></label>`).join('')+`<div class="btns"><button class="btn p" id="ces">${A(T('save'))}</button></div>`;
+  if(v=='rkey')return hd(X('Clave de recuperación','Recovery key'),'acc')+(pf.rk?`<p class="rk">${A(pf.rk)}</p><p class="sub">${A(X('Guárdala en un lugar seguro. La clave anterior ya no sirve.','Keep it somewhere safe. The previous key no longer works.'))}</p><button class="opt" id="rkc"><span>${A(X('Copiar clave','Copy key'))}</span></button>`:`<p class="sub">${A(X('Es la única forma de recuperar tus datos si olvidas la contraseña. Por seguridad no se puede mostrar la actual, pero puedes generar una nueva (la anterior dejará de valer).','It is the only way to recover your data if you forget your password. For security the current one cannot be shown, but you can generate a new one (the old one will stop working).'))}</p><div class="btns"><button class="btn p" id="rkg">${A(X('Generar clave nueva','Generate new key'))}</button></div>`);
+  if(v=='cpw')return hd(X('Cambiar contraseña','Change password'),'acc')+[['po',X('Contraseña actual','Current password'),'current-password'],['pn',X('Nueva contraseña','New password'),'new-password'],['pn2',X('Repite la nueva contraseña','Repeat new password'),'new-password']].map(([i,l,c])=>`<label class="fld"><span>${A(l)}</span><input type="password" id="${i}" autocomplete="${c}"></label>`).join('')+`<div class="btns"><button class="btn p" id="cps">${A(T('save'))}</button></div>`;
+  if(v=='dacct')return hd(X('Eliminar cuenta','Delete account'),'acc')+`<p class="sub">${A(X('Se borrarán tus datos de la nube y de este dispositivo, y se cerrará la sesión. No se puede deshacer.','Your data will be deleted from the cloud and from this device, and you will be signed out. This cannot be undone.'))}</p><div class="btns"><button class="btn" data-s="acc">${A(T('cancel'))}</button><button class="btn p" id="dys" style="background:#c00">${A(X('Eliminar','Delete'))}</button></div>`;
+
+  if(v=='gen')return hd(X('Generales','General'),'main')+rw('lang',T('lT'),'lang')+rw('cur',T('cT'),'cur')+rw('data',T('s_data'),'dat');
+  if(v=='cur')return hd(T('cT'),'gen')+CURRENCIES.map(([c,s])=>sel(`data-cu="${c}"`,AJ().moneda==c,currencyName(c),`<small>${s}</small>`)).join('');
+  if(v=='acc')return hd(X('Cuenta','Account'),'main')+rw('prof',X('Perfil','Profile'),'usr')+(ac?rw('sync',X('Sincronización','Sync'),'syn')+rw('cpw',X('Contraseña','Password'),'pwd')+rw('cem',X('Correo electrónico','Email'),'mail'):'')+rw('code',T('s_code'),'cod')+(ac?rw('rkey',X('Clave de recuperación','Recovery key'),'key')+`<button class="row" id="lgo">${I('out')}<span>${A(X('Cerrar sesión','Sign out'))}</span></button>`+rw('dacct',X('Eliminar cuenta','Delete account'),'del','dg'):'');
+  if(v=='prof')return hd(X('Perfil','Profile'),pf.direct?'x':'acc')+`<div class="av"><b id="ppb">${pf.photo?`<img src="${pf.photo}">`:PLUS}</b><span>${A(T('ph'))}${pf.photo?`<button type="button" id="prm" style="display:block;margin-top:8px;padding:0;color:#c00;font-weight:700;font-size:15px">${A(T('r_ph'))}</button>`:''}</span></div><input type="file" id="ppf" accept="image/*" hidden><label class="fld"><span>${A(T('nm'))}</span><input type="text" id="pnm" value="${esc(pf.name)}" autocomplete="off"></label><div class="btns bot"><button class="btn p" id="ps">${A(T('save'))}</button></div>`;
+  if(v=='per')return hd(X('Personalización','Personalization'),'main')+rw('theme',T('s_theme'),'thm')+rw('hom',X('Pantalla de inicio','Home screen'),'hom')+rw('bar',X('Barra inferior','Bottom bar'),'bar');
+  if(v=='hom')return hd(X('Pantalla de inicio','Home screen'),'per')+tg('center',X('Centrar el saldo en el medio','Center the balance'))+tg('hideChart',X('Ocultar el gráfico','Hide the chart'))+tg('hideLast',X('Ocultar el último movimiento','Hide the latest transaction'));
+  if(v=='bar'){const c=barCfg();return hd(X('Barra inferior','Bottom bar'),'per')+`<div class="row br fx">${TRI}<span>${A(T('hm'))}</span></div>`+c.order.map(k=>`<div class="row br dr" data-k="${k}">${NVI[k][0]}<span>${A(T(NVI[k][1]))}</span>${BK_FIX.includes(k)?'<i class="tgs"></i>':`<i class="tg${c.hidden.includes(k)?'':' on'}" data-bt="${k}"></i>`}</div>`).join('')}
+  return''};
+ const draw=k=>{const y=sh.scrollTop;sh.innerHTML=R();sh.scrollTop=k?y:0};draw();
  async function pkey(c){if(pf.lock)return;pf.err='';if(c=='⌫')pf.buf=pf.buf.slice(0,-1);else if(pf.buf.length<6)pf.buf+=c;
   sh.querySelector('.dots').innerHTML=[0,1,2,3,4,5].map(i=>`<i class="${i<pf.buf.length?'on':''}"></i>`).join('');
   if(pf.buf.length<6)return;pf.lock=true;const b=pf.buf;await new Promise(r=>setTimeout(r,160));pf.lock=false;pf.buf='';
@@ -155,12 +172,38 @@ function openSettings(){if(document.querySelector('.bg'))return;
   else if(pf.stage=='new'){pf.first=b;pf.stage='rep'}
   else if(b===pf.first){AJ().codigoHash=await sha(b);sv();v='code'}else{pf.err='bad';pf.stage='new';pf.first=''}
   draw()}
+ const photoSet=f=>{if(!f)return;const r=new FileReader();r.onload=()=>{const im=new Image();im.onload=()=>{const c=document.createElement('canvas');c.width=c.height=256;const m=Math.min(im.width,im.height);c.getContext('2d').drawImage(im,(im.width-m)/2,(im.height-m)/2,m,m,0,0,256,256);pf.photo=c.toDataURL('image/jpeg',.8);draw(1)};im.src=r.result};r.readAsDataURL(f)};
  let imp=null;
- d.onchange=async e=>{const f=e.target.id=='sif'&&e.target.files[0];if(!f)return;let x;try{x=JSON.parse(await f.text())}catch(_){}
+ d.oninput=e=>{if(e.target.id=='pnm')pf.name=e.target.value};
+ let dg=null;
+ d.onpointerdown=e=>{const r=e.target.closest('.dr');if(!r||e.target.closest('[data-bt]'))return;const rs=[...r.parentNode.querySelectorAll('.dr')];dg={r,rs,i0:rs.indexOf(r),t:rs.indexOf(r),y0:e.clientY,on:0,st:rs.length>1?rs[1].offsetTop-rs[0].offsetTop:r.offsetHeight};try{r.setPointerCapture(e.pointerId)}catch(_){}};
+ d.onpointermove=e=>{if(!dg)return;const dy=e.clientY-dg.y0;if(!dg.on&&Math.abs(dy)<5)return;if(!dg.on){dg.on=1;dg.r.classList.add('dgg')}
+  const t=Math.max(0,Math.min(dg.rs.length-1,Math.round(dg.i0+dy/dg.st)));dg.t=t;dg.r.style.transform=`translateY(${dy}px)`;
+  dg.rs.forEach((x,k)=>{if(x===dg.r)return;const m=dg.i0<t?(k>dg.i0&&k<=t?-1:0):(k<dg.i0&&k>=t?1:0);x.style.transform=m?`translateY(${m*dg.st}px)`:''})};
+ const dEnd=()=>{if(!dg)return;const g=dg;dg=null;if(!g.on)return;const ks=g.rs.map(x=>x.dataset.k),mv=ks.splice(g.i0,1)[0];ks.splice(g.t,0,mv);AJ().barra={orden:ks,ocultos:barCfg().hidden};sv();draw(1)};
+ d.onpointerup=dEnd;d.onpointercancel=dEnd;
+ d.onchange=async e=>{if(e.target.id=='ppf'){photoSet(e.target.files[0]);return}const f=e.target.id=='sif'&&e.target.files[0];if(!f)return;let x;try{x=JSON.parse(await f.text())}catch(_){}
   if(!(x&&x.perfil&&Array.isArray(x.cuentas)&&x.cuentas.length)){msg(T('bad2'));e.target.value='';return}
   imp=x;if(x.ajustes&&x.ajustes.codigoHash){pf={mode:'pimp',stage:'cur',buf:'',first:'',err:'',want:x.ajustes.codigoHash};v='pin'}else v='impc';draw()};
- d.onclick=async e=>{if(e.target==d){d.remove();return}
+ d.onclick=async e=>{
   const s=e.target.closest('[data-s]'),t=e.target.closest('[data-t]'),g=e.target.closest('[data-lg]'),k=e.target.closest('[data-sk]');
+  if(e.target.closest('#ppb')){sh.querySelector('#ppf').click();return}
+  if(e.target.closest('#prm')){pf.photo='';draw(1);return}
+  if(e.target.closest('#ps')){Object.assign(DB.perfil,{nombre:pf.name.trim(),foto:pf.photo});delete DB.perfil.apellidos;delete DB.perfil.alias;delete DB.perfil.genero;sv();if(pf.direct){d.remove();showHome()}else{v='acc';draw()}return}
+  if(e.target.closest('#ces')){const a=aget(),ne=normEmail(sh.querySelector('#ne').value),pw=sh.querySelector('#cp').value;if(!a||!ne||!pw){msg(AT('e_empty'));return}
+   if(!/^\S+@\S+\.\S+$/.test(ne)){msg(AT('e_email'));return}if(ne===a.email){msg(X('Ese ya es tu correo actual','That is already your current email'));return}
+   const b=e.target.closest('#ces');b.disabled=true;
+   try{const ok=await kdf(pw,a.email),dk=await unseal(ok.key,a.wp).catch(()=>{throw'bad'}),nk=await kdf(pw,ne),t=await token(),wp=await seal(nk.key,dk),r=await sbf('/auth/v1/user',{method:'PUT',tok:t,body:{email:ne,password:nk.auth}});
+    a.wp=wp;a.email=ne;aset(a);await acctPull(1);const dd=await seal(await aes(ub64(a.dk)),_enc.encode(JSON.stringify(DB)));
+    await sbf('/rest/v1/user_data',{tok:await token(),prefer:'resolution=merge-duplicates,return=minimal',body:{user_id:a.uid,data:JSON.stringify({v:1,wp,wr:a.wr,d:dd,m:DB.mod||0}),updated_at:new Date().toISOString()}});syncSet(DB.mod||0);
+    msg(r&&r.new_email?X('Te hemos enviado un enlace de confirmación a '+ne+'. Hasta que lo abras, no podrás iniciar sesión en otros dispositivos.','We sent a confirmation link to '+ne+'. Until you open it, you won’t be able to sign in on other devices.'):X('Correo cambiado','Email changed'));v='acc';draw()}
+   catch(er){msg(er==='bad'?X('La contraseña no es correcta','Password is wrong'):emsg(er))}
+   finally{if(document.contains(b))b.disabled=false}return}
+  const cu=e.target.closest('[data-cu]');if(cu){AJ().moneda=cu.dataset.cu;sv();draw(1);return}
+  const bb=e.target.closest('[data-bu],[data-bd],[data-bt]');if(bb){const c=barCfg(),k=bb.dataset.bu||bb.dataset.bd||bb.dataset.bt,i=c.order.indexOf(k);
+   if(bb.dataset.bt){const x=c.hidden.indexOf(k);if(!BK_FIX.includes(k)){if(x<0)c.hidden.push(k);else c.hidden.splice(x,1)}}
+   else{const j=bb.dataset.bu?i-1:i+1;if(j>=0&&j<c.order.length){const tmp=c.order[i];c.order[i]=c.order[j];c.order[j]=tmp}}
+   AJ().barra={orden:c.order,ocultos:c.hidden};sv();draw(1);return}
   if(e.target.closest('#pig')){imp.mod=Date.now();try{localStorage.setItem('fynance',JSON.stringify(imp))}catch(_){}
    if(load()||(DB=imp)){hs.acc=0;hs.tab='home';hs.q='';d.remove();showHome();schedulePush()}return}
   if(e.target.closest('#rkg')){try{await acctPull(1);const a=aget(),rec=crypto.getRandomValues(new Uint8Array(20)),wr=await seal(await aes(await hk(rec,'rec')),ub64(a.dk)),t=await token(),dd=await seal(await aes(ub64(a.dk)),_enc.encode(JSON.stringify(DB)));
@@ -176,36 +219,23 @@ function openSettings(){if(document.querySelector('.bg'))return;
    acctClear();wipe();msg(X('Sesión cerrada','Signed out'));if(t)sbf('/auth/v1/logout',{tok:t}).catch(()=>{});return}
   if(e.target.closest('#cps')){const a=aget(),g=i=>sh.querySelector('#'+i).value,o=g('po'),n=g('pn');if(!a||!o)return;if(n.length<8||n!==g('pn2')){msg(X('Las contraseñas no coinciden o tienen menos de 8 caracteres','Passwords differ or are shorter than 8 characters'));return}
    try{const ok=await kdf(o,a.email),dk=await unseal(ok.key,a.wp).catch(()=>{throw'bad'}),nk=await kdf(n,a.email),t=await token(),wp=await seal(nk.key,dk);
-    await sbf('/auth/v1/user',{method:'PUT',tok:t,body:{password:nk.auth}});a.wp=wp;aset(a);await acctPush(1);msg(X('Contraseña cambiada','Password changed'));v='acct';draw()}catch(er){msg(er==='bad'?X('La contraseña actual no es correcta','Current password is wrong'):emsg(er))}return}
+    await sbf('/auth/v1/user',{method:'PUT',tok:t,body:{password:nk.auth}});a.wp=wp;aset(a);await acctPush(1);msg(X('Contraseña cambiada','Password changed'));v='acc';draw()}catch(er){msg(er==='bad'?X('La contraseña actual no es correcta','Current password is wrong'):emsg(er))}return}
   if(e.target.closest('#dys')){try{const a=aget(),t=await token();await sbf('/rest/v1/user_data?user_id=eq.'+a.uid,{method:'DELETE',tok:t});try{await sbf('/rest/v1/rpc/delete_user',{tok:t,body:{}})}catch(_){}}catch(er){msg(emsg(er));return}
    acctClear();wipe();msg(X('Cuenta eliminada','Account deleted'));return}
   if(e.target.closest('#pwy')){wipe();return}
   if(e.target.closest('#pdy')){delete AJ().codigoHash;sv();v='code';draw();return}
-  if(s){const a=s.dataset.s;if(a=='prof'){d.remove();profile();return}
+  if(s){const a=s.dataset.s;if(a=='x'){d.remove();showHome();return}if(a=='prof')pf={name:DB.perfil.nombre||'',photo:DB.perfil.foto||''};
    if(a=='pchg'||a=='pdel'||a=='pnew'){pf={mode:a,stage:a=='pnew'?'new':'cur',buf:'',first:'',err:''};v='pin'}
    else if(a=='rkey'){pf={};v='rkey'}
    else if(a=='exp'){exportData();return}
    else if(a=='imp'){const f=sh.querySelector('#sif');f&&f.click();return}
-   else if(['lang','theme','code','upd','oth','main','data','wipe','rem','remoff','acct','cpw','dacct'].includes(a))v=a;else return;draw();return}
+   else if(['lang','cur','theme','code','data','wipe','rem','remoff','sync','cpw','cem','dacct','prof','gen','acc','per','hom','bar','main'].includes(a))v=a;else return;draw();return}
   if(e.target.closest('#rof')){AJ().recordatorio='never';sv();remReset();v='rem';draw();return}
   const rm=e.target.closest('[data-rm]');if(rm){if(rm.dataset.rm=='never'){if(remMode()!='never')v='remoff'}else{AJ().recordatorio=rm.dataset.rm;sv();remReset()}draw();return}
   const hh=e.target.closest('[data-th]');if(hh){AJ().tema=hh.dataset.th;sv();applyTheme();draw();return}
   if(g){lang=g.dataset.lg;AJ().idioma=lang;sv();draw();showHome();return}
-  if(t){const o=AJ().otros=AJ().otros||{};o[t.dataset.t]=!o[t.dataset.t];sv();draw();showHome();return}
+  if(t){const o=AJ().inicio=AJ().inicio||{};o[t.dataset.t]=!o[t.dataset.t];sv();draw(1);return}
   if(k&&k.dataset.sk!=='')await pkey(k.dataset.sk)}}
-function profile(){if(document.querySelector('.bg'))return;const p=DB.perfil,w={name:p.nombre||'',photo:p.foto||''};
- const d=document.createElement('div');d.className='bg';const av=()=>w.photo?`<img src="${w.photo}">`:PLUS;
- d.innerHTML=`<div class="sh pfs"><h2>${A(T('pT'))}</h2><div class="av"><b id="ppb">${av()}</b><span>${A(T('ph'))}<button type="button" id="prm" style="display:${w.photo?'block':'none'};margin-top:8px;padding:0;color:#c00;font-weight:700;font-size:15px">${A(T('r_ph'))}</button></span></div><input type="file" id="ppf" accept="image/*" hidden><label class="fld"><span>${A(T('nm'))}</span><input type="text" data-pf="name" value="${esc(w.name)}" autocomplete="off"></label><div class="btns"><button class="btn" id="pc">${A(T('cancel'))}</button><button class="btn p" id="ps">${A(T('save'))}</button></div></div>`;
- document.body.appendChild(d);
- d.onclick=e=>{
-  if(e.target==d||e.target.closest('#pc'))d.remove();
-  else if(e.target.closest('#prm')){w.photo='';$('#ppb').innerHTML=av();$('#prm').style.display='none'}
-  else if(e.target.closest('#ppb'))$('#ppf').click();
-  else if(e.target.closest('#ps')){Object.assign(DB.perfil,{nombre:w.name.trim(),foto:w.photo});delete DB.perfil.apellidos;delete DB.perfil.alias;delete DB.perfil.genero;
-   persist();
-   d.remove();showHome()}};
- d.oninput=e=>{const f=e.target.dataset.pf;if(f)w[f]=e.target.value};
- d.onchange=e=>{const f=e.target.files&&e.target.files[0];if(e.target.id!='ppf'||!f)return;const r=new FileReader();r.onload=()=>{const im=new Image();im.onload=()=>{const c=document.createElement('canvas');c.width=c.height=256;const m=Math.min(im.width,im.height);c.getContext('2d').drawImage(im,(im.width-m)/2,(im.height-m)/2,m,m,0,0,256,256);w.photo=c.toDataURL('image/jpeg',.8);$('#ppb').innerHTML=av();$('#prm').style.display='block'};im.src=r.result};r.readAsDataURL(f)}}
 let swT=0;
 function swapAcc(id){if(id===hs.acc)return;hs.acc=id;const tk=++swT;
  document.querySelectorAll('.tb').forEach(t=>t.classList.toggle('on',+t.dataset.acc===id));
@@ -219,8 +249,9 @@ const USR='<svg viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="8.5"
 function statsMain(){const cs=DB.cuentas,sel=cs.find(a=>a.id==hs.acc);
  return`<div class="tabs"><button class="tb${sel?'':' on'}" data-acc="0" aria-label="${A(T('hm'))}"><svg class="tri" viewBox="0 0 24 24"><path d="M1 23L23 1V23Z"/></svg></button>${cs.map(a=>`<button class="tb${a.id==hs.acc?' on':''}" data-acc="${a.id}">${A(a.nombre)}</button>`).join('')}</div>
  <div class="mid">${chart()}</div><p class="soon">${A(T('soon'))}</p>`}
-function showHome(extra=0){applyTheme();runAuto();app.classList.remove('lk');live=false;hs.active=true;ls=null;app.classList.add('hmo');const p=DB.perfil,hm=hs.tab=='home';
- const nv=`<nav class="nv">${[['home',TRI,'hm'],['stats',STAT,'stt'],['accounts',ACCT,'ac'],['mov',LST,'mv'],].filter(([k])=>!(k=='accounts'&&O().hideAcc)).map(([k,i,l])=>`<button data-nv="${k}" class="${hs.tab==k||(k=='home'&&hs.tab=='add')?'on':''}">${i}<span>${A(T(l))}</span></button>`).join('')}</nav>`;
+function showHome(extra=0){applyTheme();{const c=barCfg();if(hs.tab!='home'&&hs.tab!='add'&&c.hidden.includes(hs.tab))hs.tab='home'}runAuto();app.classList.remove('lk');live=false;hs.active=true;ls=null;app.classList.add('hmo');const p=DB.perfil,hm=hs.tab=='home';
+ const bc=barCfg(),it=[['home',TRI,'hm'],...bc.order.filter(k=>!bc.hidden.includes(k)).map(k=>[k,NVI[k][0],NVI[k][1]])],ad=it.some(x=>x[0]=='add');
+ const nv=`<nav class="nv">${it.map(([k,i,l])=>`<button data-nv="${k}" class="${hs.tab==k||(k=='home'&&hs.tab=='add'&&!ad)?'on':''}">${i}<span>${A(T(l))}</span></button>`).join('')}</nav>`;
  const head=`<div class="hd" id="hd"><div class="me" id="me"><div class="ph">${p.foto?`<img src="${p.foto}">`:USR}</div></div><div class="hr"><button class="gb" id="gear">${GER}</button></div></div>`;
  const body=hm?head+`<div class="hc" id="hmain">${homeMain()}</div>`:hs.tab=='add'?head+addPage():hs.tab=='accounts'?head+accPage():hs.tab=='mov'?head+movPage():hs.tab=='stats'?head+`<div class="hc" id="hstat">${statsMain()}</div>`:tab();
  app.innerHTML=body+nv;
@@ -391,7 +422,21 @@ document.addEventListener('change',e=>{if(!wz)return;const t=e.target;if(t.datas
 document.addEventListener('keydown',e=>{if(!wz||wz.step!=0||e.ctrlKey||e.metaKey)return;if(/^[0-9]$/.test(e.key))wzKey(e.key);else if(e.key==','||e.key=='.')wzKey('.');else if(e.key=='Backspace')wzKey('⌫')});
 const ADI={g:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="butt" stroke-linejoin="miter"><path d="M12 4V20M4 12H20"/></svg>',i:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="butt" stroke-linejoin="miter"><path d="M12 20V4M5.5 10.5L12 4L18.5 10.5"/></svg>',t:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="butt" stroke-linejoin="miter"><path d="M4 12H20M13.5 5.5L20 12L13.5 18.5"/></svg>',a:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="butt" stroke-linejoin="miter"><path d="M4 6H20V20H4ZM4 11H20M8 3V8M16 3V8"/></svg>'};
 const addList=m=>(m=='a'?[['ga','gas'],['ia','ing']]:[['g','gas'],['i','ing'],['t','tra']]).map(([k,l])=>`<button class="arow" data-add="${k}"><span>${A(T(l))}</span>${m=='a'?ADI.a:ADI[k]}</button>`).join('');
-function addPage(){const m=hs.addm=='a'?'a':'u';return`<div class="hc" id="hadd"><div class="tabs ta"><button class="tb bk" data-back aria-label="${A(T('back'))}">${ICBK}</button><span class="tb${m=='u'?' on':''}" data-am="u" aria-label="${A(T('aU'))}">${IC1}</span><span class="tb${m=='a'?' on':''}" data-am="a" aria-label="${A(T('aut'))}">${ICCAL}</span></div><div class="alist">${addList(m)}</div></div>`}
+const AUL={es:['Gasto automatizado','Ingreso automatizado'],en:['Automated expense','Automated income'],'zh-Hant':['自動支出','自動收入'],'zh-Hans':['自动支出','自动收入']},WLP='<path d="M20 11a8 8 0 0 0-14-4.5L4 9M4 13a8 8 0 0 0 14 4.5L20 15M4 4v5h5M20 20v-5h-5"/>',
+WOPT=[['g',()=>T('gas'),'#ef4444','<path d="M12 4v16M5.5 13.5L12 20l6.5-6.5"/>'],['i',()=>T('ing'),'#22c55e','<path d="M12 20V4M5.5 10.5L12 4l6.5 6.5"/>'],['t',()=>T('tra'),'#3b82f6','<path d="M4 8h16M16 4l4 4-4 4M20 16H4M8 12l-4 4 4 4"/>'],['ga',()=>(AUL[lang]||AUL.en)[0],'#f97316',WLP+'<path d="M12 9v6M9.5 12.8L12 15.2l2.5-2.4"/>'],['ia',()=>(AUL[lang]||AUL.en)[1],'#14b8a6',WLP+'<path d="M12 15V9M9.5 11.2L12 8.8l2.5 2.4"/>']];
+let wp=0,wD=null,wRaf=0,wT=0;
+const wSty=(i,p)=>{const d=i-p,a=Math.abs(d),g=Math.max(0,1-a);return`--d:${d.toFixed(3)};--g:${g.toFixed(3)};--o:${(Math.min(1,.28+.72*g)*Math.max(0,Math.min(1,(2.5-a)/.9))).toFixed(3)};z-index:${10-Math.round(a*2)};`},
+wSt=w=>Math.max(64,Math.min(110,w.clientWidth*.22)),
+wSet=(w,p)=>w.querySelectorAll('.wi').forEach((b,i)=>{b.setAttribute('style',wSty(i,p));b.classList.toggle('on',Math.abs(i-p)<.5)}),
+wGo=(w,t)=>{cancelAnimationFrame(wRaf);const f=wp,t0=performance.now(),st=n=>{const k=Math.min(1,(n-t0)/220);wp=f+(t-f)*(1-Math.pow(1-k,3));wSet(w,wp);if(k<1)wRaf=requestAnimationFrame(st)};wRaf=requestAnimationFrame(st)},
+wOpen=i=>{const k=WOPT[i][0];if(k=='t'){if(DB.cuentas.length<2)msg(T('wNo'));else addFlow('traspaso')}else if(k=='ga'||k=='ia')addFlow(k=='ga'?'gasto':'ingreso',1);else addFlow(k=='g'?'gasto':'ingreso')};
+document.addEventListener('pointerdown',e=>{const w=e.target.closest&&e.target.closest('.wh');if(!w||e.button>0)return;cancelAnimationFrame(wRaf);wD={w,y0:e.clientY,p0:wp,mv:0,t:e.target.closest('.wi')};try{w.setPointerCapture(e.pointerId)}catch(_){}});
+document.addEventListener('pointermove',e=>{if(!wD)return;const dy=e.clientY-wD.y0;if(!wD.mv&&Math.abs(dy)<6)return;wD.mv=1;wp=Math.max(-.25,Math.min(WOPT.length-.75,wD.p0-dy/wSt(wD.w)));wSet(wD.w,wp)});
+const wEnd=()=>{if(!wD)return;const g=wD;wD=null;if(g.mv)wGo(g.w,Math.max(0,Math.min(WOPT.length-1,Math.round(wp))));else if(g.t){const i=+g.t.dataset.i;if(i==Math.round(wp))wOpen(i);else wGo(g.w,i)}};
+document.addEventListener('pointerup',wEnd);document.addEventListener('pointercancel',wEnd);
+document.addEventListener('wheel',e=>{const w=e.target.closest&&e.target.closest('.wh');if(!w)return;e.preventDefault();const n=performance.now();if(n-wT<200)return;wT=n;wGo(w,Math.max(0,Math.min(WOPT.length-1,Math.round(wp)+(e.deltaY>0?1:-1))))},{passive:false});
+
+function addPage(){wp=0;return`<div class="hc" id="hadd"><div class="tabs ta"><button class="tb bk" data-back aria-label="${A(T('back'))}">${ICBK}</button></div><div class="wh" id="wh">${WOPT.map((o,i)=>`<div class="wi${i?'':' on'}" data-i="${i}" role="button" style="${wSty(i,0)}"><i class="wk"></i><span class="wp"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${o[3]}</svg></span><span class="wl">${A(o[1]())}</span></div>`).join('')}</div></div>`}
 const fqt=a=>a.fn==1?T({d:'aD',w:'aW',m:'aM',y:'aY'}[a.fu]):`${T('aEv')} ${a.fn} ${T({d:'aUd',w:'aUd',m:'aUm',y:'aUy'}[a.fu])}`.replace(/^(\S+) (\d+) (\S+)$/,'$1 $2 $3');
 const autoRow=a=>{const lg=mlogo(a),ic0=mic(a.tipo),inc=a.tipo=='ingreso',nx=new Date(a.next).toLocaleDateString(lang,{day:'numeric',month:'short',year:'numeric'});return`<div class="mv" data-aid="${a.id}"><div class="ci${lg?' lg':''}">${lg?`<img src="${esc(lg)}" alt="" data-i="${esc(ic0)}" onerror="this.outerHTML=this.dataset.i">`:ic0}</div><div class="mi"><strong>${A(a.concepto||'')}</strong><em>${A(fqt(a)+' · '+nx)}</em></div><div class="ma"><strong${inc?' class="pos"':''}>${inc?'+':'-'}${M(a.importe)}</strong></div></div>`};
 const accCur=()=>DB.cuentas.find(c=>c.id==hs.cacc)||DB.cuentas[0];
@@ -478,7 +523,7 @@ function tab(){return`<div class="hc pg"><h2>${A(T('stt'))}</h2><p class="sub">$
 app.addEventListener('click',e=>{if(!hs.active)return;const q=s=>e.target.closest(s);let x;
  if(x=q('[data-acc]'))swapAcc(+x.dataset.acc);
  else if(q('#hmain .bl')&&hs.tab=='home'){hs.tab='add';hs.q='';showHome();const c=app.querySelector('.hc');if(c){c.style.setProperty('--dx','24px');c.classList.add('an')}}
- else if(x=q('[data-nv]')){{const o=['home','add','stats','accounts','mov'],a=o.indexOf(hs.tab),b=o.indexOf(x.dataset.nv);hs.tab=x.dataset.nv;hs.q='';showHome();const c=a==b?null:app.querySelector('.hc');if(c){c.style.setProperty('--dx',(b>a?24:-24)+'px');c.classList.add('an')}}}
+ else if(x=q('[data-nv]')){{const o=navOrd(),a=o.indexOf(hs.tab),b=o.indexOf(x.dataset.nv);hs.tab=x.dataset.nv;hs.q='';showHome();const c=a==b?null:app.querySelector('.hc');if(c){c.style.setProperty('--dx',(b>a?24:-24)+'px');c.classList.add('an')}}}
  else if(x=q('[data-ma]')){const id=+x.dataset.ma;if((hs.macc||0)===id)return;hs.macc=id;document.querySelectorAll('[data-ma]').forEach(t=>t.classList.toggle('on',t===x));const l=$('#mvl');if(l){l.scrollTop=0;l.innerHTML=movRows()}}
  else if(x=q('[data-mid]'))openMov(+x.dataset.mid);
  else if(x=q('[data-aid]'))openAuto(+x.dataset.aid);
@@ -489,7 +534,7 @@ app.addEventListener('click',e=>{if(!hs.active)return;const q=s=>e.target.closes
  else if(x=q('[data-add]')){{const k=x.dataset.add;if(k=='t'){if(DB.cuentas.length<2)msg(T('wNo'));else addFlow('traspaso')}else if(k=='ga'||k=='ia')addFlow(k=='ga'?'gasto':'ingreso',1);else addFlow(k=='g'?'gasto':'ingreso')}}
  else if(q('#sx')){$('#hd').classList.remove('so');hs.q='';$('#q').value='';$('#q').blur();const l=$('#lst');l&&(l.innerHTML=rows(1));const m=$('#mvl');m&&(m.innerHTML=movRows())}
  else if(q('#gear'))openSettings();
- else if(q('#me'))profile();
+ else if(q('#me'))openSettings('prof');
  else if(q('#sr')&&!$('#hd').classList.contains('so')){$('#hd').classList.add('so');setTimeout(()=>$('#q').focus(),380)}});
 app.addEventListener('input',e=>{if(e.target.id=='q'){hs.q=e.target.value.trim();const l=$('#lst');l&&(l.innerHTML=rows(1));const m=$('#mvl');m&&(m.innerHTML=movRows())}});
 let ls=null;
@@ -732,7 +777,13 @@ app.addEventListener('input',e=>{const f=e.target.dataset.f;if(f){st[f]=e.target
 app.addEventListener('change',e=>{if(e.target.id=='pf'&&e.target.files[0])photo(e.target.files[0])});
 if('serviceWorker'in navigator)navigator.serviceWorker.register('sw.js',{updateViaCache:'none'}).then(reg=>{let base='';const chk=()=>{reg.update().catch(()=>{});fetch('index.html',{cache:'no-cache'}).then(r=>r.ok?r.text():'').then(t=>{if(!t)return;const h=hsh(t);if(!base)base=h;else if(h!==base&&!wz)location.reload()}).catch(()=>{})};chk();document.addEventListener('visibilitychange',()=>{if(document.visibilityState=='visible')chk()})}).catch(()=>{});
 try{if(navigator.storage&&navigator.storage.persist)navigator.storage.persist().catch(()=>{})}catch(_){}
-setTimeout(async()=>{let ok=load();if(ok&&aget()){await Promise.race([acctSync(),new Promise(r=>setTimeout(r,2500))]);ok=load()}ok?(DB.ajustes&&DB.ajustes.codigoHash?lock():showHome(650)):render();const s=$('#sp');s.classList.add('out');setTimeout(()=>s.remove(),350)},3000);
+(async()=>{const t0=Date.now(),pl=new Promise(r=>document.readyState=='complete'?r():addEventListener('load',r,{once:true}));let ok=load();
+ if(ok&&aget()){try{await acctSync()}catch(_){}ok=load()}
+ await pl;const w=3000-(Date.now()-t0);if(w>0)await new Promise(r=>setTimeout(r,w));
+ ok?(DB.ajustes&&DB.ajustes.codigoHash?lock():showHome(650)):render();
+ await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));
+ try{await Promise.all([document.fonts?document.fonts.ready:0,...[...app.querySelectorAll('img')].map(i=>i.decode?i.decode().catch(()=>{}):0)])}catch(_){}
+ const s=$('#sp');s.classList.add('out');setTimeout(()=>s.remove(),350)})();
 
 /* Teclados numéricos: registrar la pulsación al tocar (sin esperar al click) para no perder dígitos al teclear rápido */
 (function(){let pass=false,fastNv=false;
