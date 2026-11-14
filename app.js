@@ -95,16 +95,20 @@ const BK_ALL=['stats','accounts','mov','add'],BK_FIX=['accounts','mov'],NVI={sta
 function barCfg(){const b=(DB&&DB.ajustes&&DB.ajustes.barra)||{},o=(Array.isArray(b.orden)?b.orden:[]).filter((k,i,a)=>BK_ALL.includes(k)&&a.indexOf(k)==i);BK_ALL.forEach(k=>{if(!o.includes(k))o.push(k)});
  return{order:o,hidden:(Array.isArray(b.ocultos)?b.ocultos:['add']).filter(k=>BK_ALL.includes(k)&&!BK_FIX.includes(k))}}
 const navOrd=()=>{const c=barCfg(),o=['home',...c.order.filter(k=>!c.hidden.includes(k))];if(!o.includes('add'))o.splice(1,0,'add');return o};
-const IP={gen:'<path d="M4 7h10M18 7h2M4 17h2M10 17h10"/><circle cx="16" cy="7" r="2"/><circle cx="8" cy="17" r="2"/>',usr:'<circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-6 8-6s8 2 8 6"/>',per:'<path d="M12 3l2.2 6.8L21 12l-6.8 2.2L12 21l-2.2-6.8L3 12l6.8-2.2z"/>',lang:'<circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.8 2.6 4 5.6 4 9s-1.2 6.4-4 9c-2.8-2.6-4-5.6-4-9s1.2-6.4 4-9z"/>',cur:'<circle cx="12" cy="12" r="9"/><path d="M15 9.5C15 8.4 13.7 8 12 8s-3 .6-3 1.8c0 2.6 6 1.4 6 4.2 0 1.2-1.3 1.9-3 1.9s-3-.5-3-1.8M12 6.5V8M12 16v1.5"/>',dat:'<path d="M12 4v11M7.5 10.5L12 15l4.5-4.5M5 20h14"/>',upl:'<path d="M12 16V5M7.5 9.5L12 5l4.5 4.5M5 20h14"/>',bel:'<path d="M6 17v-6a6 6 0 0 1 12 0v6l2 2H4zM10 21h4"/>',syn:'<path d="M20 11a8 8 0 0 0-14-4.5L4 9M4 13a8 8 0 0 0 14 4.5L20 15M4 4v5h5M20 20v-5h-5"/>',pwd:'<rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/>',mail:'<rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/>',cod:'<rect x="3" y="8" width="18" height="8" rx="4"/><path d="M8 12h.01M12 12h.01M16 12h.01"/>',key:'<circle cx="8" cy="15" r="4"/><path d="M11 12l9-9M16 7l3 3"/>',out:'<path d="M10 4H6a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h4M15 8l4 4-4 4M19 12H9"/>',del:'<path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13M10 11v5M14 11v5"/>',thm:'<circle cx="12" cy="12" r="9"/><path d="M12 3a9 9 0 0 1 0 18z" fill="currentColor"/>',hom:'<rect x="7" y="3" width="10" height="18" rx="2.5"/><path d="M11 18h2"/>',bar:'<rect x="3" y="13" width="18" height="7" rx="3.5"/><path d="M8 16.5h.01M12 16.5h.01M16 16.5h.01"/>',pau:'<path d="M9 5v14M15 5v14"/>',pla:'<path d="M7 4l13 8-13 8z"/>',up:'<path d="M6 15l6-6 6 6"/>',dn:'<path d="M6 9l6 6 6-6"/>'};
+const IP={gen:'<path d="M4 7h10M18 7h2M4 17h2M10 17h10"/><circle cx="16" cy="7" r="2"/><circle cx="8" cy="17" r="2"/>',usr:'<circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-6 8-6s8 2 8 6"/>',per:'<path d="M12 3l2.2 6.8L21 12l-6.8 2.2L12 21l-2.2-6.8L3 12l6.8-2.2z"/>',lang:'<circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.8 2.6 4 5.6 4 9s-1.2 6.4-4 9c-2.8-2.6-4-5.6-4-9s1.2-6.4 4-9z"/>',cur:'<circle cx="12" cy="12" r="9"/><path d="M15 9.5C15 8.4 13.7 8 12 8s-3 .6-3 1.8c0 2.6 6 1.4 6 4.2 0 1.2-1.3 1.9-3 1.9s-3-.5-3-1.8M12 6.5V8M12 16v1.5"/>',dat:'<path d="M12 4v11M7.5 10.5L12 15l4.5-4.5M5 20h14"/>',upl:'<path d="M12 16V5M7.5 9.5L12 5l4.5 4.5M5 20h14"/>',syn:'<path d="M20 11a8 8 0 0 0-14-4.5L4 9M4 13a8 8 0 0 0 14 4.5L20 15M4 4v5h5M20 20v-5h-5"/>',off:'<rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 7.5-2"/>',pwd:'<rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/>',mail:'<rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/>',cod:'<rect x="3" y="8" width="18" height="8" rx="4"/><path d="M8 12h.01M12 12h.01M16 12h.01"/>',key:'<circle cx="8" cy="15" r="4"/><path d="M11 12l9-9M16 7l3 3"/>',out:'<path d="M10 4H6a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h4M15 8l4 4-4 4M19 12H9"/>',del:'<path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13M10 11v5M14 11v5"/>',thm:'<circle cx="12" cy="12" r="9"/><path d="M12 3a9 9 0 0 1 0 18z" fill="currentColor"/>',hom:'<rect x="7" y="3" width="10" height="18" rx="2.5"/><path d="M11 18h2"/>',bar:'<rect x="3" y="13" width="18" height="7" rx="3.5"/><path d="M8 16.5h.01M12 16.5h.01M16 16.5h.01"/>',pau:'<path d="M9 5v14M15 5v14"/>',pla:'<path d="M7 4l13 8-13 8z"/>',up:'<path d="M6 15l6-6 6 6"/>',dn:'<path d="M6 9l6 6 6-6"/>',lck:'<path d="M12 3l8 3v6c0 4.5-3.2 7.8-8 9-4.8-1.2-8-4.5-8-9V6z"/>',in:'<path d="M14 4h4a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-4M9 8l-4 4 4 4M5 12h10"/>'};
 
-function msg(t){const m=document.createElement('div');m.className='bg ctr';m.innerHTML=`<div class="sh"><p class="sub" style="max-width:none;margin-bottom:24px;font-weight:700;font-size:19px">${A(t)}</p><button class="btn p" style="width:100%">${A(T('d_acc'))}</button></div>`;m.onclick=e=>{if(e.target==m||e.target.closest('.btn'))m.remove()};document.body.appendChild(m)}
-/* ===== Recordatorio de copia de seguridad ===== */
-Object.assign(L.es,{d_exp:"Exportar",d_imp:"Importar",d_rem:"Recordatorio de copia de seguridad",d_del:"Borrar todos los datos",r_mov:"Después de cada movimiento",r_2:"Cada 2 movimientos",r_3:"Cada 3 movimientos",r_5:"Cada 5 movimientos",r_10:"Cada 10 movimientos",r_msgT:"Recuerda exportar tus datos periódicamente para no perderlos.",r_msgS:"Puedes cambiar cada cuánto te lo recordamos en Ajustes > Datos de la aplicación > Recordatorio de copia de seguridad.",r_btn:"Exportar"});
-Object.assign(L.en,{d_exp:"Export",d_imp:"Import",d_rem:"Backup reminder",d_del:"Delete all data",r_mov:"After every transaction",r_2:"Every 2 transactions",r_3:"Every 3 transactions",r_5:"Every 5 transactions",r_10:"Every 10 transactions",r_msgT:"Remember to export your data regularly so you don't lose it.",r_msgS:"You can change how often we remind you in Settings > App data > Backup reminder.",r_btn:"Export"});
+const INFO='<button type="button" class="ib" data-info aria-label="Info">i</button>';
+function senderInfo(){const m=document.createElement('div');m.className='bg ctr';m.innerHTML=`<div class="sh"><h2>${A(X('Sobre los correos electrónicos','About emails'))}</h2><p class="sub">${A(X('Los correos de confirmación, recuperación o cambio de contraseña se enviarán desde Supabase, nuestro proveedor de servicios de autenticación, y no desde una dirección de Fynance Capital.','Confirmation, recovery and password change emails are sent by Supabase, our authentication service provider, and not from a Fynance Capital address.'))}</p><p class="sub">${A(X('No te preocupes, son correos oficiales y forman parte del funcionamiento normal de tu cuenta.','Don’t worry, they are official emails and part of the normal operation of your account.'))}</p><button class="btn p" style="width:100%">${A(T('d_acc'))}</button></div>`;m.onclick=e=>{if(e.target==m||e.target.closest('.btn'))m.remove()};document.body.appendChild(m)}
+document.addEventListener('click',e=>{const b=e.target.closest&&e.target.closest('[data-info]');if(!b)return;e.preventDefault();senderInfo()});
+function msg(t,i){const m=document.createElement('div');m.className='bg ctr';m.innerHTML=`<div class="sh"><p class="sub" style="max-width:none;margin-bottom:24px;font-weight:700;font-size:19px">${A(t)}${i?INFO:''}</p><button class="btn p" style="width:100%">${A(T('d_acc'))}</button></div>`;m.onclick=e=>{if(e.target==m||e.target.closest('.btn'))m.remove()};document.body.appendChild(m)}
+function ask(t,x,ok,red){return new Promise(res=>{const d=document.createElement('div');d.className='bg ctr';d.innerHTML=`<div class="sh"><h2>${A(t)}</h2>${x?`<p class="sub">${A(x)}</p>`:''}<div class="btns"><button class="btn" data-c="">${A(T('cancel'))}</button><button class="btn p" data-c="1"${red?' style="background:#c00"':''}>${A(ok)}</button></div></div>`;d.onclick=e=>{const b=e.target.closest('[data-c]');if(b||e.target==d){d.remove();res(!!(b&&b.dataset.c))}};document.body.appendChild(d)})}
+/* ===== Exportar / importar ===== */
+Object.assign(L.es,{d_exp:"Exportar",d_imp:"Importar",d_del:"Borrar todos los datos"});
+Object.assign(L.en,{d_exp:"Export",d_imp:"Import",d_del:"Delete all data"});
 
 
-Object.assign(L.es,{r_never:"Nunca",r_ign:"Ignorar y desactivar",r_ph:"Eliminar foto",r_offT:"¿Seguro que quieres desactivar el recordatorio por completo?",r_offS:"Como tus datos se guardan únicamente en tu navegador, te recomendamos descargar una copia de seguridad al menos cada 5 movimientos.",r_keep:"No desactivar"});
-Object.assign(L.en,{r_never:"Never",r_ign:"Ignore and turn off",r_ph:"Remove photo",r_offT:"Are you sure you want to turn the reminder off completely?",r_offS:"Since your data is stored only in your browser, we recommend downloading a backup at least every 5 transactions.",r_keep:"Keep it on"});
+Object.assign(L.es,{r_ph:"Eliminar foto"});
+Object.assign(L.en,{r_ph:"Remove photo"});
 
 
 Object.assign(L.es,{aDQ:"¿Borrar este movimiento automatizado?",aDS:"Dejará de repetirse. Los movimientos que ya se han creado no se borrarán."});
@@ -115,16 +119,6 @@ Object.assign(L.es,{nAcc:"Nueva cuenta +"});
 Object.assign(L.en,{nAcc:"New account +"});
 
 
-const REM_MODES=[['never','r_never'],['mov','r_mov'],['2','r_2'],['3','r_3'],['5','r_5'],['10','r_10']],REM_KEY='fynance_rem';
-let remPend=false;
-const remMode=()=>{const m=DB&&DB.ajustes&&DB.ajustes.recordatorio;return REM_MODES.some(x=>x[0]==m)?m:'5'};
-const remGet=()=>{try{return+JSON.parse(localStorage.getItem(REM_KEY)).n||0}catch(_){return 0}},remSet=n=>{try{localStorage.setItem(REM_KEY,JSON.stringify({n}))}catch(_){}};
-function remReset(){remSet(0);remPend=false}
-function remMov(){/* tras crear, editar o borrar un movimiento */const m=remMode();if(m=='never')return;const n=remGet()+1;if(n>=(m=='mov'?1:+m)){remSet(0);remPend=true;remFlush(0)}else remSet(n)}
-function remFlush(extra){setTimeout(()=>{if(!remPend||!DB||document.querySelector('.bg,.wz')||app.classList.contains('lk'))return;remPend=false;remSheet()},900+(extra||0))}
-function remSheet(){const d=document.createElement('div');d.className='bg';
- d.innerHTML=`<div class="sh"><div class="sth"><h2>${A(T('r_msgT'))}</h2></div><p class="sub">${A(T('r_msgS'))}</p><button class="btn p" id="rex" style="width:100%">${A(T('r_btn'))}</button></div>`;
- d.onclick=e=>{if(e.target==d)d.remove();else if(e.target.closest('#rex')){d.remove();exportData()}};document.body.appendChild(d)}
 function exportData(){const b=new Blob([JSON.stringify(DB,null,2)],{type:'application/json'}),u=URL.createObjectURL(b),l=document.createElement('a'),n=new Date();l.href=u;l.download='fynance-'+n.getFullYear()+'-'+p2(n.getMonth()+1)+'-'+p2(n.getDate())+'.json';document.body.appendChild(l);l.click();l.remove();setTimeout(()=>URL.revokeObjectURL(u),4000);msg(T('d_ok'))}
 function openSettings(v0){if(document.querySelector('.bg'))return;
  const d=document.createElement('div');d.className='bg fs';d.innerHTML='<div class="sh sts"></div>';document.body.appendChild(d);const sh=d.firstChild;
@@ -138,28 +132,31 @@ function openSettings(v0){if(document.querySelector('.bg'))return;
  tg=(k,l)=>`<div class="trow" data-t="${k}"><span>${A(l)}</span><i class="tg${(AJ().inicio||{})[k]?' on':''}"></i></div>`;
  const R=()=>{
   const ac=aget();
-  if(v=='main')return hd(T('set'))+rw('gen',X('Generales','General'),'gen')+rw('acc',X('Cuenta','Account'),'usr')+rw('per',X('Personalización','Personalization'),'per');
+  if(v=='main')return hd(T('set'))+rw('gen',X('Generales','General'),'gen')+rw('acc',X('Cuenta','Account'),'usr')+rw('per',X('Personalización','Personalization'),'per')+rw('data',T('s_data'),'dat');
   if(v=='lang')return hd(T('lT'),'gen')+Object.entries(LN).map(([c,n])=>sel(`data-lg="${c}"`,lang==c,n)).join('');
   if(v=='theme')return hd(T('s_theme'),'per')+[['light','tLi'],['dark','tDa']].map(([c,l])=>sel(`data-th="${c}"`,th()==c,T(l))).join('');
   if(v=='code')return hd(T('s_code'),'acc')+(AJ().codigoHash?rw('pchg',T('c_chg'))+rw('pdel',T('c_del')):rw('pnew',T('c_new')));
   if(v=='pin'){const s=pf.stage,t=s=='cur'?['uT','uS']:s=='new'?['kT','kS']:['k2T','k2S'];
    return hd(T(t[0]),pf.mode=='pimp'?'data':'code')+`<p class="sub${pf.err?' err':''}">${A(T(pf.err||(pf.mode=='pimp'?'i_prot':t[1])))}</p><div class="dots">${[0,1,2,3,4,5].map(i=>`<i class="${i<pf.buf.length?'on':''}"></i>`).join('')}</div><div class="kp">${[1,2,3,4,5,6,7,8,9,'',0,'⌫'].map(k=>`<button data-sk="${k}" ${k===''?'style="visibility:hidden"':''}>${k=='⌫'?BS:k}</button>`).join('')}</div>`}
   if(v=='delc')return hd(T('c_delT'),'code')+`<p class="sub">${A(T('c_delS'))}</p><div class="btns"><button class="btn" data-s="code">${A(T('cancel'))}</button><button class="btn p" id="pdy" style="background:#c00">${A(T('c_delY'))}</button></div>`;
-  if(v=='data')return hd(T('s_data'),'gen')+rw('exp',T('d_exp'),'dat')+rw('imp',T('d_imp'),'upl')+rw('rem',T('d_rem'),'bel')+rw('wipe',T('d_del'),'del','dg')+`<input type="file" id="sif" accept=".json,application/json" hidden>`;
-  if(v=='rem')return hd(T('d_rem'),'data')+REM_MODES.map(([m,l])=>sel(`data-rm="${m}"`,remMode()==m,T(l))).join('');
-  if(v=='remoff')return hd(T('r_offT'),'rem')+`<p class="sub">${A(T('r_offS'))}</p><div class="btns"><button class="btn p" data-s="rem">${A(T('r_keep'))}</button><button class="btn" id="rof">${A(T('r_ign'))}</button></div>`;
+  if(v=='data')return hd(T('s_data'),'main')+rw('exp',T('d_exp'),'dat')+rw('imp',T('d_imp'),'upl')+(ac?'':rw('wipe',T('d_del'),'del','dg'))+`<input type="file" id="sif" accept=".json,application/json" hidden>`;
   if(v=='wipe')return hd(T('delT'),'data')+`<p class="sub">${A(aget()?X('Se borrarán los datos de este dispositivo y se cerrará la sesión. Seguirán guardados en tu cuenta.','The data on this device will be erased and you will be signed out. It stays saved in your account.'):T('delS'))}</p><div class="btns"><button class="btn" data-s="data">${A(T('cancel'))}</button><button class="btn p" id="pwy" style="background:#c00">${A(T('delY'))}</button></div>`;
   if(v=='impc')return hd(T('i_cT'),'data')+`<p class="sub">${A(T('i_cS'))}</p><div class="btns"><button class="btn" data-s="data">${A(T('cancel'))}</button><button class="btn p" id="pig">${A(T('i_go'))}</button></div>`;
   if(v=='sync')return hd(X('Sincronización','Sync'),'acc')+`<p class="sub">${A(ac.email||'')}</p><p class="sub">${A(syncLine())}</p>`+(ac.pause?`<p class="sub">${A(X('Los cambios se guardan solo en este dispositivo hasta que reanudes la sincronización.','Changes stay on this device only until you resume sync.'))}</p>`:`<button class="row" id="sny">${I('syn')}<span>${A(X('Sincronizar ahora','Sync now'))}</span></button>`)+`<button class="row" id="spz">${I(ac.pause?'pla':'pau')}<span>${A(ac.pause?X('Reanudar sincronización','Resume sync'):X('Pausar sincronización','Pause sync'))}</span></button>`;
   if(v=='cem')return hd(X('Correo electrónico','Email'),'acc')+`<p class="sub">${A(ac.email||'')}</p>`+[['ne',X('Nuevo correo electrónico','New email'),'email','email'],['cp',X('Contraseña actual','Current password'),'password','current-password']].map(([i,l,t,c])=>`<label class="fld"><span>${A(l)}</span><input type="${t}" id="${i}" autocomplete="${c}" autocapitalize="none" spellcheck="false"></label>`).join('')+`<div class="btns"><button class="btn p" id="ces">${A(T('save'))}</button></div>`;
-  if(v=='rkey')return hd(X('Clave de recuperación','Recovery key'),'acc')+(pf.rk?`<p class="rk">${A(pf.rk)}</p><p class="sub">${A(X('Guárdala en un lugar seguro. La clave anterior ya no sirve.','Keep it somewhere safe. The previous key no longer works.'))}</p><button class="opt" id="rkc"><span>${A(X('Copiar clave','Copy key'))}</span></button>`:`<p class="sub">${A(X('Es la única forma de recuperar tus datos si olvidas la contraseña. Por seguridad no se puede mostrar la actual, pero puedes generar una nueva (la anterior dejará de valer).','It is the only way to recover your data if you forget your password. For security the current one cannot be shown, but you can generate a new one (the old one will stop working).'))}</p><div class="btns"><button class="btn p" id="rkg">${A(X('Generar clave nueva','Generate new key'))}</button></div>`);
+  if(v=='rkey')return hd(X('Clave de recuperación','Recovery key'),'enc')+(pf.rk?`<p class="rk">${A(pf.rk)}</p><p class="sub">${A(X('Guárdala en un lugar seguro. La clave anterior ya no sirve.','Keep it somewhere safe. The previous key no longer works.'))}</p><button class="opt" id="rkc"><span>${A(X('Copiar clave','Copy key'))}</span></button>`:`<p class="sub">${A(X('Es la única forma de recuperar tus datos si olvidas la contraseña. Por seguridad no se puede mostrar la actual, pero puedes generar una nueva (la anterior dejará de valer).','It is the only way to recover your data if you forget your password. For security the current one cannot be shown, but you can generate a new one (the old one will stop working).'))}</p><div class="btns"><button class="btn p" id="rkg">${A(X('Generar clave nueva','Generate new key'))}</button></div>`);
   if(v=='cpw')return hd(X('Cambiar contraseña','Change password'),'acc')+[['po',X('Contraseña actual','Current password'),'current-password'],['pn',X('Nueva contraseña','New password'),'new-password'],['pn2',X('Repite la nueva contraseña','Repeat new password'),'new-password']].map(([i,l,c])=>`<label class="fld"><span>${A(l)}</span><input type="password" id="${i}" autocomplete="${c}"></label>`).join('')+`<div class="btns"><button class="btn p" id="cps">${A(T('save'))}</button></div>`;
   if(v=='dacct')return hd(X('Eliminar cuenta','Delete account'),'acc')+`<p class="sub">${A(X('Se borrarán tus datos de la nube y de este dispositivo, y se cerrará la sesión. No se puede deshacer.','Your data will be deleted from the cloud and from this device, and you will be signed out. This cannot be undone.'))}</p><div class="btns"><button class="btn" data-s="acc">${A(T('cancel'))}</button><button class="btn p" id="dys" style="background:#c00">${A(X('Eliminar','Delete'))}</button></div>`;
 
-  if(v=='gen')return hd(X('Generales','General'),'main')+rw('lang',T('lT'),'lang')+rw('cur',T('cT'),'cur')+rw('data',T('s_data'),'dat');
+  if(v=='gen')return hd(X('Generales','General'),'main')+rw('lang',T('lT'),'lang')+rw('cur',T('cT'),'cur');
   if(v=='cur')return hd(T('cT'),'gen')+CURRENCIES.map(([c,s])=>sel(`data-cu="${c}"`,AJ().moneda==c,currencyName(c),`<small>${s}</small>`)).join('');
-  if(v=='acc')return hd(X('Cuenta','Account'),'main')+rw('prof',X('Perfil','Profile'),'usr')+(ac?rw('sync',X('Sincronización','Sync'),'syn')+rw('cpw',X('Contraseña','Password'),'pwd')+rw('cem',X('Correo electrónico','Email'),'mail'):'')+rw('code',T('s_code'),'cod')+(ac?rw('rkey',X('Clave de recuperación','Recovery key'),'key')+`<button class="row" id="lgo">${I('out')}<span>${A(X('Cerrar sesión','Sign out'))}</span></button>`+rw('dacct',X('Eliminar cuenta','Delete account'),'del','dg'):'');
+  if(v=='acc')return hd(X('Cuenta','Account'),v0=='acc'?'x':'main')+rw('prof',X('Perfil','Profile'),'usr')+(ac?rw('sync',X('Sincronización','Sync'),'syn')+rw('cpw',X('Contraseña','Password'),'pwd')+rw('cem',X('Correo electrónico','Email'),'mail'):rw('acn',X('Crear cuenta','Create account'),'usr')+rw('ain',X('Iniciar sesión','Sign in'),'in'))+rw('code',T('s_code'),'cod')+(ac?rw('enc',X('Cifrado completo','Full encryption'),'lck')+rw('lgo',X('Cerrar sesión','Sign out'),'out')+rw('dacct',X('Eliminar cuenta','Delete account'),'del','dg'):'');
   if(v=='prof')return hd(X('Perfil','Profile'),pf.direct?'x':'acc')+`<div class="av"><b id="ppb">${pf.photo?`<img src="${pf.photo}">`:PLUS}</b><span>${A(T('ph'))}${pf.photo?`<button type="button" id="prm" style="display:block;margin-top:8px;padding:0;color:#c00;font-weight:700;font-size:15px">${A(T('r_ph'))}</button>`:''}</span></div><input type="file" id="ppf" accept="image/*" hidden><label class="fld"><span>${A(T('nm'))}</span><input type="text" id="pnm" value="${esc(pf.name)}" autocomplete="off"></label><div class="btns bot"><button class="btn p" id="ps">${A(T('save'))}</button></div>`;
+  if(v=='enc'){const on=isEnc(ac);return hd(X('Cifrado completo','Full encryption'),'acc')+`<p class="sub">${A(on?X('Tus datos están cifrados de extremo a extremo: solo tú puedes leerlos. Si olvidas la contraseña, solo podrás recuperarlos con la clave de recuperación.','Your data is end-to-end encrypted: only you can read it. If you forget your password, you can only recover it with the recovery key.'):X('Ahora mismo, si olvidas la contraseña puedes restablecerla desde tu correo. Con el cifrado completo solo tú podrás leer tus datos, pero si olvidas la contraseña solo podrás recuperarlos con una clave de recuperación.','Right now, if you forget your password you can reset it from your email. With full encryption only you can read your data, but if you forget your password you can only recover it with a recovery key.'))}</p>`+(on?rw('rkey',X('Clave de recuperación','Recovery key'),'key')+rw('eoffc',X('Desactivar cifrado','Disable encryption'),'off'):`<label class="fld"><span>${A(X('Tu contraseña','Your password'))}</span><input type="password" id="ep" autocomplete="current-password"></label><div class="btns bot"><button class="btn p" id="eon">${A(X('Activar cifrado completo','Enable full encryption'))}</button></div>`)}
+  if(v=='eoffc')return hd(X('¿Desactivar el cifrado?','Disable encryption?'),'enc')+`<p class="sub">${A(X('Tus datos se guardarán sin cifrado de extremo a extremo y podrás restablecer la contraseña desde tu correo. La clave de recuperación dejará de servir.','Your data will be stored without end-to-end encryption and you can reset your password from your email. The recovery key will stop working.'))}</p><div class="btns"><button class="btn" data-s="enc">${A(T('cancel'))}</button><button class="btn p" id="eoy" style="background:#c00">${A(X('Desactivar','Disable'))}</button></div>`;
+  if(v=='acn'||v=='ain'){const n=v=='acn';return hd(n?X('Crear cuenta','Create account'):X('Iniciar sesión','Sign in'),'acc')+`<p class="sub">${A(n?X('Tus datos actuales se guardarán en la nueva cuenta.','Your current data will be saved to the new account.'):X('Si la cuenta ya tiene datos, podrás elegir cuáles conservar.','If the account already has data, you can choose which to keep.'))}</p>`+[['ae',AT('email'),'email','email'],['ap',AT('pw'),'password',n?'new-password':'current-password']].concat(n?[['ap2',AT('pw2'),'password','new-password']]:[]).map(([i,l,t,c])=>`<label class="fld"><span>${A(l)}</span><input type="${t}" id="${i}" autocomplete="${c}" autocapitalize="none" spellcheck="false"></label>`).join('')+(n?`<label class="rc"><input type="checkbox" id="aenc"><span>${A(X('Activar cifrado completo (opcional)','Enable full encryption (optional)'))}</span></label><p class="sub" style="font-size:15px">${A(X('Solo tú podrás leer tus datos, pero si olvidas la contraseña solo podrás recuperarlos con una clave de recuperación. Sin esto, podrás restablecer la contraseña desde tu correo. Puedes activarlo más tarde en Ajustes.','Only you can read your data, but if you forget your password you can only recover it with a recovery key. Without this, you can reset your password from your email. You can enable it later in Settings.'))}</p>`:'')+`<div class="btns bot"><button class="btn p" id="sago">${A(AT(n?'go_new':'go_in'))}</button></div>`}
+  if(v=='lgo')return hd(X('Cerrar sesión','Sign out'),'acc')+`<p class="sub">${A(X('Se borrarán los datos de este dispositivo; seguirán guardados en tu cuenta.','The data on this device will be erased; it stays saved in your account.'))}</p><div class="btns"><button class="btn" data-s="acc">${A(T('cancel'))}</button><button class="btn p" id="lgy" style="background:#c00">${A(X('Cerrar sesión','Sign out'))}</button></div>`;
+  if(v=='lgw')return hd(X('Cambios sin subir','Unsynced changes'),'acc')+`<p class="sub">${A(X('Hay cambios que aún no se han subido a tu cuenta y se perderán si cierras sesión.','Some changes have not been uploaded to your account yet and will be lost if you sign out.'))}</p><div class="btns"><button class="btn" data-s="acc">${A(T('cancel'))}</button><button class="btn p" id="lgf" style="background:#c00">${A(X('Cerrar sesión igualmente','Sign out anyway'))}</button></div>`;
   if(v=='per')return hd(X('Personalización','Personalization'),'main')+rw('theme',T('s_theme'),'thm')+rw('hom',X('Pantalla de inicio','Home screen'),'hom')+rw('bar',X('Barra inferior','Bottom bar'),'bar');
   if(v=='hom')return hd(X('Pantalla de inicio','Home screen'),'per')+tg('center',X('Centrar el saldo en el medio','Center the balance'))+tg('hideChart',X('Ocultar el gráfico','Hide the chart'))+tg('hideLast',X('Ocultar el último movimiento','Hide the latest transaction'));
   if(v=='bar'){const c=barCfg();return hd(X('Barra inferior','Bottom bar'),'per')+`<div class="row br fx">${TRI}<span>${A(T('hm'))}</span></div>`+c.order.map(k=>`<div class="row br dr" data-k="${k}">${NVI[k][0]}<span>${A(T(NVI[k][1]))}</span>${BK_FIX.includes(k)?'<i class="tgs"></i>':`<i class="tg${c.hidden.includes(k)?'':' on'}" data-bt="${k}"></i>`}</div>`).join('')}
@@ -190,13 +187,32 @@ function openSettings(v0){if(document.querySelector('.bg'))return;
   if(e.target.closest('#ppb')){sh.querySelector('#ppf').click();return}
   if(e.target.closest('#prm')){pf.photo='';draw(1);return}
   if(e.target.closest('#ps')){Object.assign(DB.perfil,{nombre:pf.name.trim(),foto:pf.photo});delete DB.perfil.apellidos;delete DB.perfil.alias;delete DB.perfil.genero;sv();if(pf.direct){d.remove();showHome()}else{v='acc';draw()}return}
+  if(e.target.closest('#eon')){const a=aget(),pw=sh.querySelector('#ep').value;if(!a||!pw){msg(AT('e_empty'));return}const b=e.target.closest('#eon');b.disabled=true;
+   try{const nk=await kdf(pw,a.email);await sbf('/auth/v1/token?grant_type=password',{body:{email:a.email,password:nk.auth}}).catch(x=>{throw x==='net'?x:'bad'});
+    await acctPull(1);const dk=crypto.getRandomValues(new Uint8Array(32)),a2=Object.assign({},aget());a2.dk=b64(dk);a2.wp=await seal(nk.key,dk);delete a2.wr;await forcePush(1,a2);aset(a2);
+    msg(X('Cifrado completo activado. Ya puedes crear una clave de recuperación.','Full encryption enabled. You can now create a recovery key.'));v='enc';draw()}
+   catch(er){msg(er==='bad'?X('La contraseña no es correcta','Password is wrong'):emsg(er))}finally{if(document.contains(b))b.disabled=false}return}
+  if(e.target.closest('#eoy')){const b=e.target.closest('#eoy');b.disabled=true;
+   try{await acctPull(1);const a2=Object.assign({},aget());delete a2.dk;delete a2.wp;delete a2.wr;await forcePush(1,a2);aset(a2);msg(X('Cifrado completo desactivado.','Full encryption disabled.'));v='enc';draw()}
+   catch(er){msg(emsg(er))}finally{if(document.contains(b))b.disabled=false}return}
+  if(e.target.closest('#sago')){const n=v=='acn',em=sh.querySelector('#ae').value.trim(),p=sh.querySelector('#ap').value,p2=n?sh.querySelector('#ap2').value:p;
+   if(!em||!p||!p2){msg(AT('e_empty'));return}if(!/^\S+@\S+\.\S+$/.test(em)){msg(AT('e_email'));return}
+   if(n){if(p.length<8){msg(AT('e_short'));return}if(p!==p2){msg(AT('e_match'));return}}
+   const b=e.target.closest('#sago');b.disabled=true;
+   try{if(n){const x=await doSignup(em,p);if(x.r&&x.r.access_token){setTok(x.r);await afterAuth(x,!!(sh.querySelector('#aenc')&&sh.querySelector('#aenc').checked))}else{msg(AT('m_x').replace('{e}',em),1);v='acc';draw();return}}else await afterAuth(await doLogin(em,p));
+    if(document.contains(d)){v='acc';draw()}}
+   catch(er){msg(emsg(er))}finally{if(document.contains(b))b.disabled=false}return}
   if(e.target.closest('#ces')){const a=aget(),ne=normEmail(sh.querySelector('#ne').value),pw=sh.querySelector('#cp').value;if(!a||!ne||!pw){msg(AT('e_empty'));return}
    if(!/^\S+@\S+\.\S+$/.test(ne)){msg(AT('e_email'));return}if(ne===a.email){msg(X('Ese ya es tu correo actual','That is already your current email'));return}
    const b=e.target.closest('#ces');b.disabled=true;
-   try{const ok=await kdf(pw,a.email),dk=await unseal(ok.key,a.wp).catch(()=>{throw'bad'}),nk=await kdf(pw,ne),t=await token(),wp=await seal(nk.key,dk),r=await sbf('/auth/v1/user',{method:'PUT',tok:t,body:{email:ne,password:nk.auth}});
-    a.wp=wp;a.email=ne;aset(a);await acctPull(1);const dd=await seal(await aes(ub64(a.dk)),_enc.encode(JSON.stringify(DB)));
-    await sbf('/rest/v1/user_data',{tok:await token(),prefer:'resolution=merge-duplicates,return=minimal',body:{user_id:a.uid,data:JSON.stringify({v:1,wp,wr:a.wr,d:dd,m:DB.mod||0}),updated_at:new Date().toISOString()}});syncSet(DB.mod||0);
-    msg(r&&r.new_email?X('Te hemos enviado un enlace de confirmación a '+ne+'. Hasta que lo abras, no podrás iniciar sesión en otros dispositivos.','We sent a confirmation link to '+ne+'. Until you open it, you won’t be able to sign in on other devices.'):X('Correo cambiado','Email changed'));v='acc';draw()}
+   try{const ok=await kdf(pw,a.email),nk=await kdf(pw,ne);let wp=null;
+    if(a.dk){const dk=await unseal(ok.key,a.wp).catch(()=>{throw'bad'});wp=await seal(nk.key,dk)}
+    else await sbf('/auth/v1/token?grant_type=password',{body:{email:a.email,password:ok.auth}}).catch(x=>{throw x==='net'?x:'bad'});
+    const r=await sbf('/auth/v1/user',{method:'PUT',tok:await token(),body:{email:ne,password:nk.auth}});
+    a.email=ne;if(wp)a.wp=wp;aset(a);if(a.dk)await forcePush();
+
+
+    msg(r&&r.new_email?X('Te hemos enviado un enlace de confirmación a '+ne+'. Hasta que lo abras, no podrás iniciar sesión en otros dispositivos.','We sent a confirmation link to '+ne+'. Until you open it, you won’t be able to sign in on other devices.'):X('Correo cambiado','Email changed'),!!(r&&r.new_email));v='acc';draw()}
    catch(er){msg(er==='bad'?X('La contraseña no es correcta','Password is wrong'):emsg(er))}
    finally{if(document.contains(b))b.disabled=false}return}
   const cu=e.target.closest('[data-cu]');if(cu){AJ().moneda=cu.dataset.cu;sv();draw(1);return}
@@ -211,15 +227,16 @@ function openSettings(v0){if(document.querySelector('.bg'))return;
   if(e.target.closest('#rkc')){try{await navigator.clipboard.writeText(pf.rk);msg(X('Copiada','Copied'))}catch(_){}return}
   if(e.target.closest('#spz')){const a=aget();if(!a)return;a.pause=!a.pause;aset(a);if(a.pause)clearTimeout(_pushT);else{const b=e.target.closest('#spz');b.style.opacity='.5';await acctSync(true)}draw();return}
   if(e.target.closest('#sny')){const b=e.target.closest('#sny');b.style.opacity='.5';await acctSync(true);draw();return}
-  if(e.target.closest('#lgo')){if(!confirm(X('¿Cerrar sesión? Se borrarán los datos de este dispositivo; seguirán guardados en tu cuenta.','Sign out? The data on this device will be erased; it stays saved in your account.')))return;
-   const b=e.target.closest('#lgo');b.style.opacity='.5';let t=null;const a=aget();
+  if(e.target.closest('#lgy,#lgf')){const fc=!!e.target.closest('#lgf'),b=e.target.closest('#lgy,#lgf');b.style.opacity='.5';let t=null;const a=aget();
    if(a&&!a.pause){try{await Promise.race([acctSync(),new Promise(r=>setTimeout(r,4000))])}catch(_){}}
-   if(DB&&DB.mod>syncGet()&&!confirm(X('Hay cambios que aún no se han subido a tu cuenta y se perderán. ¿Cerrar sesión igualmente?','Some changes have not been uploaded to your account yet and will be lost. Sign out anyway?'))){b.style.opacity='';return}
+   if(!fc&&DB&&DB.mod>syncGet()){v='lgw';draw();return}
    try{t=await Promise.race([token(),new Promise((_,j)=>setTimeout(j,1500))])}catch(_){}
    acctClear();wipe();msg(X('Sesión cerrada','Signed out'));if(t)sbf('/auth/v1/logout',{tok:t}).catch(()=>{});return}
   if(e.target.closest('#cps')){const a=aget(),g=i=>sh.querySelector('#'+i).value,o=g('po'),n=g('pn');if(!a||!o)return;if(n.length<8||n!==g('pn2')){msg(X('Las contraseñas no coinciden o tienen menos de 8 caracteres','Passwords differ or are shorter than 8 characters'));return}
-   try{const ok=await kdf(o,a.email),dk=await unseal(ok.key,a.wp).catch(()=>{throw'bad'}),nk=await kdf(n,a.email),t=await token(),wp=await seal(nk.key,dk);
-    await sbf('/auth/v1/user',{method:'PUT',tok:t,body:{password:nk.auth}});a.wp=wp;aset(a);await acctPush(1);msg(X('Contraseña cambiada','Password changed'));v='acc';draw()}catch(er){msg(er==='bad'?X('La contraseña actual no es correcta','Current password is wrong'):emsg(er))}return}
+   try{const ok=await kdf(o,a.email),nk=await kdf(n,a.email);
+    if(a.dk){const dk=await unseal(ok.key,a.wp).catch(()=>{throw'bad'}),wp=await seal(nk.key,dk);await sbf('/auth/v1/user',{method:'PUT',tok:await token(),body:{password:nk.auth}});a.wp=wp;aset(a);await forcePush()}
+    else{await sbf('/auth/v1/token?grant_type=password',{body:{email:a.email,password:ok.auth}}).catch(x=>{throw x==='net'?x:'bad'});await sbf('/auth/v1/user',{method:'PUT',tok:await token(),body:{password:nk.auth}})}
+    msg(X('Contraseña cambiada','Password changed'));v='acc';draw()}catch(er){msg(er==='bad'?X('La contraseña actual no es correcta','Current password is wrong'):emsg(er))}return}
   if(e.target.closest('#dys')){try{const a=aget(),t=await token();await sbf('/rest/v1/user_data?user_id=eq.'+a.uid,{method:'DELETE',tok:t});try{await sbf('/rest/v1/rpc/delete_user',{tok:t,body:{}})}catch(_){}}catch(er){msg(emsg(er));return}
    acctClear();wipe();msg(X('Cuenta eliminada','Account deleted'));return}
   if(e.target.closest('#pwy')){wipe();return}
@@ -229,9 +246,7 @@ function openSettings(v0){if(document.querySelector('.bg'))return;
    else if(a=='rkey'){pf={};v='rkey'}
    else if(a=='exp'){exportData();return}
    else if(a=='imp'){const f=sh.querySelector('#sif');f&&f.click();return}
-   else if(['lang','cur','theme','code','data','wipe','rem','remoff','sync','cpw','cem','dacct','prof','gen','acc','per','hom','bar','main'].includes(a))v=a;else return;draw();return}
-  if(e.target.closest('#rof')){AJ().recordatorio='never';sv();remReset();v='rem';draw();return}
-  const rm=e.target.closest('[data-rm]');if(rm){if(rm.dataset.rm=='never'){if(remMode()!='never')v='remoff'}else{AJ().recordatorio=rm.dataset.rm;sv();remReset()}draw();return}
+   else if(['lang','cur','theme','code','data','wipe','sync','acn','ain','lgo','lgw','enc','eoffc','cpw','cem','dacct','prof','gen','acc','per','hom','bar','main'].includes(a))v=a;else return;draw();return}
   const hh=e.target.closest('[data-th]');if(hh){AJ().tema=hh.dataset.th;sv();applyTheme();draw();return}
   if(g){lang=g.dataset.lg;AJ().idioma=lang;sv();draw();showHome();return}
   if(t){const o=AJ().inicio=AJ().inicio||{};o[t.dataset.t]=!o[t.dataset.t];sv();draw(1);return}
@@ -254,8 +269,7 @@ function showHome(extra=0){applyTheme();{const c=barCfg();if(hs.tab!='home'&&hs.
  const nv=`<nav class="nv">${it.map(([k,i,l])=>`<button data-nv="${k}" class="${hs.tab==k||(k=='home'&&hs.tab=='add'&&!ad)?'on':''}">${i}<span>${A(T(l))}</span></button>`).join('')}</nav>`;
  const head=`<div class="hd" id="hd"><div class="me" id="me"><div class="ph">${p.foto?`<img src="${p.foto}">`:USR}</div></div><div class="hr"><button class="gb" id="gear">${GER}</button></div></div>`;
  const body=hm?head+`<div class="hc" id="hmain">${homeMain()}</div>`:hs.tab=='add'?head+addPage():hs.tab=='accounts'?head+accPage():hs.tab=='mov'?head+movPage():hs.tab=='stats'?head+`<div class="hc" id="hstat">${statsMain()}</div>`:tab();
- app.innerHTML=body+nv;
- if(remPend)remFlush(extra)}
+ app.innerHTML=body+nv}
 /* ===== Añadir gasto / ingreso (ventana por pasos) ===== */
 const LOGO_DEV_KEY='pk_AqSldAhGTLGVrtC0PBGSpg';/* opcional: clave pública gratuita (pk_...) de logo.dev para logos de más calidad */
 Object.assign(L.es,{wAg:"¿Cuánto has gastado?",wAi:"¿Cuánto has ingresado?",wAs:"Escribe el importe.",wCt:"Elige la cuenta",wCg:"¿De qué cuenta ha salido el dinero?",wCi:"¿En qué cuenta ha entrado el dinero?",wNt:"Nombre y descripción",wNs:"Ponle un nombre al movimiento.",wNn:"Nombre",wLt:"Elige un símbolo",wLs:"Toca el logo que quieras. También puedes buscar por web, por ejemplo mercadona.es.",wLq:"Nombre o web",wLb:"Buscando…",wLz:"No se han encontrado logos. Prueba con otro nombre o con la web.",wLo:"No se han podido buscar logos. Comprueba la conexión.",wKt:"Categoría",wKs:"¿En qué categoría entra?",wDt:"Fecha y hora",wDs:"¿Cuándo ha sido?",wDd:"Fecha",wDh:"Hora"});
@@ -398,7 +412,7 @@ async function wzSave(){const w=wz,b=$('#wn');if(b)b.disabled=true;let logo='';
  else if(w.edit){const m=DB.movimientos.find(x=>x.id==w.edit);if(m){Object.assign(m,{concepto:w.name.trim(),descripcion:w.desc.trim(),importe:Math.round(parseFloat(w.amt)*100)/100,tipo:w.type,categoria:w.cat,fecha:wzTs(),cuenta:w.acc});if(logo)m.logo=logo;else delete m.logo;if(w.type=='traspaso')m.destino=w.dest}}
  else DB.movimientos.push(Object.assign({id,concepto:w.name.trim(),descripcion:w.desc.trim(),importe:Math.round(parseFloat(w.amt)*100)/100,tipo:w.type,categoria:w.cat,fecha:wzTs(),cuenta:w.acc},logo?{logo}:{},w.type=='traspaso'?{destino:w.dest}:{}));
  persist();
- wzTk++;const d=document.querySelector('.wz');if(d)d.remove();wz=null;if(!w.edit&&!w.editA){hs.tab='home';hs.q=''}showHome();if(!w.editA)remMov()}
+ wzTk++;const d=document.querySelector('.wz');if(d)d.remove();wz=null;if(!w.edit&&!w.editA){hs.tab='home';hs.q=''}showHome()}
 function wzClose(){wzTk++;const d=document.querySelector('.wz');if(d)d.remove();wz=null}
 document.addEventListener('click',e=>{if(!wz||!e.target.closest('.wz'))return;const q=s=>e.target.closest(s);let x;
  if(x=q('[data-wk]'))wzKey(x.dataset.wk);
@@ -436,7 +450,7 @@ const wEnd=()=>{if(!wD)return;const g=wD;wD=null;if(g.mv)wGo(g.w,Math.max(0,Math
 document.addEventListener('pointerup',wEnd);document.addEventListener('pointercancel',wEnd);
 document.addEventListener('wheel',e=>{const w=e.target.closest&&e.target.closest('.wh');if(!w)return;e.preventDefault();const n=performance.now();if(n-wT<200)return;wT=n;wGo(w,Math.max(0,Math.min(WOPT.length-1,Math.round(wp)+(e.deltaY>0?1:-1))))},{passive:false});
 
-function addPage(){wp=0;return`<div class="hc" id="hadd"><div class="tabs ta"><button class="tb bk" data-back aria-label="${A(T('back'))}">${ICBK}</button></div><div class="wh" id="wh">${WOPT.map((o,i)=>`<div class="wi${i?'':' on'}" data-i="${i}" role="button" style="${wSty(i,0)}"><i class="wk"></i><span class="wp"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${o[3]}</svg></span><span class="wl">${A(o[1]())}</span></div>`).join('')}</div></div>`}
+function addPage(){wp=0;return`<div class="hc" id="hadd"><div class="tabs ta"><button class="tb bk" data-back aria-label="${A(T('back'))}">${ICBK}</button></div><div class="wh" id="wh">${WOPT.map((o,i)=>`<div class="wi${i?'':' on'}" data-i="${i}" role="button" style="${wSty(i,0)}"><i class="wk"></i><span class="wp">${({g:mic('gasto'),i:mic('ingreso'),t:mic('traspaso'),ga:ADI.a,ia:ADI.a})[o[0]]}</span><span class="wl">${A(o[1]())}</span></div>`).join('')}</div></div>`}
 const fqt=a=>a.fn==1?T({d:'aD',w:'aW',m:'aM',y:'aY'}[a.fu]):`${T('aEv')} ${a.fn} ${T({d:'aUd',w:'aUd',m:'aUm',y:'aUy'}[a.fu])}`.replace(/^(\S+) (\d+) (\S+)$/,'$1 $2 $3');
 const autoRow=a=>{const lg=mlogo(a),ic0=mic(a.tipo),inc=a.tipo=='ingreso',nx=new Date(a.next).toLocaleDateString(lang,{day:'numeric',month:'short',year:'numeric'});return`<div class="mv" data-aid="${a.id}"><div class="ci${lg?' lg':''}">${lg?`<img src="${esc(lg)}" alt="" data-i="${esc(ic0)}" onerror="this.outerHTML=this.dataset.i">`:ic0}</div><div class="mi"><strong>${A(a.concepto||'')}</strong><em>${A(fqt(a)+' · '+nx)}</em></div><div class="ma"><strong${inc?' class="pos"':''}>${inc?'+':'-'}${M(a.importe)}</strong></div></div>`};
 const accCur=()=>DB.cuentas.find(c=>c.id==hs.cacc)||DB.cuentas[0];
@@ -445,31 +459,33 @@ function accInfo(id){const a=DB.cuentas.find(c=>c.id==id)||DB.cuentas[0];return 
 const ub32=t=>{const al='ABCDEFGHIJKLMNOPQRSTUVWXYZ234567',o=[];let bits=0,v=0;for(const c of t.toUpperCase().replace(/[^A-Z2-7]/g,'')){v=((v<<5)|al.indexOf(c))&0xfff;bits+=5;if(bits>=8){o.push((v>>>(bits-8))&255);bits-=8}}return new Uint8Array(o)};
 const rfld=(i,l,t,c,v='')=>`<label class="fld"><span>${A(l)}</span><input type="${t}" id="${i}" autocomplete="${c}" autocapitalize="none" autocorrect="off" spellcheck="false" value="${esc(v)}"></label>`;
 function forgotPw(e0){if(document.querySelector('.bg'))return;const d=document.createElement('div');d.className='bg';d.innerHTML='<div class="sh sts"></div>';document.body.appendChild(d);const sh=d.firstChild;let busy=false;
- const draw=()=>{sh.innerHTML=`<h2>${A(X('Recuperar cuenta','Recover account'))}</h2><p class="sub">${A(X('Te enviaremos un enlace a tu correo. Ábrelo y volverás aquí para elegir una contraseña nueva.','We will email you a link. Open it and you will come back here to choose a new password.'))}</p>${rfld('fe',AT('email'),'email','email',normEmail(e0||''))}<p class="aer" id="fer"></p><div class="btns"><button class="btn" id="fx">${A(T('cancel'))}</button><button class="btn p" id="fs">${A(X('Enviar enlace','Send link'))}</button></div>`};draw();
+ const draw=()=>{sh.innerHTML=`<h2>${A(X('Recuperar cuenta','Recover account'))}</h2><p class="sub">${A(X('Te enviaremos un enlace a tu correo. Ábrelo y volverás aquí para elegir una contraseña nueva.','We will email you a link. Open it and you will come back here to choose a new password.'))}${INFO}</p>${rfld('fe',AT('email'),'email','email',normEmail(e0||''))}<p class="aer" id="fer"></p><div class="btns"><button class="btn" id="fx">${A(T('cancel'))}</button><button class="btn p" id="fs">${A(X('Enviar enlace','Send link'))}</button></div>`};draw();
  d.onclick=async e=>{if(e.target==d||e.target.closest('#fx')){d.remove();return}if(busy||!e.target.closest('#fs'))return;const er=sh.querySelector('#fer'),m=normEmail(sh.querySelector('#fe').value);if(!/^\S+@\S+\.\S+$/.test(m)){er.textContent=AT('e_email');return}
-  busy=true;try{await sbf('/auth/v1/recover?redirect_to='+encodeURIComponent(location.origin+location.pathname),{body:{email:m}});sh.innerHTML=`<h2>${A(AT('m_t'))}</h2><p class="sub">${A(X('Si existe una cuenta con '+m+', te hemos enviado un enlace. Ábrelo en este mismo dispositivo.','If an account exists for '+m+', we sent you a link. Open it on this same device.'))}</p><div class="btns"><button class="btn p" id="fx">OK</button></div>`}catch(x){er.textContent=emsg(x)}busy=false}}
-function recoverFromLink(k){if(document.querySelector('.bg'))return;const d=document.createElement('div');d.className='bg';d.innerHTML='<div class="sh sts"></div>';document.body.appendChild(d);const sh=d.firstChild;let busy=false;
- sh.innerHTML=`<h2>${A(X('Nueva contraseña','New password'))}</h2><p class="sub">${A(X('Escribe tu clave de recuperación y elige una contraseña nueva.','Enter your recovery key and choose a new password.'))}</p>${rfld('fk',X('Clave de recuperación','Recovery key'),'text','off')}${rfld('fp',X('Nueva contraseña','New password'),'password','new-password')}${rfld('fp2',AT('pw2'),'password','new-password')}<p class="aer" id="fer"></p><div class="btns"><button class="btn" id="fx">${A(T('cancel'))}</button><button class="btn p" id="fg">${A(X('Recuperar','Recover'))}</button></div>`;
+  busy=true;try{await sbf('/auth/v1/recover?redirect_to='+encodeURIComponent(location.origin+location.pathname),{body:{email:m}});sh.innerHTML=`<h2>${A(AT('m_t'))}</h2><p class="sub">${A(X('Si existe una cuenta con '+m+', te hemos enviado un enlace. Ábrelo en este mismo dispositivo.','If an account exists for '+m+', we sent you a link. Open it on this same device.'))}${INFO}</p><div class="btns"><button class="btn p" id="fx">OK</button></div>`}catch(x){er.textContent=emsg(x)}busy=false}}
+function recoverFromLink(k){if(document.querySelector('.bg'))return;const d=document.createElement('div');d.className='bg';d.innerHTML='<div class="sh sts"></div>';document.body.appendChild(d);const sh=d.firstChild;let busy=false,env=null,row=null,u=null;
  const g=i=>sh.querySelector('#'+i).value,bad=t=>{sh.querySelector('#fer').textContent=t};
+ const draw=()=>{const e2=env&&env.v!==2;sh.innerHTML=`<h2>${A(X('Nueva contraseña','New password'))}</h2><p class="sub">${A(e2?X('Esta cuenta usa cifrado completo. Escribe tu clave de recuperación y elige una contraseña nueva.','This account uses full encryption. Enter your recovery key and choose a new password.'):X('Elige una contraseña nueva para tu cuenta.','Choose a new password for your account.'))}</p>${e2?rfld('fk',X('Clave de recuperación','Recovery key'),'text','off'):''}${rfld('fp',X('Nueva contraseña','New password'),'password','new-password')}${rfld('fp2',AT('pw2'),'password','new-password')}${e2?`<label class="rc"><input type="checkbox" id="fno"><span>${A(X('No tengo la clave: restablecer y borrar los datos guardados en la nube','I don’t have the key: reset and delete the data saved in the cloud'))}</span></label>`:''}<p class="aer" id="fer"></p><div class="btns"><button class="btn" id="fx">${A(T('cancel'))}</button><button class="btn p" id="fg">${A(X('Cambiar contraseña','Change password'))}</button></div>`};
+ sh.innerHTML=`<h2>${A(X('Nueva contraseña','New password'))}</h2><p class="sub">${A(AT('busy'))}</p>`;
+ (async()=>{try{u=await sbf('/auth/v1/user',{method:'GET',tok:k.at});const rows=await sbf('/rest/v1/user_data?select=data,updated_at',{method:'GET',tok:k.at});row=rows&&rows[0];env=row?JSON.parse(row.data):null;draw()}catch(x){d.remove();msg(x==='net'?AT('e_net'):X('El enlace ha caducado. Pide uno nuevo.','The link has expired. Request a new one.'))}})();
  d.onclick=async e=>{if(e.target==d||e.target.closest('#fx')){d.remove();return}if(busy||!e.target.closest('#fg'))return;
-  const key=ub32(g('fk')),n=g('fp');if(!g('fk')||!n)return bad(AT('e_empty'));if(n.length<8)return bad(AT('e_short'));if(n!==g('fp2'))return bad(AT('e_match'));if(key.length!==20)return bad(X('La clave de recuperación no es válida','The recovery key is not valid'));
-  busy=true;bad(AT('busy'));try{const u=await sbf('/auth/v1/user',{method:'GET',tok:k.at}).catch(x=>{throw x==='net'?x:'exp'}),em=normEmail(u.email),r={access_token:k.at,refresh_token:k.rt,expires_in:k.ex,user:u};
-   const rows=await sbf('/rest/v1/user_data?select=data',{method:'GET',tok:k.at}),row=rows&&rows[0];if(!row)throw'nodata';
-   const env=JSON.parse(row.data);let dk;if(!env.wr)throw'nor';try{dk=await unseal(await aes(await hk(key,'rec')),env.wr)}catch{throw'rk'}
-   const nk=await kdf(n,em),wp=await seal(nk.key,dk),nd=JSON.stringify({v:1,wp,wr:env.wr,d:env.d,m:env.m});
+  const n=g('fp'),e2=env&&env.v!==2,no=!!(e2&&sh.querySelector('#fno').checked);if(!n)return bad(AT('e_empty'));if(n.length<8)return bad(AT('e_short'));if(n!==g('fp2'))return bad(AT('e_match'));
+  let key=null;if(e2&&!no){if(!g('fk'))return bad(AT('e_empty'));key=ub32(g('fk'));if(key.length!==20)return bad(X('La clave de recuperación no es válida','The recovery key is not valid'))}
+  busy=true;bad(AT('busy'));try{const em=normEmail(u.email),r={access_token:k.at,refresh_token:k.rt,expires_in:k.ex,user:u},nk=await kdf(n,em);let nd=row?row.data:null;
+   if(e2&&!no){if(!env.wr)throw'nor';let dk;try{dk=await unseal(await aes(await hk(key,'rec')),env.wr)}catch{throw'rk'}nd=JSON.stringify({v:1,wp:await seal(nk.key,dk),wr:env.wr,d:env.d,m:env.m})}
    await sbf('/auth/v1/user',{method:'PUT',tok:k.at,body:{password:nk.auth}});
-   await sbf('/rest/v1/user_data',{tok:k.at,prefer:'resolution=merge-duplicates,return=minimal',body:{user_id:u.id,data:nd,updated_at:new Date().toISOString()}});
-   setTok(r);await afterAuth({r,em,key:nk.key,row:{data:nd}});d.remove();return}
-  catch(x){bad(x==='exp'?X('El enlace ha caducado. Pide uno nuevo.','The link has expired. Request a new one.'):x==='nor'?X('Esta cuenta no tiene clave de recuperación','This account has no recovery key'):x==='rk'?X('La clave de recuperación no es correcta','The recovery key is wrong'):x==='nodata'?X('Esta cuenta no tiene datos guardados','This account has no saved data'):x==='dec'?AT('e_dec'):emsg(x))}busy=false}}
+   if(no){await sbf('/rest/v1/user_data?user_id=eq.'+u.id,{method:'DELETE',tok:k.at});nd=null}
+   else if(e2)await sbf('/rest/v1/user_data',{tok:k.at,prefer:'resolution=merge-duplicates,return=minimal',body:{user_id:u.id,data:nd,updated_at:new Date().toISOString()}});
+   setTok(r);await afterAuth({r,em,key:nk.key,row:nd?{data:nd,updated_at:row&&row.updated_at}:null});d.remove();return}
+  catch(x){bad(x==='nor'?X('Esta cuenta no tiene clave de recuperación','This account has no recovery key'):x==='rk'?X('La clave de recuperación no es correcta','The recovery key is wrong'):x==='dec'?AT('e_dec'):emsg(x))}busy=false}}
 (()=>{const h=location.hash;if(!/[#&](access_token|error_code)=/.test(h))return;const q=new URLSearchParams(h.slice(1));try{history.replaceState(null,'',location.pathname+location.search)}catch(_){}
  if(q.get('type')==='recovery'&&q.get('access_token'))setTimeout(()=>recoverFromLink({at:q.get('access_token'),rt:q.get('refresh_token'),ex:+q.get('expires_in')||3600}),700);
- else if(q.get('error_code'))setTimeout(()=>alert(X('El enlace ha caducado o ya se usó. Pide uno nuevo.','The link has expired or was already used. Request a new one.')),700)})();
+ else if(q.get('error_code'))setTimeout(()=>msg(X('El enlace ha caducado o ya se usó. Pide uno nuevo.','The link has expired or was already used. Request a new one.')),700)})();
 function editAcc(id){const a=DB.cuentas.find(c=>c.id==id);if(!a||document.querySelector('.bg'))return;const d=document.createElement('div');d.className='bg';
  d.innerHTML=`<div class="sh sts"><h2>${A(X('Editar cuenta','Edit account'))}</h2><label class="fld"><span>${A(T('an'))}</span><input type="text" id="en" value="${esc(a.nombre)}" autocomplete="off"></label><label class="fld"><span>${A(T('ad'))}</span><input type="text" id="ed" value="${esc(a.descripcion||'')}" autocomplete="off"></label><label class="fld"><span>${A(T('ab'))}</span><input type="text" id="eb" inputmode="decimal" value="${String(a.saldoInicial).replace('.',',')}"></label><div class="btns"><button class="btn" id="ec">${A(T('cancel'))}</button><button class="btn p" id="es">${A(T('save'))}</button></div></div>`;
  document.body.appendChild(d);d.onclick=e=>{if(e.target==d||e.target.closest('#ec')){d.remove();return}
   if(e.target.closest('#es')){const n=d.querySelector('#en').value.trim(),b=parseFloat(d.querySelector('#eb').value.replace(',','.'));if(!n||isNaN(b))return;a.nombre=n;a.descripcion=d.querySelector('#ed').value.trim();a.saldoInicial=b;sv2();d.remove();showHome()}}}
-function delAcc(id){const a=DB.cuentas.find(c=>c.id==id);if(!a)return;if(DB.cuentas.length<2){msg(X('Debe quedar al menos una cuenta','At least one account must remain'));return}
- const n=DB.movimientos.filter(m=>m.cuenta==id||m.destino==id).length;if(!confirm(X(`¿Eliminar «${a.nombre}» y sus ${n} movimientos? No se puede deshacer.`,`Delete "${a.nombre}" and its ${n} transactions? This cannot be undone.`)))return;
+async function delAcc(id){const a=DB.cuentas.find(c=>c.id==id);if(!a)return;if(DB.cuentas.length<2){msg(X('Debe quedar al menos una cuenta','At least one account must remain'));return}
+ const n=DB.movimientos.filter(m=>m.cuenta==id||m.destino==id).length;if(!await ask(X(`¿Eliminar «${a.nombre}»?`,`Delete "${a.nombre}"?`),X(`Se borrarán sus ${n} movimientos. No se puede deshacer.`,`Its ${n} transactions will be deleted. This cannot be undone.`),X('Eliminar','Delete'),true))return;
  DB.cuentas=DB.cuentas.filter(c=>c.id!=id);DB.movimientos=DB.movimientos.filter(m=>m.cuenta!=id&&m.destino!=id);if(DB.auto)DB.auto=DB.auto.filter(x=>x.cuenta!=id);hs.acc=0;hs.cacc=null;sv2();showHome()}
 document.addEventListener('click',e=>{const a=e.target.closest&&e.target.closest('[data-eacc],[data-dacc]');if(!a||!DB)return;e.stopPropagation();a.dataset.eacc?editAcc(a.dataset.eacc):delAcc(a.dataset.dacc)},true);
 function accInfo0(id){const a=DB.cuentas.find(c=>c.id==id)||DB.cuentas[0];if(!a)return'';const ms=DB.movimientos.filter(m=>m.cuenta==a.id||m.destino==a.id).sort((x,y)=>y.fecha-x.fecha).slice(0,3),au=(DB.auto||[]).filter(x=>x.cuenta==a.id).sort((x,y)=>x.next-y.next);
@@ -498,7 +514,7 @@ function openMov(id){const m=DB.movimientos.find(x=>x.id==id);if(!m)return;mdClo
   if(e.target.closest('#mde')){o.remove();editMov(id)}
   else if(e.target.closest('#mdd')){o.querySelector('.sh').innerHTML=`<h2 style="margin-bottom:8px">${A(T('mdQ'))}</h2><p class="sub" style="max-width:none;margin-bottom:24px">${A(T('mdQs'))}</p><div class="btns"><button class="btn" id="mdx">${A(T('cancel'))}</button><button class="btn p" id="mdy" style="background:#c00;border-color:#c00;color:#fff">${A(T('mdB'))}</button></div>`}
   else if(e.target.closest('#mdx'))o.remove();
-  else if(e.target.closest('#mdy')){DB.movimientos=DB.movimientos.filter(x=>x.id!=id);persist();o.remove();showHome();remMov()}};
+  else if(e.target.closest('#mdy')){DB.movimientos=DB.movimientos.filter(x=>x.id!=id);persist();o.remove();showHome()}};
  document.body.appendChild(o)}
 function openAuto(id){const a=(DB.auto||[]).find(x=>x.id==id);if(!a)return;mdClose();const inc=a.tipo=='ingreso',lg=mlogo(a),ic0=mic(a.tipo),nm=i=>{const c=DB.cuentas.find(c=>c.id==i);return c?c.nombre:'—'},inf=(l,v)=>`<div class="mdi"><span>${A(l)}</span><strong>${A(v)}</strong></div>`;
  const o=document.createElement('div');o.className='bg mvd';
@@ -534,7 +550,7 @@ app.addEventListener('click',e=>{if(!hs.active)return;const q=s=>e.target.closes
  else if(x=q('[data-add]')){{const k=x.dataset.add;if(k=='t'){if(DB.cuentas.length<2)msg(T('wNo'));else addFlow('traspaso')}else if(k=='ga'||k=='ia')addFlow(k=='ga'?'gasto':'ingreso',1);else addFlow(k=='g'?'gasto':'ingreso')}}
  else if(q('#sx')){$('#hd').classList.remove('so');hs.q='';$('#q').value='';$('#q').blur();const l=$('#lst');l&&(l.innerHTML=rows(1));const m=$('#mvl');m&&(m.innerHTML=movRows())}
  else if(q('#gear'))openSettings();
- else if(q('#me'))openSettings('prof');
+ else if(q('#me'))openSettings('acc');
  else if(q('#sr')&&!$('#hd').classList.contains('so')){$('#hd').classList.add('so');setTimeout(()=>$('#q').focus(),380)}});
 app.addEventListener('input',e=>{if(e.target.id=='q'){hs.q=e.target.value.trim();const l=$('#lst');l&&(l.innerHTML=rows(1));const m=$('#mvl');m&&(m.innerHTML=movRows())}});
 let ls=null;
@@ -553,7 +569,7 @@ function settings(direct){const d=document.createElement('div');d.className='bg'
  document.body.appendChild(d);d.onclick=e=>{if(e.target==d)d.remove()};
  $('#dl').onclick=()=>{d.querySelector('.sh').innerHTML=`<h2>${A(T('delT'))}</h2><p class="sub">${A(T('delS'))}</p><div class="btns"><button class="btn" id="dn">${A(T('cancel'))}</button><button class="btn p" id="dy" style="background:#c00">${A(T('delY'))}</button></div>`;
   $('#dn').onclick=()=>d.remove();$('#dy').onclick=wipe};if(direct)$('#dl').onclick()}
-function wipe(){if(aget())acctClear();try{localStorage.removeItem('fynance');localStorage.removeItem('fynance_rem')}catch(_){}syncClr();remPend=false;
+function wipe(){if(aget())acctClear();try{localStorage.removeItem('fynance')}catch(_){}syncClr();
  document.querySelectorAll('.bg').forEach(e=>e.remove());DB=null;window.DATA=null;
  Object.assign(st,{name:'',last:'',alias:'',photo:'',gender:'',cur:'EUR',acc:[],pin:''});pk={stage:'a',buf:'',first:''};
  hs={acc:0,q:'',tab:'home',active:false};lang=det;noAcc=false;accS=null;step=-1;ls=null;render()}
@@ -566,7 +582,7 @@ function render(){app.classList.remove('hmo','lk');hs.active=false;live=false;co
  app.innerHTML=bars(5)+`<div class="scr${same?' na':''}${step==4?' pin-screen':''}">${body()}</div><div class="btns"><button class="btn" id="bk">${A(T('back'))}</button><button class="btn p" id="nx">${A(step==3||step==4?(skipAction()?T('skip'):T('next')):T('next'))}</button></div>`;upd()}
 const D=5000;let cur=0,t0=0;
 const useData=(d,bump)=>{if(!(d&&d.perfil&&Array.isArray(d.cuentas)&&d.cuentas.length))throw 0;if(bump)d.mod=Date.now();if(d.ajustes&&d.ajustes.codigoHash){DB=d;hs.acc=0;hs.tab='home';hs.q='';lock();}else{try{localStorage.setItem('fynance',JSON.stringify(d))}catch(_){}if(!load())throw 0;showHome();schedulePush()}};
-const impFile=async e=>{const f=e.target.files[0];if(!f)return;try{useData(JSON.parse(await f.text()),true)}catch{alert(T('bad2'))}};
+const impFile=async e=>{const f=e.target.files[0];if(!f)return;if(hasLocal()&&!await ask(T('i_cT'),T('i_cS'),T('i_go'))){e.target.value='';return}try{useData(JSON.parse(await f.text()),true)}catch{msg(T('bad2'))}};
 
 /* ===== Cuenta: Supabase + cifrado de extremo a extremo =====
    - La contraseña nunca se envía: de ella (PBKDF2 600k + HKDF) salen dos valores distintos:
@@ -684,20 +700,24 @@ function setDoc(n){if(!DB)DB=n;else{Object.keys(DB).forEach(k=>delete DB[k]);Obj
 async function remoteStamp(t){const rows=await sbf('/rest/v1/user_data?select=updated_at',{method:'GET',tok:t});return rows&&rows[0]?(Date.parse(rows[0].updated_at)||0):null}
 async function remoteGet(t){const rows=await sbf('/rest/v1/user_data?select=data,updated_at',{method:'GET',tok:t}),row=rows&&rows[0];if(!row)return null;
  const env=JSON.parse(row.data);return{env,m:env.m||Date.parse(row.updated_at)||0,u:Date.parse(row.updated_at)||0}}
-async function acctPull(keepWrap){const a=aget(),g=_gen;if(!a||!a.dk||!DB)return'none';
+const isEnc=a=>!!(a&&a.dk),mkEnv=async(a,snap,mod)=>a&&a.dk?JSON.stringify({v:1,wp:a.wp,wr:a.wr,d:await seal(await aes(ub64(a.dk)),_enc.encode(snap)),m:mod}):'{"v":2,"m":'+mod+',"db":'+snap+'}',
+docOf=async(a,env)=>env.v===2?env.db:JSON.parse(_dec.decode(await unseal(await aes(ub64(a.dk)),env.d)));
+async function forcePush(skip,ao){if(!skip)await acctPull(1);const a=ao||aget(),t=await token(),m=DB.mod||0;await sbf('/rest/v1/user_data',{tok:t,prefer:'resolution=merge-duplicates,return=minimal',body:{user_id:a.uid,data:await mkEnv(a,JSON.stringify(DB),m),updated_at:new Date(Math.max(Date.now(),_lastU+1)).toISOString()}});syncSet(m);setBase(baseOf(DB))}
+async function acctPull(keepWrap){const a=aget(),g=_gen;if(!a||!DB)return'none';
  const t=await token(),r=await remoteGet(t);if(!alive(g)||!r)return'none';_lu=r.u;_lastU=Math.max(_lastU,r.u);
- if(!keepWrap&&r.env.wp&&(JSON.stringify(r.env.wp)!==JSON.stringify(a.wp)||JSON.stringify(r.env.wr)!==JSON.stringify(a.wr))){a.wp=r.env.wp;a.wr=r.env.wr;aset(a)}
+ const std=r.env.v===2;if(std&&a.dk){delete a.dk;delete a.wp;delete a.wr;aset(a)}else if(!std&&!a.dk)throw'dec';
+ if(!std&&!keepWrap&&r.env.wp&&(JSON.stringify(r.env.wp)!==JSON.stringify(a.wp)||JSON.stringify(r.env.wr)!==JSON.stringify(a.wr))){a.wp=r.env.wp;a.wr=r.env.wr;aset(a)}
  const lm=syncGet();if(r.m<=lm)return'same';
- let rem;try{rem=JSON.parse(_dec.decode(await unseal(await aes(ub64(a.dk)),r.env.d)))}catch(_){throw'dec'}
+ let rem;try{rem=await docOf(a,r.env)}catch(_){throw'dec'}
  if(!alive(g)||!validDoc(rem))return'none';rem.mod=rem.mod||r.m;
  if((DB.mod||0)>lm){const B=getBase();setDoc(B?merge3(DB,rem,B):mergeDocs(DB,rem));setBase(baseOf(rem));syncSet(r.m);return'merged'}
  setDoc(rem);setBase(baseOf(rem));syncSet(r.m);return'replaced'}
-function acctPush(keepWrap){const a0=aget(),g=_gen;if(!a0||!a0.dk||!a0.wp||!DB)return Promise.resolve(false);
+function acctPush(keepWrap){const a0=aget(),g=_gen;if(!a0||!DB)return Promise.resolve(false);
  if(_busy){_again=true;return _busy}
  _busy=(async()=>{try{await acctPull(keepWrap);const a=aget();if(!alive(g)||!DB)return false;if(!(DB.mod>syncGet())){_si.ok=Date.now();_si.err=null;return true}
-   const t=await token(),ts=Math.max(Date.now(),_lastU+1),mod=DB.mod,snap=JSON.stringify(DB),bs=baseOf(DB),d=await seal(await aes(ub64(a.dk)),_enc.encode(snap));
+   const t=await token(),ts=Math.max(Date.now(),_lastU+1),mod=DB.mod,snap=JSON.stringify(DB),bs=baseOf(DB),dat=await mkEnv(a,snap,mod);
    if(!alive(g))return false;
-   await sbf('/rest/v1/user_data',{tok:t,prefer:'resolution=merge-duplicates,return=minimal',body:{user_id:a.uid,data:JSON.stringify({v:1,wp:a.wp,wr:a.wr,d,m:mod}),updated_at:new Date(ts).toISOString()}});
+   await sbf('/rest/v1/user_data',{tok:t,prefer:'resolution=merge-duplicates,return=minimal',body:{user_id:a.uid,data:dat,updated_at:new Date(ts).toISOString()}});
    if(!alive(g))return false;_lastU=ts;syncSet(mod);setBase(bs);_lu=null;_si.ok=Date.now();_si.err=null;return true}
   catch(e){if(g===_gen){console.warn('sync',e);_si.err=e}return false}
   finally{if(g===_gen){_busy=null;if(_again){_again=false;setTimeout(()=>acctSync(),400)}}}})();
@@ -723,21 +743,23 @@ const doSignup=async(email,pw)=>{const em=normEmail(email),{auth,key}=await kdf(
  return{r,em,key,row:null}};
 const doLogin=async(email,pw)=>{const em=normEmail(email),{auth,key}=await kdf(pw,em),r=await sbf('/auth/v1/token?grant_type=password',{body:{email:em,password:auth}});
  setTok(r);const rows=await sbf('/rest/v1/user_data?select=data,updated_at',{method:'GET',tok:_tok});return{r,em,key,row:rows&&rows[0]}};
-const afterAuth=async({r,em,key,row})=>{const uid=r.user.id;
- if(row){let env,dk,data;try{env=JSON.parse(row.data);dk=await unseal(key,env.wp);data=JSON.parse(_dec.decode(await unseal(await aes(dk),env.d)))}catch{throw'dec'}
-  if(hasLocal()&&!confirm(AT('rep')))return;
-  aset({email:em,uid,rt:r.refresh_token,dk:b64(dk),wp:env.wp,wr:env.wr});accS=null;accD={};const rm=env.m||data.mod||Date.parse(row.updated_at)||0;data.mod=data.mod||rm;syncSet(rm);setBase(baseOf(data));useData(data);return}
- syncClr();const dk=crypto.getRandomValues(new Uint8Array(32));
- const wp=await seal(key,dk);
- aset({email:em,uid,rt:r.refresh_token,dk:b64(dk),wp});accS=null;accD={};if(hasLocal()){load();await acctPush();showHome()}else{step=0;render()}};
+function askRep(){return new Promise(res=>{const d=document.createElement('div');d.className='bg ctr';d.innerHTML=`<div class="sh"><h2>${A(X('Esta cuenta ya tiene datos','This account already has data'))}</h2><p class="sub">${A(X('¿Qué quieres hacer con los datos que tienes ahora en este dispositivo?','What do you want to do with the data currently on this device?'))}</p><div class="btns col"><button class="btn p" data-c="cloud">${A(X('Usar los datos de la cuenta','Use the account data'))}</button><button class="btn" data-c="local">${A(X('Reescribir la cuenta con mis datos actuales','Overwrite the account with my current data'))}</button><button class="btn" data-c="">${A(T('cancel'))}</button></div></div>`;d.onclick=e=>{const b=e.target.closest('[data-c]');if(!b)return;d.remove();res(b.dataset.c||null)};document.body.appendChild(d)})}
+const afterAuth=async({r,em,key,row},enc)=>{const uid=r.user.id;
+ if(row){let env,dk=null,data;try{env=JSON.parse(row.data);if(env.v===2)data=env.db;else{dk=await unseal(key,env.wp);data=JSON.parse(_dec.decode(await unseal(await aes(dk),env.d)))}}catch{throw'dec'}
+  let ch='cloud';if(hasLocal()){ch=await askRep();if(!ch){acctClear();return}}
+  aset(dk?{email:em,uid,rt:r.refresh_token,dk:b64(dk),wp:env.wp,wr:env.wr}:{email:em,uid,rt:r.refresh_token});accS=null;accD={};
+  if(ch=='local'){load();DB.mod=Math.max(Date.now(),(env.m||0)+1);await sbf('/rest/v1/user_data',{tok:await token(),prefer:'resolution=merge-duplicates,return=minimal',body:{user_id:uid,data:await mkEnv(aget(),JSON.stringify(DB),DB.mod),updated_at:new Date().toISOString()}});try{localStorage.setItem('fynance',JSON.stringify(DB))}catch(_){}syncSet(DB.mod);setBase(baseOf(DB));showHome();return}
+  const rm=env.m||data.mod||Date.parse(row.updated_at)||0;data.mod=data.mod||rm;syncSet(rm);setBase(baseOf(data));useData(data);return}
+ syncClr();const na={email:em,uid,rt:r.refresh_token};if(enc){const dk=crypto.getRandomValues(new Uint8Array(32));na.dk=b64(dk);na.wp=await seal(key,dk)}
+ aset(na);accS=null;accD={};if(hasLocal()){load();await acctPush();showHome()}else{step=0;render()}};
 function renderAcc(){
  const head=()=>`<img class="logo" src="logo.png" alt="Fynance Capital">`,fld=(id,l,type,ac,v='')=>`<label class="fld"><span>${A(l)}</span><input type="${type}" id="${id}" autocomplete="${ac}" autocapitalize="none" autocorrect="off" spellcheck="false" value="${esc(v)}"></label>`;
  const bk=`<button class="nbk" id="ab">${A(AT('back'))}</button>`;let h;
  if(accS=='rec'){const k=accD.rec.match(/.{1,4}/g).join('-');
   h=`${head(AT('r_t'))}<div class="acf"><p class="rk" id="rk">${A(k)}</p><p class="nat" style="margin:0 4px 6px;text-align:left">${A(AT('r_x'))}</p><button class="btn o" id="rcp" style="display:block;width:100%;height:58px;margin-top:14px;border:2.5px solid var(--fg)">${A(AT('r_copy'))}</button></div><div class="nab"><label class="rc"><input type="checkbox" id="rc"><span>${A(AT('r_chk'))}</span></label><button class="btn p" id="rgo" style="display:block;width:100%" disabled>${A(AT('r_go'))}</button><button class="nbk" id="rsk">${A(X('Omitir por ahora','Skip for now'))}</button><p class="nat" style="margin:6px 4px 0;font-size:14px">${A(X('Podrás generar una clave de recuperación más adelante en Ajustes. Sin ella, si olvidas la contraseña no podrás recuperar tus datos.','You can generate a recovery key later in Settings. Without one, if you forget your password you won\'t be able to recover your data.'))}</p></div>`}
- else if(accS=='mail'){h=`${head(AT('m_t'))}<div class="acf"><p class="nat" style="margin:0 4px;text-align:left;font-size:17px;opacity:.8">${A(AT('m_x').replace('{e}',accD.email||''))}</p></div><div class="nab"><button class="btn p" id="ml" style="display:block;width:100%">${A(AT('go_in'))}</button></div>`}
+ else if(accS=='mail'){h=`${head(AT('m_t'))}<div class="acf"><p class="nat" style="margin:0 4px;text-align:left;font-size:17px;opacity:.8">${A(AT('m_x').replace('{e}',accD.email||''))}${INFO}</p></div><div class="nab"><button class="btn p" id="ml" style="display:block;width:100%">${A(AT('go_in'))}</button></div>`}
  else{const n=accS=='new';
-  h=`${head(AT(n?'t_new':'t_in'))}<div class="acf">${fld('ae',AT('email'),'email','email',accD.email||'')}${fld('ap',AT('pw'),'password',n?'new-password':'current-password')}${n?fld('ap2',AT('pw2'),'password','new-password'):''}</div><div class="nab">${n?`<p class="nat">${A(AT('pw_note'))}</p>`:''}${n?'':`<button class="nbk up" id="fgp">${A(X('¿Has olvidado la contraseña?','Forgot your password?'))}</button>`}<p class="aer" id="aer"></p><button class="btn p" id="ago" style="display:block;width:100%">${A(AT(n?'go_new':'go_in'))}</button>${bk}</div>`}
+  h=`${head(AT(n?'t_new':'t_in'))}<div class="acf">${fld('ae',AT('email'),'email','email',accD.email||'')}${fld('ap',AT('pw'),'password',n?'new-password':'current-password')}${n?fld('ap2',AT('pw2'),'password','new-password'):''}</div><div class="nab">${n?`<label class="rc"><input type="checkbox" id="aenc"><span>${A(X('Activar cifrado completo (opcional)','Enable full encryption (optional)'))}</span></label><p class="nat" style="font-size:14px;margin:4px 4px 8px">${A(X('Solo tú podrás leer tus datos, pero si olvidas la contraseña solo podrás recuperarlos con una clave de recuperación. Sin esto, podrás restablecer la contraseña desde tu correo. Puedes activarlo más tarde en Ajustes.','Only you can read your data, but if you forget your password you can only recover it with a recovery key. Without this, you can reset your password from your email. You can enable it later in Settings.'))}</p>`:''}${n?'':`<button class="nbk up" id="fgp">${A(X('¿Has olvidado la contraseña?','Forgot your password?'))}</button>`}<p class="aer" id="aer"></p><button class="btn p" id="ago" style="display:block;width:100%">${A(AT(n?'go_new':'go_in'))}</button>${bk}</div>`}
  app.innerHTML=`<div class="nas">${h}</div>`;
  const back=()=>{accS=null;accD={};render()};
  if($('#ab'))$('#ab').onclick=back;if($('#fgp'))$('#fgp').onclick=()=>forgotPw($('#ae').value);
@@ -749,7 +771,7 @@ function renderAcc(){
   if(!e||!p||!p2)return bad(AT('e_empty'));if(!/^\S+@\S+\.\S+$/.test(e))return bad(AT('e_email'));
   if(n){if(p.length<8)return bad(AT('e_short'));if(p!==p2)return bad(AT('e_match'))}
   bad('');b.disabled=true;const lbl=b.textContent;b.textContent=AT('busy');accD.email=e;
-  try{if(n){const x=await doSignup(e,p);if(x.r&&x.r.access_token){setTok(x.r);await afterAuth(x)}else{accS='mail';render()}}else await afterAuth(await doLogin(e,p))}
+  try{if(n){const x=await doSignup(e,p);if(x.r&&x.r.access_token){setTok(x.r);await afterAuth(x,!!($('#aenc')&&$('#aenc').checked))}else{accS='mail';render()}}else await afterAuth(await doLogin(e,p))}
   catch(x){bad(emsg(x))}finally{if(document.contains(b)){b.disabled=false;b.textContent=lbl}}}}
 
 function story(){$('#acc').onclick=()=>{accS='new';accD={};render()};$('#hv').onclick=()=>{accS='in';accD={};render()};$('#imp').onclick=()=>{noAcc=true;render()};$('#f').onchange=impFile}
@@ -777,6 +799,7 @@ app.addEventListener('input',e=>{const f=e.target.dataset.f;if(f){st[f]=e.target
 app.addEventListener('change',e=>{if(e.target.id=='pf'&&e.target.files[0])photo(e.target.files[0])});
 if('serviceWorker'in navigator)navigator.serviceWorker.register('sw.js',{updateViaCache:'none'}).then(reg=>{let base='';const chk=()=>{reg.update().catch(()=>{});fetch('index.html',{cache:'no-cache'}).then(r=>r.ok?r.text():'').then(t=>{if(!t)return;const h=hsh(t);if(!base)base=h;else if(h!==base&&!wz)location.reload()}).catch(()=>{})};chk();document.addEventListener('visibilitychange',()=>{if(document.visibilityState=='visible')chk()})}).catch(()=>{});
 try{if(navigator.storage&&navigator.storage.persist)navigator.storage.persist().catch(()=>{})}catch(_){}
+try{localStorage.removeItem('fynance_rem')}catch(_){}
 (async()=>{const t0=Date.now(),pl=new Promise(r=>document.readyState=='complete'?r():addEventListener('load',r,{once:true}));let ok=load();
  if(ok&&aget()){try{await acctSync()}catch(_){}ok=load()}
  await pl;const w=3000-(Date.now()-t0);if(w>0)await new Promise(r=>setTimeout(r,w));
